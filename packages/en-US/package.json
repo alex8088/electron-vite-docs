@@ -1,0 +1,13 @@
+{
+  "name": "@electron-vite-docs/en",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vitepress",
+    "build": "vitepress build",
+    "serve": "vitepress serve"
+  },
+  "dependencies": {
+    "vue": "^3.2.37"
+  }
+}

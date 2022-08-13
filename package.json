@@ -1,0 +1,39 @@
+{
+  "name": "@electron-vite-docs/monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Documentation for electron-vite",
+  "license": "MIT",
+  "author": "Alex Wei<https://github.com/alex8088>",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "dev": "pnpm run -C packages/en-US dev",
+    "build": "pnpm run -C packages/en-US build",
+    "serve": "pnpm run -C packages/en-US serve",
+    "dev:cn": "pnpm run -C packages/zh-CN dev",
+    "build:cn": "pnpm run -C packages/zh-CN build",
+    "serve:cn": "pnpm run -C packages/zh-CN serve"
+  },
+  "simple-git-hooks": {
+    "commit-msg": "npx commit-lint $1"
+  },
+  "devDependencies": {
+    "@alexwei/commit-lint": "^1.0.0",
+    "@types/node": "^16.11.48",
+    "simple-git-hooks": "^2.8.0",
+    "vitepress": "1.0.0-alpha.4"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "@algolia/client-search",
+        "react",
+        "react-dom",
+        "@types/react"
+      ]
+    }
+  }
+}
