@@ -2,8 +2,11 @@
 layout: home
 hero:
   name: electron-vite
-  text: Next generation Electron build tooling based on Vite
-  tagline: A fast, simple and approachable development tool for Electron
+  text: Next Generation Electron Build Tooling
+  tagline: Based on Vite. It's fast, simple and approachable!
+  image:
+    src: /favicon.svg
+    alt: logo
   actions:
     - theme: brand
       text: Get Started
