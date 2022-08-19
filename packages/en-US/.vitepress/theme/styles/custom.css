@@ -4,6 +4,7 @@
   --vp-c-brand-lighter: #8aa1e5;
   --vp-c-brand-dark: #597ce7;
   --vp-c-brand-darker: #4971e9;
+  --vp-c-brand-dimm: rgba(105, 136, 230, 0.1);
 }
 
 :root {
@@ -19,6 +20,19 @@
     #6fd6eb60
   );
   --vp-home-hero-image-filter: blur(56px);
+}
+
+
+:root {
+  --vp-custom-block-tip-border: var(--vp-c-brand);
+  --vp-custom-block-tip-text: var(--vp-c-brand-darker);
+  --vp-custom-block-tip-bg: var(--vp-c-brand-dimm);
+}
+
+.dark {
+  --vp-custom-block-tip-border: var(--vp-c-brand);
+  --vp-custom-block-tip-text: var(--vp-c-brand-lighter);
+  --vp-custom-block-tip-bg: var(--vp-c-brand-dimm);
 }
 
 .VPHero .name {
@@ -39,4 +53,16 @@
   .VPHero .text {
     font-size: 52px;
   }
+}
+
+.vp-doc .custom-block a {
+  text-decoration: none;
+}
+
+.ev-dev {
+  background-color: #eee;
+}
+
+.dark .ev-dev {
+  background-color: #313641;
 }

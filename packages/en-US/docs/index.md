@@ -10,7 +10,7 @@ hero:
   actions:
     - theme: brand
       text: Get Started
-      link: /guide/getting-started
+      link: /guide/
     - theme: alt
       text: View on GitHub
       link: https://github.com/alex8088/electron-vite
@@ -19,7 +19,7 @@ features:
     title: Vite Powered
     details: Inherit all the benefits of Vite and use the same way as Vite.
   - icon: 📦
-    title: Fully Build
+    title: Fully Bundling
     details: The main process, renderer and preload scripts are all built with Vite.
   - icon: 🛠
     title: Centralized Configuration
