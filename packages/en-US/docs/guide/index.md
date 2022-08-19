@@ -77,7 +77,7 @@ When using electron-vite to bundle your code, the entry point of the Electron ap
 
 Electron's working directory will be the output directory, not your source code directory. So you can exclude the source code when packaging Electron application.
 
-Learn more about [Build for production](/config/build).
+Learn more about [Build for production](/guide/build).
 
 ## Scaffolding Your First electron-vite Project
 

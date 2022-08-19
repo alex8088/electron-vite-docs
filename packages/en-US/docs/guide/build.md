@@ -43,7 +43,7 @@ It should be pointed out that the best practice is to put the bundled code in **
 
 ## Customizing the Build
 
-The build can be customized via various [build config options](/config/build-options.md). Specifically, you can directly adjust the underlying [Rollup options](https://rollupjs.org/guide/en/#big-list-of-options) via `build.rollupOptions`:
+The build can be customized via various [build config options](https://vitejs.dev/config/build-options.html). Specifically, you can directly adjust the underlying [Rollup options](https://rollupjs.org/guide/en/#big-list-of-options) via `build.rollupOptions`:
 
 ```js
 // electron.vite.config.js
