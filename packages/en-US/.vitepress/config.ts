@@ -78,7 +78,7 @@ export default defineConfig({
     ],
     localeLinks: {
       text: 'English',
-      items: [{ text: '简体中文', link: 'https://alex8088.github.io/ev/zh-CN' }]
+      items: [{ text: '简体中文', link: 'https://cn-evite.netlify.app/' }]
     },
     logo: '/favicon.svg',
     footer: {
