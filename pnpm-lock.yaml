@@ -20,6 +20,12 @@ importers:
     dependencies:
       vue: 3.2.37
 
+  packages/zh-CN:
+    specifiers:
+      vue: ^3.2.37
+    dependencies:
+      vue: 3.2.37
+
 packages:
 
   /@alexwei/commit-lint/1.0.0:
