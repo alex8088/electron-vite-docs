@@ -32,5 +32,5 @@ features:
     details: HMR for renderer processes.
   - icon: 🔋
     title: Powerful
-    details: Out-of-box Typescript, support for Vue, React, Svelte and more web frameworks in Electron.
+    details: Out-of-box Typescript, support Vue, React, Svelte and more web front-end frameworks.
 ---

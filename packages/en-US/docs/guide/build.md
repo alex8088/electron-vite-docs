@@ -16,7 +16,7 @@ By default, the build output will be placed at `out` (relative to project root).
 
 You can specify it via a command line flag, e.g. `electron-vite dev/build/preview --outDir=dist`.
 
-In addition, you can also use `build.outDir` to specify the output directory of the main process, renderer and preload scripts.
+In addition, you can also use `build.outDir` option to specify the output directory of the main process, renderer and preload scripts.
 
 ```js
 // electron.vite.config.js
