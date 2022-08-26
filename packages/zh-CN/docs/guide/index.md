@@ -17,7 +17,7 @@ electron-vite 快速、简单且易学易用，旨在开箱即用。
 ## 安装
 
 ::: tip 前提条件
-electron-vite 需要 **Node.js** 版本 14.18+ 和 **Vite** 版本 2.6+
+electron-vite 需要 **Node.js** 版本 14.18+ 和 **Vite** 版本 3.0+
 :::
 
 ```sh
