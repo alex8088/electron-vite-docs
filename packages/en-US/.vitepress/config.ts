@@ -45,7 +45,7 @@ const nav: DefaultTheme.NavItem[] = [
     ]
   },
   {
-    text: 'v1.0.5',
+    text: 'v1.0.6',
     items: [
       {
         text: 'Changelog',
