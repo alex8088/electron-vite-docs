@@ -1,5 +1,6 @@
 ---
 layout: home
+title: 下一代 Electron 开发与构建工具
 hero:
   name: electron-vite
   text: 下一代 Electron 开发与构建工具
