@@ -23,6 +23,7 @@ The command will build the main process, renderers and preload scripts source co
 | `-l, --logLevel <level>`  | Set log level (optional: `info`, `warn`, `error`, `silent`) |
 | `-m, --mode <mode>`       | Set env mode |
 | `--ignoreConfigWarning`   | Ignore config warning (default: `false`) |
+| `--sourcemap`             | Output source maps for debug (default: `false`) |
 | `--outDir <dir>`          | Output directory (default: `out`)  |
 | `-v, --version`	          | Display version number |
 | `-h, --help`	            | Display available CLI options |

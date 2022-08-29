@@ -13,7 +13,8 @@ const sidebar: DefaultTheme.Sidebar = {
         { text: 'Use HMR in Renderer', link: '/guide/hmr-in-renderer' },
         { text: 'Building for Production', link: '/guide/build' },
         { text: 'Env Variables and Modes', link: '/guide/env-and-mode' },
-        { text: 'Multiple Windows', link: '/guide/mutli-windows' }
+        { text: 'Multiple Windows', link: '/guide/mutli-windows' },
+        { text: 'Debugging in VSCode', link: '/guide/debugging' }
       ]
     },
     {
