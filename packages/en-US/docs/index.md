@@ -1,5 +1,6 @@
 ---
 layout: home
+title: Next Generation Electron Build Tooling
 hero:
   name: electron-vite
   text: Next Generation Electron Build Tooling
