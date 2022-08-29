@@ -22,6 +22,7 @@
 | `-l, --logLevel <level>`  | 设置日志级别 (optional: `info`, `warn`, `error`, `silent`) |
 | `-m, --mode <mode>`       | 设置环境模式 |
 | `--ignoreConfigWarning`   | 忽略配置缺失警告 (default: `false`) |
+| `--sourcemap`             | 输出 source maps 支持 debug (default: `false`) |
 | `--outDir <dir>`          | 设置输出目录 (default: `out`)  |
 | `-v, --version`	          | 显示版本号 |
 | `-h, --help`	            | 显示可用的 CLI 选项 |

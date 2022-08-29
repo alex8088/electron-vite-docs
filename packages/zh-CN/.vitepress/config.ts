@@ -13,7 +13,8 @@ const sidebar: DefaultTheme.Sidebar = {
         { text: '渲染进程 HMR', link: '/guide/hmr-in-renderer' },
         { text: '构建生产版本', link: '/guide/build' },
         { text: '环境变量和模式', link: '/guide/env-and-mode' },
-        { text: '多窗口配置', link: '/guide/mutli-windows' }
+        { text: '多窗口配置', link: '/guide/mutli-windows' },
+        { text: 'VSCode 调试', link: '/guide/debugging' }
       ]
     },
     {
