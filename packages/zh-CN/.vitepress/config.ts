@@ -11,6 +11,7 @@ const sidebar: DefaultTheme.Sidebar = {
         { text: '命令行界面', link: '/guide/cli' },
         { text: '项目结构', link: '/guide/project-structure' },
         { text: '渲染进程 HMR', link: '/guide/hmr-in-renderer' },
+        { text: '热重载', link: '/guide/hot-reloading' },
         { text: '构建生产版本', link: '/guide/build' },
         { text: '环境变量和模式', link: '/guide/env-and-mode' },
         { text: '多窗口配置', link: '/guide/mutli-windows' },

@@ -45,6 +45,12 @@ electron-vite 可以智能地为 Electron 的独特环境打包源代码。
 
 查阅 [在渲染进程中使用 HMR](/guide/hmr-in-renderer) 部分，了解此功能的更多详细信息。
 
+## 热重载
+
+热重载是指在主进程或预加载脚本模块发生变化时快速重新构建并重启 Electron 程序。事实上，并不是真正的热重载，而是类似的。它为开发者带来了很好的开发体验。
+
+查阅 [热重载](/guide/hot-reloading) 部分，了解此功能的更多详细信息。
+
 ## Vite 支持
 
 请参阅 [Vite 功能](https://cn.vitejs.dev/guide/features.html) 。
