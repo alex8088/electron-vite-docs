@@ -45,6 +45,12 @@ Thanks to Vite's extremely fast HMR feature, we use it in renderer development. 
 
 Check out the [Use HMR in Renderers](/guide/hmr-in-renderer) section to learn more about this feature.
 
+## Hot Reloading
+
+Hot reloading refers to quickly rebuilding and restarting the Electron app when the main process or preload scripts module changes. In fact, it's not really hot reloading, but similar. It also brings a good development experience to developers.
+
+Check out the [Hot Reloading](/guide/hot-reloading) section to learn more about this feature.
+
 ## Vite Powered
 
 See [Vite features](https://vitejs.dev/guide/features.html).

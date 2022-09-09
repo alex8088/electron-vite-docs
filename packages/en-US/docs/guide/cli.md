@@ -24,6 +24,7 @@ The command will build the main process, renderers and preload scripts source co
 | `-m, --mode <mode>`       | Set env mode |
 | `--ignoreConfigWarning`   | Ignore config warning (default: `false`) |
 | `--sourcemap`             | Output source maps for debug (default: `false`) |
+| `-w, --watch`             | Watch mode for hot reloading (default: `false`) |
 | `--outDir <dir>`          | Output directory (default: `out`)  |
 | `-v, --version`	          | Display version number |
 | `-h, --help`	            | Display available CLI options |
