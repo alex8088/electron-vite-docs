@@ -2,13 +2,15 @@
 
 ## Overview
 
-**electron-vite** is a build tool that aims to provide a faster and leaner development experience for [Electron](https://www.electronjs.org). It consists of three major parts:
+**electron-vite** is a build tool that aims to provide a faster and leaner development experience for [Electron](https://www.electronjs.org). It consists of four major parts:
 
 - A build command that bundles your code with [Vite](https://vitejs.dev/), and able to handle Electron's unique environment including [Node.js](https://nodejs.org/) and browser environments.
 
 - Centrally configure the main process, renderers and preload scripts Vite configuration, and preconfigure for Electron's unique environment.
 
-- Use fast Hot Module Replacement(HMR) for renderers, extremely improving development efficiency.
+- Use fast Hot Module Replacement(HMR) for renderers, and the main process and preload scripts support hot reloading, extremely improving development efficiency.
+
+- Use V8 bytecode to protect source code.
 
 electron-vite is fast, simple and approachable, designed to work out-of-the-box.
 

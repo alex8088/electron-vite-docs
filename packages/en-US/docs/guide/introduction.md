@@ -14,6 +14,8 @@ Thanks to Vite's excellent front-end development experience, more and more Elect
 
 - Can't make inferences, choose front-end frameworks (Vue, React, Svelte, etc.)
 
+- Unable to protect source code
+
 electron-vite aims to solve these problems and provide a faster and leaner development experience for Electron.
 
 ## Electron Features

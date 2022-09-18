@@ -51,6 +51,12 @@ Hot reloading refers to quickly rebuilding and restarting the Electron app when 
 
 Check out the [Hot Reloading](/guide/hot-reloading) section to learn more about this feature.
 
+## Source Code Protection
+
+electron-vite use V8 bytecode to protect source code.
+
+Check out the [Source Code Protection](/guide/source-code-protection) section to learn more about this feature.
+
 ## Vite Powered
 
 See [Vite features](https://vitejs.dev/guide/features.html).

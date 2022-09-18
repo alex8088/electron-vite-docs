@@ -29,9 +29,18 @@ features:
     title: Pre-configured
     details: Pre-configured for Electron, don't worry about configuration.
   - icon: 🚀
-    title: Fast HMR and Hot Reloading
-    details: HMR for renderers, and the main process and preload scripts support hot reloading.
+    title: Fast HMR
+    details: HMR for renderer processes.
+  - icon: 🔥
+    title: Hot Reloading
+    details: The main process and preload scripts support hot reloading.
+  - icon: 🔌
+    title: Easy to Debug
+    details: Very easy to debug in IDE like vscode or webstorm.
+  - icon: 🔒
+    title: Source Code Protection
+    details: Compile to V8 bytecode to protect source code.
   - icon: 🔋
-    title: Powerful
-    details: Out-of-box Typescript, support Vue, React, Svelte and more web front-end frameworks.
+    title:  Out-of-the-box
+    details: Out-of-the-box support for TypeScript, Vue, React, Svelte, SolidJS and more.
 ---
