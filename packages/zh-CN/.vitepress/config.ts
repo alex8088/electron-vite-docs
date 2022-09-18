@@ -48,7 +48,7 @@ const nav: DefaultTheme.NavItem[] = [
     ]
   },
   {
-    text: 'v1.0.8',
+    text: 'v1.0.9',
     items: [
       {
         text: '更新日志',
