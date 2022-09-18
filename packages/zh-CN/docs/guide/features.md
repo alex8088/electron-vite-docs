@@ -51,6 +51,12 @@ electron-vite 可以智能地为 Electron 的独特环境打包源代码。
 
 查阅 [热重载](/guide/hot-reloading) 部分，了解此功能的更多详细信息。
 
+## 源代码保护
+
+electron-vite 使用 V8 字节码来保护源代码。
+
+查阅 [源代码保护](/guide/source-code-protection) 部分，了解此功能的更多详细信息。
+
 ## Vite 支持
 
 请参阅 [Vite 功能](https://cn.vitejs.dev/guide/features.html) 。

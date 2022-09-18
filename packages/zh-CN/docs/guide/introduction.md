@@ -14,6 +14,8 @@
 
 - 无法举一反三，自主选择前端框架（Vue、React 和 Svelte 等）
 
+- 无法保护源代码
+
 electron-vite 旨在解决这些问题，为 Electron 提供更快、更精简的开发体验。
 
 ## Electron 特性
