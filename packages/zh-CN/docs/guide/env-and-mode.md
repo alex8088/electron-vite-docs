@@ -32,4 +32,6 @@ export default defineConfig({
 
 ## 模式
 
-默认情况下，`development` 模式（`dev` 命令）仅适用于渲染器。这意味着来自 `.env.development` 的变量仅对渲染器可用。
+默认情况下，`dev` 命令运行在 `development` (开发) 模式，而 `build` 和 `preview` 命令则运行在 `production` (生产) 模式。
+
+你可以通过传递 `--mode` 选项标志来覆盖命令使用的默认模式。请参阅[ Vite 模式](https://cn.vitejs.dev/guide/env-and-mode.html#modes)
