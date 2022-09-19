@@ -119,6 +119,10 @@ export default defineConfig({
 对于主进程和预加载脚本，最好的做法是排除外部依赖项。如果你不这样做，它们将被打包在一起。在这种情况下，你应该在打包 Electron 应用程序时将它们从 `node_modules` 目录中排除，因为不再需要它们了。
 :::
 
+## 源代码保护
+
+请参阅 [源代码保护](/guide/source-code-protection)。
+
 ## 多窗口应用
 
 请参阅 [多窗口配置](/guide/mutli-windows)。
