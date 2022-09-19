@@ -119,6 +119,10 @@ By default, electron-vite will add the `electron` module and all `node` built-in
 For the main process and preload scripts, the best practice is to exclude external dependencies. If you don't, they will be bundled. In this case, you should exclude them from the `node_modules` directory when packaging your Electron app, because they are no longer needed.
 :::
 
+## Source Code Protection
+
+See [Source Code Protection](/guide/source-code-protection).
+
 ## Multiple Windows App
 
 See [Multiple Windows](/guide/mutli-windows).
