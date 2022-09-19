@@ -32,4 +32,6 @@ export default defineConfig({
 
 ## Modes
 
-By default, `development` mode (`dev` command) only works in renderers. it means that variables from `.env.development` are only available to renderers.
+By default, `dev` command runs in `development` mode, the `build` and `preview` command runs in `production` mode.
+
+You can overwrite the default mode used for a command by passing the `--mode` option flag. See [Vite Modes](https://vitejs.dev/guide/env-and-mode.html#modes).
