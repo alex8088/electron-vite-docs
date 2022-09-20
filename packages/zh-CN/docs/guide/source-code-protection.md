@@ -43,6 +43,7 @@ electron-vite 受 [bytenode](https://github.com/bytenode/bytenode) 启发，具�
 
 - 实现一个插件 `bytecodePlugin` 来解析构建产物，并确定是否编译为字节码。
 - 启动 Electron 进程将构建产物编译成 `.jsc` ​​文件，并确保生成的字节码可以在 Electron 的 Node 环境中运行。
+- 自动生成字节码加载器，使 Electorn 应用能够加载字节码模块。
 - 支持开发者自由决定编译哪些块。
 
 此外，electron-vite 还解决了一些 `bytenode` 无法解决的问题：
@@ -143,6 +144,9 @@ export default defineConfig({
 })
 ```
 
+## 示例
+
+你可以通过演练 [示例](https://github.com/alex8088/electron-vite-bytecode-example) 来了解更多信息。
 
 ## V8 字节码的局限性
 
