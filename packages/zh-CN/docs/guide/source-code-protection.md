@@ -76,6 +76,8 @@ export default defineConfig({
 
 ::: tip 提示
 `bytecodePlugin` 仅适用于生产阶段构建并且只支持主进程和预加载脚本。
+
+需要注意的是，预加载脚本需要禁用 `sandbox` 才能支持字节码，因为字节码是基于 Node 的 `vm` 模块实现。从 Electron 20 开始，渲染器默认会被沙箱化，所以如果你想使用字节码来保护预加载脚本，你需要设置 `sandbox: false`。
 :::
 
 ##  `bytecodePlugin` 选项
