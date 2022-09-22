@@ -76,6 +76,8 @@ export default defineConfig({
 
 ::: tip NOTE
 `bytecodePlugin` only works in production and supports main process and preload scripts.
+
+It is important to note that the preload script needs to disable the `sandbox` to support the bytecode, because the bytecode is based on the Node's `vm` module. Since Electron 20, renderers will be sandboxed by default, so if you want to use bytecode to protect preload scripts you need to set `sandbox: false`.
 :::
 
 ##  `bytecodePlugin` Options
