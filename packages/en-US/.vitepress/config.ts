@@ -69,9 +69,9 @@ export default defineConfig({
   lastUpdated: true,
   themeConfig: {
     algolia: {
-      appId: '',
-      apiKey: '',
-      indexName: ''
+      appId: '1NX9WWHEG7',
+      apiKey: 'f6f0308484ed60fd61c8b2bb8d2ce2a9',
+      indexName: 'evite'
     },
     socialLinks: [
       {
