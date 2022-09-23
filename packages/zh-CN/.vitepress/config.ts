@@ -59,7 +59,7 @@ const nav: DefaultTheme.NavItem[] = [
 ]
 
 export default defineConfig({
-  lang: 'en-US',
+  lang: 'zh-CN',
   title: 'electron-vite',
   description: 'Next generation Electron build tooling based on Vite.',
   head: [
