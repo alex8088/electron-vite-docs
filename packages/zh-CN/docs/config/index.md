@@ -26,7 +26,7 @@ electron-vite --config my-config.js
 ```
 
 ::: tip 提示
-`electron-vite` 也支持 `ts` 或者 `mjs` 的配置文件。
+`electron-vite` 还支持 `.ts`、`.mjs` 和 `.cjs` 后缀的配置文件。
 :::
 
 ## 配置智能提示
@@ -100,6 +100,7 @@ export default defineConfig({
 
 | 构建选项                   | 默认值                   |
 | ------------------------- | ------------------------  |
+| `target`        | `node*`，自动匹配 Electron 的 Node 兼容目标（例如：Electron 20 为 `node16.15`） |
 | `outDir`        | `out\main`（相对于项目根目录） |
 | `lib.entry`     | `src\main\{index\|main}.{js\|ts\|mjs\|cjs}`，找不到则为空字符串 |
 | `lib.formats`   | `cjs` |
@@ -109,6 +110,7 @@ export default defineConfig({
 
 | 构建选项                   | 默认值                   |
 | ------------------------- | ------------------------  |
+| `target`        | `node*`，自动匹配 Electron 的 Node 兼容目标（例如：Electron 20 为 `node16.15`） |
 | `outDir`        | `out\preload`（相对于项目根目录） |
 | `lib.entry`     | `src\preload\{index\|preload}.{js\|ts\|mjs\|cjs}`，找不到则为空字符串 |
 | `lib.formats`   | `cjs` |
@@ -119,6 +121,7 @@ export default defineConfig({
 | 构建选项                   | 默认值                   |
 | ------------------------- | ------------------------  |
 | `root`        | `src\renderer` |
+| `target`        | `chrome*`，自动匹配 Electron 的 Chrome 兼容目标（例如：Electron 20 为 `chrome104`） |
 | `outDir`        | `out\renderer`（相对于项目根目录） |
 | `lib.entry`     | `\src\renderer\index.html`，找不到则为空字符串 |
 | `polyfillModulePreload` | `false`, 无需为 Electron 渲染器注入 `Module Preload` 的 polyfill |
