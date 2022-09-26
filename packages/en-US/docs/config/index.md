@@ -26,7 +26,7 @@ electron-vite --config my-config.js
 ```
 
 ::: tip TIP
-`electron-vite` also supports `ts` or `mjs` config file.
+`electron-vite` also supports config files suffixed with `.ts`, `.mjs` and `.cjs`.
 :::
 
 ## Config Intellisense
@@ -100,6 +100,7 @@ The `defineViteConfig` exports from `Vite`.
 
 | Build options             | Default                   |
 | ------------------------- | ------------------------  |
+| `target`        | `node*`, automatically match Node compatible target for Electron (e.g. Electron 20 is `node16.15`) |
 | `outDir`        | `out\main` (relative to project root) |
 | `lib.entry`     | `src\main\{index\|main}.{js\|ts\|mjs\|cjs}`, empty string if not found |
 | `lib.formats`   | `cjs` |
@@ -109,6 +110,7 @@ The `defineViteConfig` exports from `Vite`.
 
 | Build options             | Default                   |
 | ------------------------- | ------------------------  |
+| `target`        | `node*`, automatically match Node compatible target for Electron (e.g. Electron 20 is `node16.15`) |
 | `outDir`        | `out\preload` (relative to project root) |
 | `lib.entry`     | `src\preload\{index\|preload}.{js\|ts\|mjs\|cjs}`, empty string if not found |
 | `lib.formats`   | `cjs` |
@@ -119,6 +121,7 @@ The `defineViteConfig` exports from `Vite`.
 | Build options             | Default                   |
 | ------------------------- | ------------------------  |
 | `root`        | `src\renderer` |
+| `target`        | `chrome*`, automatically match Chrome compatible target for Electron (e.g. Electron 20 is `chrome104`) |
 | `outDir`        | `out\renderer` (relative to project root) |
 | `lib.entry`     | `\src\renderer\index.html`, empty string if not found |
 | `polyfillModulePreload` | `false`, there is no need to polyfill `Module Preload` for the Electron renderers |
