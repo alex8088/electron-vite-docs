@@ -153,7 +153,7 @@ You can learn more by playing with the [example](https://github.com/alex8088/ele
 
 V8 bytecode does not protect strings, so if we write some database keys and other information in JS code, we can still see the string contents directly by reading V8 bytecode as a string.
 
-## QA
+## FAQ
 
 ### Impact on code organization and writing?
 
