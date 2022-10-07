@@ -26,7 +26,7 @@ electron-vite --config my-config.js
 ```
 
 ::: tip TIP
-`electron-vite` also supports config files suffixed with `.ts`, `.mjs` and `.cjs`.
+`electron-vite` also supports config files suffixed with `.ts`, `.mjs`, `.cjs`, `.mts` and `.cts`.
 :::
 
 ## Config Intellisense
