@@ -26,7 +26,7 @@ electron-vite --config my-config.js
 ```
 
 ::: tip 提示
-`electron-vite` 还支持 `.ts`、`.mjs` 和 `.cjs` 后缀的配置文件。
+`electron-vite` 还支持 `.ts`、`.mjs`、`.cjs`、`.mts` 和 `.cts` 后缀的配置文件。
 :::
 
 ## 配置智能提示
