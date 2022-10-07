@@ -91,7 +91,7 @@ Set chunk alias to instruct the bytecode compiler to compile the associated bund
 ### transformArrowFunctions
 
 - Type: `boolean`
-- default: `false`
+- default: `true`(enabled by default since electron-vite 1.0.10)
 
 Set `true` to transform arrow functions to normal functions.
 
