@@ -104,6 +104,7 @@ The `defineViteConfig` exports from `Vite`.
 | `outDir`        | `out\main` (relative to project root) |
 | `lib.entry`     | `src\main\{index\|main}.{js\|ts\|mjs\|cjs}`, empty string if not found |
 | `lib.formats`   | `cjs` |
+| `reportCompressedSize` | `false`, disable gzip-compressed size reporting, increase build performance |
 | `rollupOptions.external` | `electron` and all `node` built-in modules |
 
 ### Build options for `preload scripts`:
@@ -114,6 +115,7 @@ The `defineViteConfig` exports from `Vite`.
 | `outDir`        | `out\preload` (relative to project root) |
 | `lib.entry`     | `src\preload\{index\|preload}.{js\|ts\|mjs\|cjs}`, empty string if not found |
 | `lib.formats`   | `cjs` |
+| `reportCompressedSize` | `false`, disable gzip-compressed size reporting, increase build performance |
 | `rollupOptions.external` | `electron` and all `node` built-in modules |
 
 ### Build options for `renderers`:
@@ -125,6 +127,7 @@ The `defineViteConfig` exports from `Vite`.
 | `outDir`        | `out\renderer` (relative to project root) |
 | `lib.entry`     | `\src\renderer\index.html`, empty string if not found |
 | `polyfillModulePreload` | `false`, there is no need to polyfill `Module Preload` for the Electron renderers |
+| `reportCompressedSize` | `false`, disable gzip-compressed size reporting, increase build performance |
 | `rollupOptions.external` | `electron` and all `node` built-in modules |
 
 ### Define option for `main` and `preload scripts`
