@@ -92,7 +92,7 @@ export default defineConfig({
 ### transformArrowFunctions
 
 - 类型： `boolean`
-- 默认： `false`
+- 默认： `true`（自 electron-vite 1.0.10 起默认启用）
 
 设置为 `true` 将箭头函数转换为普通函数。
 
