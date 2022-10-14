@@ -30,6 +30,21 @@ export default defineConfig({
 })
 ```
 
+If you are a TypeScript user, make sure to add type definitions for `import.meta.env` in `env.d.ts` to get type checks and intellisense for user-defined env variables.
+
+```js
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+  readonly MAIN_VITE_SOME_KEY: string
+  // more env variables...
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv
+}
+```
+
 ## Modes
 
 By default, `dev` command runs in `development` mode, the `build` and `preview` command runs in `production` mode.
