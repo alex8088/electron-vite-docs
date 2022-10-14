@@ -30,6 +30,21 @@ export default defineConfig({
 })
 ```
 
+如果你是 TypeScript 用户，请确保在 `env.d.ts` 中添加 `import.meta.env` 的类型定义，以获取用户自定义环境变量的类型检查和智能感知。
+
+```js
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+  readonly MAIN_VITE_SOME_KEY: string
+  // more env variables...
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv
+}
+```
+
 ## 模式
 
 默认情况下，`dev` 命令运行在 `development` (开发) 模式，而 `build` 和 `preview` 命令则运行在 `production` (生产) 模式。
