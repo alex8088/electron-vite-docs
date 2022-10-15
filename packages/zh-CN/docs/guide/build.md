@@ -74,7 +74,7 @@ export default defineConfig({
 
 ```js
 // electron.vite.config.js
-import { splitVendorChunkPlugin } from 'electron-vite'
+import { defineConfig, splitVendorChunkPlugin } from 'electron-vite'
 
 export default defineConfig({
   main: {
@@ -105,7 +105,7 @@ export default defineConfig({
       rollupOptions: {
         external: ['sqlite3']
       }
-    }
+    },
   }
   // ...
 })
@@ -115,8 +115,24 @@ export default defineConfig({
 
 默认情况下，electron-vite 会将添加 `electron` 模块和所有 `node` 内置模块作为外部依赖项。如果开发人员添加了自己的外部依赖项，它们将自动合并。更多详情可参考 [内置配置](/config/#built-in-config)。
 
+此外，electron-vite 提供了一个 `externalizeDepsPlugin` 插件来自动外部化 `package.json` 的依赖项（`dependencies`）。
+
+```js
+import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
+
+export default defineConfig({
+  main: {
+    plugins: [externalizeDepsPlugin()],
+  },
+  preload: {
+    plugins: [externalizeDepsPlugin()]
+  },
+  // ...
+})
+```
+
 ::: tip 推荐
-对于主进程和预加载脚本，最好的做法是排除外部依赖项。如果你不这样做，它们将被打包在一起。在这种情况下，你应该在打包 Electron 应用程序时将它们从 `node_modules` 目录中排除，因为不再需要它们了。
+对于主进程和预加载脚本，最好的做法是外部化依赖关系。对于渲染器，它通常是完全打包的，因此最好将依赖项安装在 `devDependencies` 中。这使得最终的分发包更小。
 :::
 
 ## 源代码保护
