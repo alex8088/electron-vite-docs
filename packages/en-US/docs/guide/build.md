@@ -74,7 +74,7 @@ From Vite 2.9, `manualChunks` is no longer modified by default. You can continue
 
 ```js
 // electron.vite.config.js
-import { splitVendorChunkPlugin } from 'electron-vite'
+import { defineConfig, splitVendorChunkPlugin } from 'electron-vite'
 
 export default defineConfig({
   main: {
@@ -106,7 +106,7 @@ export default defineConfig({
         external: ['sqlite3']
       }
     }
-  }
+  },
   // ...
 })
 ```
@@ -115,8 +115,24 @@ In the above configuration, it indicates that the module `sqlite3` should exclud
 
 By default, electron-vite will add the `electron` module and all `node` built-in modules as external dependencies. If developers add their own external dependencies, they will be automatically merged with them. Learn more about [Built-in Config](/config/#built-in-config).
 
+Additionally, electron-vite provides an `externalizeDepsPlugin` to automatically externalize `package.json` dependencies.
+
+```js
+import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
+
+export default defineConfig({
+  main: {
+    plugins: [externalizeDepsPlugin()],
+  },
+  preload: {
+    plugins: [externalizeDepsPlugin()]
+  },
+  // ...
+})
+```
+
 ::: tip Recommend
-For the main process and preload scripts, the best practice is to exclude external dependencies. If you don't, they will be bundled. In this case, you should exclude them from the `node_modules` directory when packaging your Electron app, because they are no longer needed.
+For the main process and preload scripts, the best practice is to externalize dependencies. For renderers, it is usually fully bundle, so dependencies are best installed in `devDependencies`. This makes the final package more smaller.
 :::
 
 ## Source Code Protection
@@ -126,4 +142,3 @@ See [Source Code Protection](/guide/source-code-protection).
 ## Multiple Windows App
 
 See [Multiple Windows](/guide/mutli-windows).
-
