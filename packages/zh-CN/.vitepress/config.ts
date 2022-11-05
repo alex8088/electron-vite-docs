@@ -14,6 +14,7 @@ const sidebar: DefaultTheme.Sidebar = {
         { text: '热重载', link: '/guide/hot-reloading' },
         { text: '源代码保护', link: '/guide/source-code-protection' },
         { text: '构建生产版本', link: '/guide/build' },
+        { text: 'TS 装饰器', link: '/guide/typescript-decorator' },
         { text: '环境变量和模式', link: '/guide/env-and-mode' },
         { text: '多窗口配置', link: '/guide/mutli-windows' },
         { text: 'VSCode 调试', link: '/guide/debugging' }
