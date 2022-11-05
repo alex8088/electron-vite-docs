@@ -14,6 +14,7 @@ const sidebar: DefaultTheme.Sidebar = {
         { text: 'Hot Reloading', link: '/guide/hot-reloading' },
         { text: 'Building for Production', link: '/guide/build' },
         { text: 'Source Code Protection', link: '/guide/source-code-protection' },
+        { text: 'TypeScript Decorator', link: '/guide/typescript-decorator' },
         { text: 'Env Variables and Modes', link: '/guide/env-and-mode' },
         { text: 'Multiple Windows', link: '/guide/mutli-windows' },
         { text: 'Debugging in VSCode', link: '/guide/debugging' }
