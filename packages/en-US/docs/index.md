@@ -19,12 +19,9 @@ features:
   - icon: ⚡
     title: Vite Powered
     details: Inherit all the benefits of Vite and use the same way as Vite.
-  - icon: 📦
-    title: Fully Bundling
-    details: The main process, renderer and preload scripts are all built with Vite.
   - icon: 🛠
     title: Centralized Configuration
-    details: The main process, renderer and preload scripts Vite configuration combined into one file.
+    details: Main process, preload scripts and renderer Vite configuration combined into one file.
   - icon: 💡
     title: Pre-configured
     details: Pre-configured for Electron, don't worry about configuration.
@@ -37,10 +34,13 @@ features:
   - icon: 🔌
     title: Easy to Debug
     details: Very easy to debug in IDE like vscode or webstorm.
+  - icon: 🏷️
+    title: TypeScript Decorators
+    details: Support for emitting type metadata for decorators.
   - icon: 🔒
     title: Source Code Protection
     details: Compile to V8 bytecode to protect source code.
-  - icon: 🔋
+  - icon: 📦
     title:  Out-of-the-box
     details: Out-of-the-box support for TypeScript, Vue, React, Svelte, SolidJS and more.
 ---
