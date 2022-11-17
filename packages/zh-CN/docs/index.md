@@ -19,9 +19,6 @@ features:
   - icon: ⚡
     title: Vite 支持
     details: 继承 Vite 的所有优点，使用方式与 Vite 相同。
-  - icon: 📦
-    title: 完全构建
-    details: 主进程、渲染器和预加载脚本均使用 Vite 构建。
   - icon: 🛠
     title: 集中配置
     details: 将主进程、渲染器和预载脚本的 Vite 配置合并到一个文件。
@@ -37,10 +34,13 @@ features:
   - icon: 🔌
     title: 易于调试
     details: 非常容易在 IDE 中调试，例如 vscode 或 webstorm。
+  - icon: 🏷️
+    title: TypeScript 装饰器
+    details: 支持 TS 装饰器和元数据特性。
   - icon: 🔒
     title: 源代码保护
     details: 编译为 V8 字节码以保护源代码。
-  - icon: 🔋
+  - icon: 📦
     title: 开箱即用
     details: 开箱即用支持 Typescript、Vue、React、Svelte 和 SolidJS 等。
 ---
