@@ -18,6 +18,8 @@ export default defineConfig({
 })
 ```
 
+You can also learn more by playing with the [example](https://github.com/alex8088/electron-vite-decorator-example).
+
 ::: tip NOTE
 When using swcPlugin, you need to install `@swc/core`, because @swc/core is an optional dependency by default in electron-vite.
 :::
