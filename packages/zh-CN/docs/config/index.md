@@ -64,7 +64,35 @@ export default defineConfig({
 
 ## 情景配置
 
-如果配置文件需要基于（`dev`/`serve` 或 `build`）命令或者不同的模式 (`development` 或 `production`) 来决定选项，可使用 `defineViteConfig` 函数来导出：
+如果配置文件需要基于（`dev`/`serve` 或 `build`）命令或者不同的模式 (`development` 或 `production`) 来决定选项，则可以选择导出这样一个函数：
+
+```js
+import { defineConfig } from 'electron-vite'
+
+export default defineConfig(({ command, mode }) => {
+  if (command === 'serve') {
+    return {
+      // dev specific config
+      main: {
+        // ...
+      },
+      preload: {
+        // ...
+      },
+      renderer: {
+        // ...
+      }
+    }
+  } else {
+    // command === 'build'
+    return {
+      // build specific config
+    }
+  }
+})
+```
+
+你还可以使用 `defineViteConfig` 函数来导出：
 
 ```js
 import { defineConfig, defineViteConfig } from 'electron-vite'
@@ -126,9 +154,8 @@ export default defineConfig({
 | `target`        | `chrome*`，自动匹配 Electron 的 Chrome 兼容目标（例如：Electron 20 为 `chrome104`） |
 | `outDir`        | `out\renderer`（相对于项目根目录） |
 | `lib.entry`     | `\src\renderer\index.html`，找不到则为空字符串 |
-| `polyfillModulePreload` | `false`, 无需为 Electron 渲染器注入 `Module Preload` 的 polyfill |
+| `modulePreload.polyfill` | `false`, 无需为 Electron 渲染器注入 `Module Preload` 的 polyfill |
 | `reportCompressedSize` | `false`, 禁用 gzip 压缩大小报告， 提高构建性能 |
-| `rollupOptions.external` | `electron` 和所有 `node` 内置模块 |
 
 ### 主进程和预加载脚本的 define 项设置：
 
