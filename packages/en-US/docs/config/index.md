@@ -64,7 +64,35 @@ export default defineConfig({
 
 ## Conditional Config
 
-If the config needs to conditionally determine options based on the command (`dev`/`serve` or `build`), the mode (`development` or `production`) being used, it can use `defineViteConfig` helper:
+If the config needs to conditionally determine options based on the command (`dev`/`serve` or `build`), the mode (`development` or `production`) being used, it can export a function instead:
+
+```js
+import { defineConfig } from 'electron-vite'
+
+export default defineConfig(({ command, mode }) => {
+  if (command === 'serve') {
+    return {
+      // dev specific config
+      main: {
+        // ...
+      },
+      preload: {
+        // ...
+      },
+      renderer: {
+        // ...
+      }
+    }
+  } else {
+    // command === 'build'
+    return {
+      // build specific config
+    }
+  }
+})
+```
+
+You can also use the `defineViteConfig` helper:
 
 ```js
 import { defineConfig, defineViteConfig } from 'electron-vite'
@@ -126,9 +154,8 @@ The `defineViteConfig` exports from `Vite`.
 | `target`        | `chrome*`, automatically match Chrome compatible target for Electron (e.g. Electron 20 is `chrome104`) |
 | `outDir`        | `out\renderer` (relative to project root) |
 | `lib.entry`     | `\src\renderer\index.html`, empty string if not found |
-| `polyfillModulePreload` | `false`, there is no need to polyfill `Module Preload` for the Electron renderers |
+| `modulePreload.polyfill` | `false`, there is no need to polyfill `Module Preload` for the Electron renderers |
 | `reportCompressedSize` | `false`, disable gzip-compressed size reporting, increase build performance |
-| `rollupOptions.external` | `electron` and all `node` built-in modules |
 
 ### Define option for `main` and `preload scripts`
 
