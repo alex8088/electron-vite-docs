@@ -10,6 +10,7 @@ const sidebar: DefaultTheme.Sidebar = {
         { text: '功能', link: '/guide/features' },
         { text: '命令行界面', link: '/guide/cli' },
         { text: '项目结构', link: '/guide/project-structure' },
+        { text: '开发', link: '/guide/dev' },
         { text: '渲染进程 HMR', link: '/guide/hmr-in-renderer' },
         { text: '热重载', link: '/guide/hot-reloading' },
         { text: '源代码保护', link: '/guide/source-code-protection' },
