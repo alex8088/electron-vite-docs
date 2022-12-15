@@ -2,16 +2,6 @@
 
 When it is time to package your Electron app for production, usually need to run the `electron-vite build` command first.
 
-## Public Directory
-
-### For Main process and Preload Scripts
-
-Sometimes the main process and the preload script need to use some public resources, such as tray icons, third-party executable programs that can be called, etc. We just need to create arbitrary directories (not output dir) in the root and properly reference these resources in the code.
-
-### For Renderes
-
-By default, the working directory of renderers are located in `src/renderer`, so the static public assets directory needs to be created in this directory. The default public directory is named `public`, which can also be specified by [publicDir](https://vitejs.dev/config/shared-options.html#publicdir).
-
 ## Output Dir
 
 By default, the build output will be placed at `out` (relative to project root).
