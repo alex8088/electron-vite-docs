@@ -182,12 +182,33 @@ export default defineConfig({
 
 **For renderers**, it is usually fully bundle, so dependencies are best installed in `devDependencies`. This makes the final package more smaller.
 
-## Public Directory
+## Multiple Windows App
 
-### For Main Process and Preload Scripts
+When your electron app has multiple windows, it means there are multiple html files or preload files. You can modify your config file like this:
 
-Sometimes the main process and the preload script need to use some public resources, such as tray icons, third-party executable programs that can be called, etc. We just need to create arbitrary directories (not output dir) in the root and properly reference these resources in the code.
-
-### For Renderes
-
-By default, the working directory of renderers are located in `src/renderer`, so the static public assets directory needs to be created in this directory. The default public directory is named `public`, which can also be specified by [publicDir](https://vitejs.dev/config/shared-options.html#publicdir).
+```js
+// electron.vite.config.js
+export default {
+  main: {},
+  preload: {
+    build: {
+      rollupOptions: {
+        input: {
+          browser: resolve(__dirname, 'src/preload/browser.js'),
+          webview: resolve(__dirname, 'src/preload/webview.js')
+        }
+      }
+    }
+  },
+  renderer: {
+    build: {
+      rollupOptions: {
+        input: {
+          browser: resolve(__dirname, 'src/renderer/browser.html'),
+          webview: resolve(__dirname, 'src/renderer/webview.html')
+        }
+      }
+    }
+  }
+}
+```

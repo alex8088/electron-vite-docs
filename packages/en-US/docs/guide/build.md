@@ -138,7 +138,3 @@ For the main process and preload scripts, the best practice is to externalize de
 ## Source Code Protection
 
 See [Source Code Protection](/guide/source-code-protection).
-
-## Multiple Windows App
-
-See [Multiple Windows](/guide/mutli-windows).
