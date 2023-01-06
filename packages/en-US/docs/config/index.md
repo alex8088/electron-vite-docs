@@ -122,42 +122,73 @@ export default defineConfig({
 The `defineViteConfig` exports from `Vite`.
 :::
 
+## Environment Variables
+
+Note that electron-vite doesn't load `.env` files by default as the files to load can only be determined after evaluating the electron-vite config. However, you can use the exported `loadEnv` helper to load the specific `.env` file if needed.
+
+```js
+import { defineConfig, loadEnv } from 'electron-vite'
+
+export default defineConfig(({ command, mode }) => {
+  // Load env file based on `mode` in the current working directory.
+  // By default, only env variables prefixed with `MAIN_VITE_`,
+  // `PRELOAD_VITE_` and `RENDERER_VITE_` are loaded,
+  // unless the third parameter `prefixes` is changed.
+  const env = loadEnv(mode)
+  return {
+    // electron-vite config
+  }
+})
+```
+
 ## Built-in Config
 
-### Build options for `main`:
+### Built-in Config for `main`:
 
-| Build options             | Default                   |
+| Options                   | Default                   |
 | ------------------------- | ------------------------  |
-| `target`        | `node*`, automatically match Node compatible target for Electron (e.g. Electron 20 is `node16.15`) |
-| `outDir`        | `out\main` (relative to project root) |
-| `lib.entry`     | `src\main\{index\|main}.{js\|ts\|mjs\|cjs}`, empty string if not found |
-| `lib.formats`   | `cjs` |
-| `reportCompressedSize` | `false`, disable gzip-compressed size reporting, increase build performance |
-| `rollupOptions.external` | `electron` and all `node` built-in modules |
+| `build.target`        | `node*`, automatically match Node compatible target for Electron (e.g. Electron 20 is `node16.15`) |
+| `build.outDir`        | `out\main` (relative to project root) |
+| `build.lib.entry`     | `src\main\{index\|main}.{js\|ts\|mjs\|cjs}`, empty string if not found |
+| `build.lib.formats`   | `cjs` |
+| `build.reportCompressedSize`   | `false`, disable gzip-compressed size reporting, increase build performance |
+| `build.rollupOptions.external` | `electron` and all `node` built-in modules |
+| `build.assetDir`               | `chunks` |
+| `build.minify`                 | `false` |
+| `build.copyPublicDir`          | `false`, alway |
+| `publicDir`                    | `resources` |
+| `envPrefix`                    | `MAIN_VITE_` |
 
-### Build options for `preload scripts`:
+### Built-in Config for `preload`:
 
-| Build options             | Default                   |
+| Options                   | Default                   |
 | ------------------------- | ------------------------  |
-| `target`        | `node*`, automatically match Node compatible target for Electron (e.g. Electron 20 is `node16.15`) |
-| `outDir`        | `out\preload` (relative to project root) |
-| `lib.entry`     | `src\preload\{index\|preload}.{js\|ts\|mjs\|cjs}`, empty string if not found |
-| `lib.formats`   | `cjs` |
-| `reportCompressedSize` | `false`, disable gzip-compressed size reporting, increase build performance |
-| `rollupOptions.external` | `electron` and all `node` built-in modules |
+| `build.target`        | `node*`, automatically match Node compatible target for Electron (e.g. Electron 20 is `node16.15`) |
+| `build.outDir`        | `out\preload` (relative to project root) |
+| `build.lib.entry`     | `src\preload\{index\|preload}.{js\|ts\|mjs\|cjs}`, empty string if not found |
+| `build.lib.formats`   | `cjs` |
+| `build.reportCompressedSize` | `false`, disable gzip-compressed size reporting, increase build performance |
+| `build.rollupOptions.external` | `electron` and all `node` built-in modules |
+| `build.assetDir`               | `chunks` |
+| `build.minify`                 | `false` |
+| `build.copyPublicDir`          | `false`, alway |
+| `publicDir`                    | `resources` |
+| `envPrefix`                    | `PRELOAD_VITE_` |
 
-### Build options for `renderers`:
+### Built-in Config for `renderer`:
 
-| Build options             | Default                   |
+| Options                   | Default                   |
 | ------------------------- | ------------------------  |
-| `root`        | `src\renderer` |
-| `target`        | `chrome*`, automatically match Chrome compatible target for Electron (e.g. Electron 20 is `chrome104`) |
-| `outDir`        | `out\renderer` (relative to project root) |
-| `lib.entry`     | `\src\renderer\index.html`, empty string if not found |
-| `modulePreload.polyfill` | `false`, there is no need to polyfill `Module Preload` for the Electron renderers |
-| `reportCompressedSize` | `false`, disable gzip-compressed size reporting, increase build performance |
+| `root`             | `src\renderer` |
+| `build.target`     | `chrome*`, automatically match Chrome compatible target for Electron (e.g. Electron 20 is `chrome104`) |
+| `build.outDir`     | `out\renderer` (relative to project root) |
+| `build.lib.entry`  | `\src\renderer\index.html`, empty string if not found |
+| `build.modulePreload.polyfill` | `false`, there is no need to polyfill `Module Preload` for the Electron renderers |
+| `build.reportCompressedSize`   | `false`, disable gzip-compressed size reporting, increase build performance |
+| `build.minify`                 | `false` |
+| `envPrefix`                    | `RENDERER_VITE_` |
 
-### Define option for `main` and `preload scripts`
+### Define option for `main` and `preload`
 
 In web development, Vite will transform `'process.env.'` to `'({}).'`. This is reasonable and correct. But in nodejs development, we sometimes need to use `process.env`, so `electron-vite` will automatically add config define field to redefine global variable replacements like this:
 
