@@ -2,6 +2,12 @@
 
 Based on Vite, designed to work with Electron.
 
+## Vite Powered
+
+Inherit all the benefits of Vite and use the same way as Vite.
+
+See [Vite features](https://vitejs.dev/guide/features.html).
+
 ## Fully Bundling
 
 electron-vite can intelligently bundle source code for Electron's unique environment.
@@ -51,12 +57,32 @@ Hot reloading refers to quickly rebuilding and restarting the Electron app when 
 
 Check out the [Hot Reloading](/guide/hot-reloading) section to learn more about this feature.
 
+## Static Assets
+
+In addition to supporting the [static asset handling](https://vitejs.dev/guide/assets.html) in web app like Vite， electron-vite also optimizes the static asset handling in the Electron main process.
+
+Check out the [Static Asset Handling](/guide/assets) section to learn more about this feature.
+
 ## Source Code Protection
 
 electron-vite use V8 bytecode to protect source code.
 
 Check out the [Source Code Protection](/guide/source-code-protection) section to learn more about this feature.
 
-## Vite Powered
+## TypeScript Decorator
 
-See [Vite features](https://vitejs.dev/guide/features.html).
+electron-vite creates an optional `swcPlugin` which is powered by `swc` to replace Vite's esbuild plugin to support TypeScript decorator.
+
+Check out the [TypeScript Decorator](/guide/typescript-decorator) section to learn more about this feature.
+
+## Worker Threads
+
+electron-vite provides Node.js worker threads support for the Electron main process.
+
+Check out the [Workers](/guide/worker) section to learn more about this feature.
+
+## Debugging
+
+Very easy to debug in IDE like `vscode` or `webstorm`.
+
+Check out the [Debugging in VSCode](/guide/debugging) section to learn more about this feature.
