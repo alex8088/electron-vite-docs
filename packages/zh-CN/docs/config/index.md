@@ -122,42 +122,73 @@ export default defineConfig({
 `defineViteConfig` 从 Vite 导出。
 :::
 
+## 环境变量
+
+注意 electron-vite 默认是不加载 `.env` 文件的，因为这些文件需要在执行完 electron-vite 配置后才能确定加载哪一个。不过当你的确需要时，你可以使用 electron-vite 导出的 `loadEnv` 函数来加载特定的 `.env` 文件。
+
+```js
+import { defineConfig, loadEnv } from 'electron-vite'
+
+export default defineConfig(({ command, mode }) => {
+  // Load env file based on `mode` in the current working directory.
+  // By default, only env variables prefixed with `MAIN_VITE_`,
+  // `PRELOAD_VITE_` and `RENDERER_VITE_` are loaded,
+  // unless the third parameter `prefixes` is changed.
+  const env = loadEnv(mode)
+  return {
+    // electron-vite config
+  }
+})
+```
+
 ## 内置配置
 
-### `主进程` 构建选项：
+### `main` 内置配置：
 
-| 构建选项                   | 默认值                   |
+| 选项                      | 默认值                   |
 | ------------------------- | ------------------------  |
-| `target`        | `node*`，自动匹配 Electron 的 Node 兼容目标（例如：Electron 20 为 `node16.15`） |
-| `outDir`        | `out\main`（相对于项目根目录） |
-| `lib.entry`     | `src\main\{index\|main}.{js\|ts\|mjs\|cjs}`，找不到则为空字符串 |
-| `lib.formats`   | `cjs` |
-| `reportCompressedSize` | `false`, 禁用 gzip 压缩大小报告， 提高构建性能 |
-| `rollupOptions.external` | `electron` 和所有 `node` 内置模块 |
+| `build.target`        | `node*`，自动匹配 Electron 的 Node 兼容目标（例如：Electron 20 为 `node16.15`） |
+| `build.outDir`        | `out\main`（相对于项目根目录） |
+| `build.lib.entry`     | `src\main\{index\|main}.{js\|ts\|mjs\|cjs}`，找不到则为空字符串 |
+| `build.lib.formats`   | `cjs` |
+| `build.reportCompressedSize`   | `false`, 禁用 gzip 压缩大小报告， 提高构建性能 |
+| `build.rollupOptions.external` | `electron` 和所有 `node` 内置模块 |
+| `build.assetDir`               | `chunks` |
+| `build.minify`                 | `false` |
+| `build.copyPublicDir`          | `false`, 不可改写 |
+| `publicDir`                    | `resources` |
+| `envPrefix`                    | `MAIN_VITE_` |
 
-### `预加载脚本` 构建选项：
+### `preload` 内置配置：
 
-| 构建选项                   | 默认值                   |
+| 选项                      | 默认值                   |
 | ------------------------- | ------------------------  |
-| `target`        | `node*`，自动匹配 Electron 的 Node 兼容目标（例如：Electron 20 为 `node16.15`） |
-| `outDir`        | `out\preload`（相对于项目根目录） |
-| `lib.entry`     | `src\preload\{index\|preload}.{js\|ts\|mjs\|cjs}`，找不到则为空字符串 |
-| `lib.formats`   | `cjs` |
-| `reportCompressedSize` | `false`, 禁用 gzip 压缩大小报告， 提高构建性能 |
-| `rollupOptions.external` | `electron` 和所有 `node` 内置模块 |
+| `build.target`        | `node*`，自动匹配 Electron 的 Node 兼容目标（例如：Electron 20 为 `node16.15`） |
+| `build.outDir`        | `out\preload`（相对于项目根目录） |
+| `build.lib.entry`     | `src\preload\{index\|preload}.{js\|ts\|mjs\|cjs}`，找不到则为空字符串 |
+| `build.lib.formats`   | `cjs` |
+| `build.reportCompressedSize`   | `false`, 禁用 gzip 压缩大小报告， 提高构建性能 |
+| `build.rollupOptions.external` | `electron` 和所有 `node` 内置模块 |
+| `build.assetDir`               | `chunks` |
+| `build.minify`                 | `false` |
+| `build.copyPublicDir`          | `false`, 不可改写 |
+| `publicDir`                    | `resources` |
+| `envPrefix`                    | `PRELOAD_VITE_` |
 
-### `渲染进程` 构建选项：
+### `renderer` 内置配置：
 
-| 构建选项                   | 默认值                   |
+| 选项                      | 默认值                   |
 | ------------------------- | ------------------------  |
-| `root`        | `src\renderer` |
-| `target`        | `chrome*`，自动匹配 Electron 的 Chrome 兼容目标（例如：Electron 20 为 `chrome104`） |
-| `outDir`        | `out\renderer`（相对于项目根目录） |
-| `lib.entry`     | `\src\renderer\index.html`，找不到则为空字符串 |
-| `modulePreload.polyfill` | `false`, 无需为 Electron 渲染器注入 `Module Preload` 的 polyfill |
-| `reportCompressedSize` | `false`, 禁用 gzip 压缩大小报告， 提高构建性能 |
+| `root`             | `src\renderer` |
+| `build.target`     | `chrome*`，自动匹配 Electron 的 Chrome 兼容目标（例如：Electron 20 为 `chrome104`） |
+| `build.outDir`     | `out\renderer`（相对于项目根目录） |
+| `build.lib.entry`  | `\src\renderer\index.html`，找不到则为空字符串 |
+| `build.modulePreload.polyfill` | `false`, 无需为 Electron 渲染器注入 `Module Preload` 的 polyfill |
+| `build.reportCompressedSize`   | `false`, 禁用 gzip 压缩大小报告， 提高构建性能 |
+| `build.minify`                 | `false` |
+| `envPrefix`                    | `RENDERER_VITE_` |
 
-### 主进程和预加载脚本的 define 项设置：
+### `main` and `preload` 的 define 项设置：
 
 在 Web 开发中，Vite 会将 `'process.env.'` 替换为 `'({}).'`，这是合理和正确的。但在 Nodejs 开发中，我们有时候需要使用 `process.env` ，所以 `electron-vite` 重新预设全局变量替换，恢复其使用，预设如下：
 
