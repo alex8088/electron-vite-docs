@@ -27,7 +27,10 @@
 | `--outDir <dir>`          | 设置输出目录 (default: `out`)  |
 | `-v, --version`	          | 显示版本号 |
 | `-h, --help`	            | 显示可用的 CLI 选项 |
+| `--skipBuild`	            | 为 `preview` 命令跳过构建 |
 
 ::: tip 提示
 `--ignoreConfigWarning` 选项允许你在配置缺失时忽略警告。例如，不需要使用预加载脚本。
+
+`--skipBuild` 选项仅用于 `preview` 命令跳过构建并启动 Electron 应用程序进行预览。
 :::
