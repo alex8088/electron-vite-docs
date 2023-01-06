@@ -11,6 +11,7 @@ const sidebar: DefaultTheme.Sidebar = {
         { text: 'CLI', link: '/guide/cli' },
         { text: 'Project Structure', link: '/guide/project-structure' },
         { text: 'Development', link: '/guide/dev' },
+        { text: 'Static Asset Handling', link: '/guide/assets' },
         { text: 'Use HMR in Renderer', link: '/guide/hmr-in-renderer' },
         { text: 'Hot Reloading', link: '/guide/hot-reloading' },
         { text: 'Building for Production', link: '/guide/build' },
