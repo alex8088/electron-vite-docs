@@ -182,12 +182,33 @@ export default defineConfig({
 
 **对于渲染器**，它通常是完全打包的，所以依赖项最好安装在 `devDependencies` 中。这使得最终的分发包更小。
 
-## 公共目录
+## 多窗口应用程序
 
-### 对于主进程和预加载脚本
+当 Electron 应用程序具有多窗口时，这意味着可能有多个 html 页面和预加载脚本，你可以像下面一样修改你的配置文件：
 
-有时主进程和预加载脚本需要用到一些公共资源，比如托盘图标，可调用的第三方可执行程序等，我们只需要在根目录下创建任意目录（非输出目录）并在代码中正确引用这些资源即可。
-
-### 对于渲染进程
-
-默认情况下，渲染器的工作目录位于 `src/renderer`，因此需要在该目录下创建静态公共资源目录。默认的公共目录名为 `public`，也可以通过 [publicDir](https://vitejs.dev/config/shared-options.html#publicdir) 指定。
+```js
+// electron.vite.config.js
+export default {
+  main: {},
+  preload: {
+    build: {
+      rollupOptions: {
+        input: {
+          browser: resolve(__dirname, 'src/preload/browser.js'),
+          webview: resolve(__dirname, 'src/preload/webview.js')
+        }
+      }
+    }
+  },
+  renderer: {
+    build: {
+      rollupOptions: {
+        input: {
+          browser: resolve(__dirname, 'src/renderer/browser.html'),
+          webview: resolve(__dirname, 'src/renderer/webview.html')
+        }
+      }
+    }
+  }
+}
+```

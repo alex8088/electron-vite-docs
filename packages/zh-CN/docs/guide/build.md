@@ -138,8 +138,3 @@ export default defineConfig({
 ## 源代码保护
 
 请参阅 [源代码保护](/guide/source-code-protection)。
-
-## 多窗口应用
-
-请参阅 [多窗口配置](/guide/mutli-windows)。
-
