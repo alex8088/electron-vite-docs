@@ -134,7 +134,7 @@ There are two ways to use `*.node` modules.
 1. import as node module
 
 ```js
-import addon from '../../public/hello.node'
+import addon from '../../resources/hello.node'
 
 console.log(addon?.hello())
 ```
@@ -142,7 +142,7 @@ console.log(addon?.hello())
 2. import as file path
 
 ```js
-import addon from '../../public/hello.node?asset'
+import addon from '../../resources/hello.node?asset'
 import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
 
@@ -151,3 +151,46 @@ console.log(native?.hello())
 ```
 
 It is important to note that native node modules usually have to be imported depending on the `platform` and `arch`. If you can ensure that the node module is generated according to the platform and arch, there will be no problem using the first import method. Otherwise, you can use the second method to import the correct node module according to the platform and arch.
+
+## Importing WebAssembly
+
+::: warning NOTE
+In Vite, `.wasm` files can be processed via the `?init` suffix, which supports browsers but not Node.js (Electron main process).
+:::
+
+In main process, pre-compiled `.wasm` files can be imported with `?loader` - the default export will be an initialization function that returns a Promise of the wasm instance:
+
+```js
+import loadWasm from '../../resources/add.wasm?loader'
+
+loadWasm().then((instance) => {
+  // Exported function live under instance.exports
+  const add = instance.exports.add as (a: number, b: number) => number
+  const sum = add(5, 6)
+  console.log(sum); // Outputs: 11
+})
+```
+
+The init function can also take the `imports` object which is passed along to `WebAssembly.instantiate` as its second argument:
+
+```js
+loadWasm({
+  env: {
+    memoryBase: 0,
+    tableBase: 0,
+    memory: new WebAssembly.Memory({
+      initial: 256,
+      maximum: 512
+    }),
+    table: new WebAssembly.Table({
+      initial: 0,
+      maximum: 0,
+      element: 'anyfunc'
+    })
+  }
+}).then(() => {
+  /* ... */
+})
+```
+
+In renderer, See Vite's [WebAssembly](https://vitejs.dev/guide/features.html#webassembly) feature for more details.
