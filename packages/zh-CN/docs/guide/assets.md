@@ -134,7 +134,7 @@ const bin = path.join(__dirname, "../../resources/hello.exe").replace("app.asar"
 1. 作为 node 模块导入
 
 ```js
-import addon from '../../public/hello.node'
+import addon from '../../resources/hello.node'
 
 console.log(addon?.hello())
 ```
@@ -142,7 +142,7 @@ console.log(addon?.hello())
 2. 作为文件路径导入
 
 ```js
-import addon from '../../public/hello.node?asset'
+import addon from '../../resources/hello.node?asset'
 import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
 
@@ -151,3 +151,46 @@ console.log(native?.hello())
 ```
 
 值得注意的是通常需要根据 `platform` 和 `arch` 来导入原生 node 模块。如果能保证 node 模块是根据 platform 和 arch 生成的，使用第一种导入方式是没有问题的。否则，你可以使用第二种方法根据 platform 和 arch 来导入正确的 node 模块。
+
+## 导入 WebAssembly
+
+::: warning  提示
+在 Vite 中，可以通过 `?init` 后缀处理 `.wasm` 文件，它支持浏览器，但不支持 Node.js（Electron 主进程）。
+:::
+
+在主进程中，预编译的 `.wasm` 文件可以通过 `?loader` 来导入。默认导出一个初始化函数，返回值为所导出 wasm 实例对象的 Promise：
+
+```js
+import loadWasm from '../../resources/add.wasm?loader'
+
+loadWasm().then((instance) => {
+  // Exported function live under instance.exports
+  const add = instance.exports.add as (a: number, b: number) => number
+  const sum = add(5, 6)
+  console.log(sum); // Outputs: 11
+})
+```
+
+初始化函数还可以将 `imports` 对象传递给 `WebAssembly.instantiate` 作为其第二个参数：
+
+```js
+loadWasm({
+  env: {
+    memoryBase: 0,
+    tableBase: 0,
+    memory: new WebAssembly.Memory({
+      initial: 256,
+      maximum: 512
+    }),
+    table: new WebAssembly.Table({
+      initial: 0,
+      maximum: 0,
+      element: 'anyfunc'
+    })
+  }
+}).then(() => {
+  /* ... */
+})
+```
+
+在渲染进程中，请参阅 Vite 的 [WebAssembly](https://vitejs.dev/guide/features.html#webassembly) 功能，了解更多详细信息。
