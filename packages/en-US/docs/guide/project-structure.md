@@ -96,7 +96,8 @@ export default defineConfig({
     }
   },
   renderer: {
-     build: {
+    root: '.',
+    build: {
       rollupOptions: {
         input: {
           index: resolve(__dirname, 'index.html')
