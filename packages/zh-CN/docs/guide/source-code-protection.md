@@ -94,7 +94,7 @@ export default defineConfig({
 - 类型： `boolean`
 - 默认： `true`（自 electron-vite 1.0.10 起默认启用）
 
-设置为 `true` 将箭头函数转换为普通函数。
+设置为 `false` 禁止将箭头函数转换为普通函数。
 
 ### removeBundleJS
 
@@ -102,6 +102,15 @@ export default defineConfig({
 - 默认： `true`
 
 设置 `false` 以保留已编译为字节码文件的 bundle 文件。
+
+### protectedStrings
+
+- 类型: `string[]`
+- 相关: [V8 字节码的局限性](#v8-字节码的局限性)
+
+指定源代码中的哪些字符串（如 `敏感字符串`、`加密密钥`、`密码`等）需要加强保护。
+
+V8 字节码不保护字符串，但是 electron-vite 会将这些字符串转换为字符代码（使用 [String.fromCharCode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode)），使得这些字符串可以被 V8 字节码保护。
 
 ## 自定义保护
 
@@ -152,7 +161,36 @@ export default defineConfig({
 
 ## V8 字节码的局限性
 
-V8 字节码不保护字符串，如果我们在 JS 代码中写死了一些数据库的密钥等信息，只要将 V8 字节码作为字符串阅读，还是能直接看到这些字符串内容的。
+V8 字节码不保护字符串，如果我们在 JS 代码中写死了一些加密密钥或其他敏感字符串，只要将 V8 字节码作为字符串阅读，还是能直接看到这些字符串内容的。
+
+但是 electron-vite 可以将这些字符串转为字符代码，这样这些字符串就可以受到 V8 字节码的保护。例如：
+
+```js
+// string in source code
+const encryptKey = 'ABC'
+
+// electron-vite will transform string to character codes
+const encryptKey = String.fromCharCode(65, 66, 67)
+```
+
+源代码中要保护的字符串可以通过插件 `protectedStrings` 选项指定。
+
+```js{5}
+import { defineConfig, bytecodePlugin } from 'electron-vite'
+
+export default defineConfig({
+  main: {
+    plugins: [bytecodePlugin({ protectedStrings: ['ABC'] })]
+  },
+  // ...
+})
+```
+
+::: warning 警告
+不应该为了保护而枚举源代码中的所有字符串，通常我们只需要保护敏感字符串即可。
+:::
+
+
 
 ## 常见疑问
 
