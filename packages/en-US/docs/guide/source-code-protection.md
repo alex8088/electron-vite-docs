@@ -93,7 +93,7 @@ Set chunk alias to instruct the bytecode compiler to compile the associated bund
 - Type: `boolean`
 - default: `true`(enabled by default since electron-vite 1.0.10)
 
-Set `true` to transform arrow functions to normal functions.
+Set `false` to disable transforming arrow functions to normal functions.
 
 ### removeBundleJS
 
@@ -101,6 +101,15 @@ Set `true` to transform arrow functions to normal functions.
 - default: `true`
 
 Set `false` to keep bundle files which compiled as bytecode files.
+
+### protectedStrings
+
+- Type: `string[]`
+- Related: [Limitations of V8 Bytecode](#limitations-of-v8-bytecode)
+
+Specify which strings(such as `sensitive strings`, `encryption keys`, `passwords`, etc) in source code need to be protected.
+
+V8 bytecode does not protect strings, but electron-vite will transform these strings to character codes(using [String.fromCharCode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode)) so that these strings can be protected by V8 bytecode.
 
 ## Customizing Protection
 
@@ -151,7 +160,34 @@ You can learn more by playing with the [example](https://github.com/alex8088/ele
 
 ## Limitations of V8 Bytecode
 
-V8 bytecode does not protect strings, so if we write some database keys and other information in JS code, we can still see the string contents directly by reading V8 bytecode as a string.
+V8 bytecode does not protect strings, so if we write some encryption keys or other sensitive strings in JS code, we can still see the string contents directly by reading V8 bytecode as a string.
+
+However, electron-vite can transform these strings to character codes so that these strings can be protected by V8 bytecode. For example:
+
+```js
+// string in source code
+const encryptKey = 'ABC'
+
+// electron-vite will transform string to character codes
+const encryptKey = String.fromCharCode(65, 66, 67)
+```
+
+The strings to be protected in the source code can be specified  via plugin `protectedStrings` option.
+
+```js{5}
+import { defineConfig, bytecodePlugin } from 'electron-vite'
+
+export default defineConfig({
+  main: {
+    plugins: [bytecodePlugin({ protectedStrings: ['ABC'] })]
+  },
+  // ...
+})
+```
+
+::: warning Warning
+You should not enumerate all strings in source code for protection, usually we only need to protect sensitive strings.
+:::
 
 ## FAQ
 
