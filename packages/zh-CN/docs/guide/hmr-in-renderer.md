@@ -25,6 +25,16 @@ function createWindow() {
 
 变量 `ELECTRON_RENDERER_URL` 是 Vite 开发服务运行的本地 URL。
 
+如果是多页，可以这样使用：
+
+```js
+if (!app.isPackaged && process.env['ELECTRON_RENDERER_URL']) {
+  mainWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}/view.html`)
+} else {
+  mainWindow.loadFile(path.join(__dirname, '../renderer/view.html'))
+}
+```
+
 ::: tip 提示
 - 在开发阶段，渲染进程 `index.html` 文件需要通过 `<script type="module">` 引用脚本。
 
