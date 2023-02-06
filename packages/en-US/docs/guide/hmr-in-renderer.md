@@ -25,6 +25,16 @@ function createWindow() {
 
 The variable `ELECTRON_RENDERER_URL` is the local URL where Vite is running.
 
+If there are multi-page, you can use it like this:
+
+```js
+if (!app.isPackaged && process.env['ELECTRON_RENDERER_URL']) {
+  mainWindow.loadURL(`${process.env['ELECTRON_RENDERER_URL']}/view.html`)
+} else {
+  mainWindow.loadFile(path.join(__dirname, '../renderer/view.html'))
+}
+```
+
 ::: tip NOTE
 - For development, the renderer `index.html` file needs to reference your script code via `<script type="module">`.
 
