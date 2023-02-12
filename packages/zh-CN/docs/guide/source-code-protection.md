@@ -191,6 +191,58 @@ export default defineConfig({
 :::
 
 
+## 多平台构建
+
+::: tip 提示
+不要期望可以在一个平台上为所有平台构建应用程序。
+:::
+
+默认情况下根据当前 **Electorn Node.js 版本**和当前**架构**（例如 x86、x64、ARM 等）编译字节码。除了确保发布的 Electorn 应用程序的 Node.js 版本与编译时的版本相同外，架构是多平台构建的约束。
+
+### 单一架构目标构建多平台
+
+可能支持多平台构建：
+
+- 在 64 位的 MacOS 中构建 MacOS、Windows 或 Linux 的 64 位 Electorn 应用程序
+
+### 单一平台构建多架构目标
+
+例如，在 arm64 MacOS 中构建 MacOS 的 64 位应用程序，它会运行出错。因为默认构建的基于 arm64 的字节码无法在 64 位应用程序中运行。
+
+但是，我们可以指定另一个配置文件并将环境变量 `ELECTRON_EXEC_PATH` 设置为（64 位）Electron 应用程序的路径。字节码编译器将使用指定的 Electron 应用程序进行编译。
+
+```js{5}
+// specify `electron.x64.vite.config.ts` for building x64 Electron app
+import { defineConfig } from 'electron-vite'
+
+export default defineConfig(() => {
+  process.env.ELECTRON_EXEC_PATH = '/path/to/electron-x64/electron.app'
+
+  return {
+    // electron-vite config
+  }
+})
+```
+
+::: tip 提示
+可以将 `--arch` 标志与 npm install 一起使用来安装其他架构的 Electron。
+
+```bash
+npm install --arch=ia32 electron
+```
+:::
+
+当然这也是有限制的，因为需要运行 Electron 进程编译字节码，保证字节码是按照 Electron Node.js 版本生成的。但不同的架构不一定相互兼容。例如，64 位应用程序可以在 arm64 MacOS 中运行，但 arm64 应用程序无法在 64 位 MacOS 中运行。
+
+可能支持多架构构建：
+
+- 在 arm64 MacOS 中构建 MacOS 的 64 位 Electorn 应用程序
+- 在 arm64 Windows 中构建 Windows 的 64 位 Electorn 应用程序
+- 在 64 位 Windows 中构建 Windows 的 32 位 Electorn 应用程序
+
+::: warning 警告
+字节码与 CPU 无关。但是，你应该在部署前后运行测试，因为 V8 健全性检查包括一些与 CPU 支持的功能相关的检查，因此在极少数情况下这可能会导致错误。
+:::
 
 ## 常见疑问
 
