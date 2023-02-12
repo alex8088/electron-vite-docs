@@ -189,6 +189,59 @@ export default defineConfig({
 You should not enumerate all strings in source code for protection, usually we only need to protect sensitive strings.
 :::
 
+## Multi Platform Build
+
+::: tip NOTE
+Don’t expect that you can build app for all platforms on one platform.
+:::
+
+By default compile bytecode based on current **Electorn Node.js version** and current **architecture** (such as x86, x64, ARM, etc). In addition to ensuring the Node.js version of the released Electorn app is the same as when it was compiled, the architecture is the constraint of the multi-platform build.
+
+### Multi Platform Build on One Architecture
+
+It is possible for multi-platform build:
+
+- 64-bit Electorn app for MacOS, Windows or Linux in 64-bit MacOS
+
+### Multi Architecture Build on One Platform
+
+For example, building an 64-bit app for MacOS in arm64 MacOS, it will run with an error. Because the arm64-based bytecode built by default cannot run in an 64-bit app.
+
+But we can specify another configuration file and set the environment variable `ELECTRON_EXEC_PATH` to the path of (64-bit) Electron app. The bytecode compiler will compile with the specified Electron app.
+
+```js{5}
+// specify `electron.x64.vite.config.ts` for building x64 Electron app
+import { defineConfig } from 'electron-vite'
+
+export default defineConfig(() => {
+  process.env.ELECTRON_EXEC_PATH = '/path/to/electron-x64/electron.app'
+
+  return {
+    // electron-vite config
+  }
+})
+```
+
+::: tip NOTE
+You can use the `--arch` flag with npm install to install Electron for other architectures.
+
+```bash
+npm install --arch=ia32 electron
+```
+:::
+
+Of course, this is also limited, because the Electron process needs to be run to compile the bytecode to ensure that the bytecode is generated according to the Electron Node.js version. But different architectures are not necessarily compatible with each other. For example, an 64-bit app can run in arm64 MacOS, but an arm64 app cannot run in 64-bit MacOS.
+
+It is possible for multi architecture build:
+
+- 64-bit Electorn app for MacOS in arm64 MacOS
+- 64-bit Electorn app for Windows in arm64 Windows
+- 32-bit Electorn app for Windows in 64-bit Windows
+
+::: warning Warning
+Bytecode are CPU-agnostic. However, you should run your tests before and after deployment, because V8 sanity checks include some checks related to CPU supported features, so this may cause errors in some rare cases.
+:::
+
 ## FAQ
 
 ### Impact on code organization and writing?
