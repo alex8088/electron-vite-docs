@@ -254,7 +254,7 @@ There is no impact on code execution performance and a slight improvement.
 
 ### Impact on program volume?
 
-For bundles of only a few hundred KILobytes, there is a significant increase in bytecode size, but for 2M+ bundles, there is no significant difference in bytecode size.
+For bundles of only a few hundred Kilobytes, there is a significant increase in bytecode size, but for 2M+ bundles, there is no significant difference in bytecode size.
 
 ### How strong is the code protection?
 
