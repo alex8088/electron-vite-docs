@@ -19,7 +19,7 @@ const sidebar: DefaultTheme.Sidebar = {
         { text: 'TS 装饰器', link: '/guide/typescript-decorator' },
         { text: 'Workers', link: '/guide/worker' },
         { text: '环境变量和模式', link: '/guide/env-and-mode' },
-        { text: 'VSCode 调试', link: '/guide/debugging' }
+        { text: '调试', link: '/guide/debugging' }
       ]
     },
     {
