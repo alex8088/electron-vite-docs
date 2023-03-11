@@ -29,9 +29,12 @@ The command will build the main process, renderers and preload scripts source co
 | `-v, --version`	          | Display version number |
 | `-h, --help`	            | Display available CLI options |
 | `--skipBuild`	            | Skip build for `preview` command |
+| `--remoteDebuggingPort`	  | Port for remote debugging |
 
 ::: tip NOTE
 The `--ignoreConfigWarning` option allows you to ignore warnings when config missing. For example, do not use preload scripts.
 
 The `--skipBuild` option is only used for `preview` command to skip build and start the Electron app to preview.
+
+The `--remoteDebuggingPort` option is only used for debugging in dev mode.
 :::
