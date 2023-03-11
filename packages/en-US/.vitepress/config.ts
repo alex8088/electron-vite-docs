@@ -19,7 +19,7 @@ const sidebar: DefaultTheme.Sidebar = {
         { text: 'TypeScript Decorator', link: '/guide/typescript-decorator' },
         { text: 'Workers', link: '/guide/worker' },
         { text: 'Env Variables and Modes', link: '/guide/env-and-mode' },
-        { text: 'Debugging in VSCode', link: '/guide/debugging' }
+        { text: 'Debugging', link: '/guide/debugging' }
       ]
     },
     {

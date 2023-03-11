@@ -1,8 +1,12 @@
-# Debugging in VSCode
+# Debugging
+
+electron-vite supports debugging both the main process and the renderer process code.
+
+## VSCode
 
 Add a file `.vscode/launch.json` with the following configuration:
 
-```json{9,11,13}
+```json
 {
   "version": "0.2.0",
   "configurations": [
@@ -15,14 +19,48 @@ Add a file `.vscode/launch.json` with the following configuration:
       "windows": {
         "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron-vite.cmd"
       },
-      "runtimeArgs": ["--sourcemap"]
+      "runtimeArgs": ["--sourcemap"],
+      "env": {
+        "REMOTE_DEBUGGING_PORT": "9222"
+      }
+    },
+    {
+      "name": "Debug Renderer Process",
+      "port": 9222,
+      "request": "attach",
+      "type": "chrome",
+      "webRoot": "${workspaceFolder}"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Debug All",
+      "configurations": [
+        "Debug Main Process",
+        "Debug Renderer Process"
+      ]
     }
   ]
 }
 ```
 
-Then, set some breakpoints in `main.ts` (source code), and start debugging in the `VSCode Debug View`.
+Then set some breakpoints in (main process or renderer process) source code. And go to the Debug view and ensure `Debug All` is selected. You can then press F5 to start debugging.
 
-::: tip NOTE
-Before electron-vite 1.0.7, the `sourcemap` CLI option was not supported. For debugging, you can set `build.sourcemap` options to `true` in `electron.vite.config.js` and remove the `runtimeArgs` option for the above configuration.
-:::
+## WebStorm
+
+Create a `Npm` run configuration. Use the following settings for main process debugging:
+
+| Setting   | Value            |
+| :-------- | :--------------- |
+| Command   | run              |
+| Scripts   | dev              |
+| Arguments | --sourcemap --remote-debugging-port=9222 |
+
+Also Create a `Attach to Node.js/Chrome` run configuration. Use the following settings for renderer process debugging:
+
+| Setting   | Value            |
+| :-------- | :--------------- |
+| Host      | localhost        |
+| Port      | 9222             |
+
+Then run these configuration in debug mode.
