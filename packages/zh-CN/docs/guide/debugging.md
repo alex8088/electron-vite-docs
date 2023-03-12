@@ -29,22 +29,29 @@ electron-vite 支持调试主进程和渲染进程代码。
       "port": 9222,
       "request": "attach",
       "type": "chrome",
-      "webRoot": "${workspaceFolder}"
+      "webRoot": "${workspaceFolder}/src/renderer",
+      "presentation": {
+        "hidden": true
+      }
     }
   ],
   "compounds": [
     {
       "name": "Debug All",
-      "configurations": [
-        "Debug Main Process",
-        "Debug Renderer Process"
-      ]
+      "configurations": ["Debug Main Process", "Debug Renderer Process"],
+      "presentation": {
+        "order": 1
+      }
     }
   ]
 }
 ```
 
 然后，在（主进程或渲染进程）源代码中设置一些断点。转到“调试”选项卡并确保选择“Debug All”，然后你可以按 F5 开始调试。
+
+::: tip 提示
+你也可以选择 `Debug Main Process` 仅调试主进程。由于渲染进程只能通过附加方式调试，所以无法单独调试渲染进程。
+:::
 
 ## WebStorm
 
