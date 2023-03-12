@@ -29,22 +29,29 @@ Add a file `.vscode/launch.json` with the following configuration:
       "port": 9222,
       "request": "attach",
       "type": "chrome",
-      "webRoot": "${workspaceFolder}"
+      "webRoot": "${workspaceFolder}/src/renderer",
+      "presentation": {
+        "hidden": true
+      }
     }
   ],
   "compounds": [
     {
       "name": "Debug All",
-      "configurations": [
-        "Debug Main Process",
-        "Debug Renderer Process"
-      ]
+      "configurations": ["Debug Main Process", "Debug Renderer Process"],
+      "presentation": {
+        "order": 1
+      }
     }
   ]
 }
 ```
 
 Then set some breakpoints in (main process or renderer process) source code. And go to the Debug view and ensure `Debug All` is selected. You can then press F5 to start debugging.
+
+::: tip NOTE
+You can also choose `Debug Main Process` to only debug the main process. Since renderer debugging can only be attached, so it is not possible to debug renderer alone.
+:::
 
 ## WebStorm
 
