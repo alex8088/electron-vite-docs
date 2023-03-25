@@ -30,6 +30,7 @@ electron-vite 支持调试主进程和渲染进程代码。
       "request": "attach",
       "type": "chrome",
       "webRoot": "${workspaceFolder}/src/renderer",
+      "timeout": 60000,
       "presentation": {
         "hidden": true
       }
