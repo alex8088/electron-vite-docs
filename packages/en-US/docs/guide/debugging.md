@@ -30,6 +30,7 @@ Add a file `.vscode/launch.json` with the following configuration:
       "request": "attach",
       "type": "chrome",
       "webRoot": "${workspaceFolder}/src/renderer",
+      "timeout": 60000,
       "presentation": {
         "hidden": true
       }
