@@ -49,7 +49,7 @@ electron-vite 可以智能地为 Electron 的独特环境打包源代码。
 
 得益于 Vite 极快的 HMR 功能，我们在渲染器开发中使用它。它将极大地提高 Electron 的开发效率。
 
-查阅 [在渲染进程中使用 HMR](/guide/hmr-in-renderer) 部分，了解此功能的更多详细信息。
+查阅 [在渲染进程中使用 HMR](/guide/hmr) 部分，了解此功能的更多详细信息。
 
 ## 热重载
 
