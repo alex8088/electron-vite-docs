@@ -57,11 +57,11 @@ Hot reloading refers to quickly rebuilding and restarting the Electron app when 
 
 Check out the [Hot Reloading](/guide/hot-reloading) section to learn more about this feature.
 
-## Static Assets
+## Asset Handling
 
-In addition to supporting the [static asset handling](https://vitejs.dev/guide/assets.html) in web app like Vite， electron-vite also optimizes the static asset handling in the Electron main process.
+In addition to supporting the [static asset handling](https://vitejs.dev/guide/assets.html) in web app like Vite， electron-vite also optimizes asset handling in the Electron main process.
 
-Check out the [Static Asset Handling](/guide/assets) section to learn more about this feature.
+Check out the [Asset Handling](/guide/assets) section to learn more about this feature.
 
 ## Source Code Protection
 
