@@ -11,13 +11,12 @@ const sidebar: DefaultTheme.Sidebar = {
         { text: 'CLI', link: '/guide/cli' },
         { text: 'Project Structure', link: '/guide/project-structure' },
         { text: 'Development', link: '/guide/dev' },
-        { text: 'Static Asset Handling', link: '/guide/assets' },
+        { text: 'Asset Handling', link: '/guide/assets' },
         { text: 'Use HMR in Renderer', link: '/guide/hmr-in-renderer' },
         { text: 'Hot Reloading', link: '/guide/hot-reloading' },
         { text: 'Building for Production', link: '/guide/build' },
         { text: 'Source Code Protection', link: '/guide/source-code-protection' },
         { text: 'TypeScript Decorator', link: '/guide/typescript-decorator' },
-        { text: 'Workers', link: '/guide/worker' },
         { text: 'Env Variables and Modes', link: '/guide/env-and-mode' },
         { text: 'Debugging', link: '/guide/debugging' }
       ]

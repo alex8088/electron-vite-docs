@@ -1,66 +1,48 @@
-# Static Asset Handling
+# Asset Handling
 
 ::: tip NOTE
-Static asset handling feature is available since electron-vite 1.0.17.
+The asset handling feature in this guide applies to the main process. For static asset handling of the renderer process, refer to Vite's [Static Asset Handling](https://vitejs.dev/guide/assets.html) guide.
 :::
 
 ## Public Directory
 
-### For Main Process and Preload Scripts
+The public directory defaults to `<root>/resources`, dedicated to the main process and preload scripts. It can be configured via the `main.build.publicDir` and `preload.build.publicDir` option.
 
-If you have assets that are:
-
-- Referenced in source code (e.g. `*.node`, `*.wasm`, `*.exe`, `*.png`)
-- Must retain the exact same file name (without hashing)
-- Do not want to be bundled into an ASAR archive ([limitations of ASAR](https://www.electronjs.org/docs/latest/tutorial/asar-archives#limitations-of-the-node-api))
-
-Then you can place the asset in a special `public` directory under your project root.
-
-The directory defaults to `<root>/resources`, but can be configured via the [publicDir](https://vitejs.dev/config/shared-options.html#publicdir) option.
+If you have assets such as `icons`, `executables`, `wasm files`, etc., you can put them in this directory.
 
 Note that:
 
-- All assets in `public` directory are not copied to output directory. So when packaging the app, the `public` directory should be packaged together.
-- It is recommended to use the `?asset` suffix to import `public` assets.
+- All assets in public directory are not copied to output directory. So when packaging the app, the public directory should be packaged together.
+- It is recommended to use the `?asset` suffix to import public assets.
 
-### For Renderers
+::: warning Warning
+The public asset handling in renderers is different from the main process and preload scripts.
 
-By default, the working directory of renderers are located in `src/renderer`, so the public directory needs to be created in this directory. The default public directory is named `public`, which can also be specified by [publicDir](https://vitejs.dev/config/shared-options.html#publicdir).
-
-It is important to note that public asset handling in renderers is different from main process and preload scripts. See [Public Directory](https://vitejs.dev/guide/assets.html#the-public-directory) for more details.
-
-## ASAR Archives
-
-The Electron app's source code are usually bundled into an ASAR archive, which is a simple extensive archive format designed for Electron apps.
-
-But the ASAR Archive has limitations:
-
-- Some Node APIs require extra unpacking into a temporary file and pass the path of the temporary file to the APIs to make them work. This adds a little overhead for those APIs. Such as `child_process.execFile`, `fs.open`, `process.dlopen`, etc.
-- There are some Node APIs that do not support executing binaries in ASAR archives, such as `child_process.exec`, `child_process.spawn`.
-
-As stated above, it is best practice not to pack these assets into ASAR archives.
-
-There are those binaries that should not be packed:
-
-- Some native node modules like `sqlite`, `fluent-ffmpeg`, etc.
-- Referenced binaries like `*.node`, `*.app`, `*.exe`, etc.
-
-For example, in `electron-builder` you can configure like this:
-
-```yaml
-asarUnpack:
-  - node_modules/sqlite3
-  - resources/*
-  - out/main/chunks/*.node
-```
-
-Learn more about [ASAR Archives](https://www.electronjs.org/docs/latest/tutorial/asar-archives).
-
-::: tip NOTE
-It is recommended to put these assets in the public directory, which makes it easier to configure exclusions without packing them into the asar archive.
+- By default, the working directory of renderers are located in `src/renderer`, so the public directory needs to be created in this directory. The default public directory is named `public`, which can also be specified by `renderer.build.publicDir`.
+- The renderer public asset will be copied to output directory.
 :::
 
-## Importing Asset in Main Process
+## Type Definitions
+
+If you are a TypeScript user, make sure to add a `*.d.ts` declaration file to get type checks and intellisense:
+
+```js
+/// <reference types="electron-vite/node" />
+```
+
+Also, you can add `electron-vite/node` to `compilerOptions.types` of your `tsconfig`:
+
+```json
+{
+  "compilerOptions": {
+    "types": ["electron-vite/node"]
+  }
+}
+```
+
+This will provide type definitions for asset imports (e.g. importing an `*?asset` file).
+
+## Importing Asset as File Path
 
 In main process, assets can be imported as file path using the `?asset` suffix:
 
@@ -98,15 +80,9 @@ const appIcon = path.join(__dirname, "../../resources/icon.ico");
 
 And `resources/icon.ico` will not be copied to output dir.
 
-By default, electron-vite provides type definitions for `*?asset` in `electron-vite/node.d.ts`. If you are a TypeScript user, make sure to add type definitions in `env.d.ts` to get type checks and intellisense:
-
-```js
-/// <reference types="electron-vite/node" />
-```
-
 ### `app.asar.unpacked` File Path Problem
 
-We know the limitations of ASAR and do not pack binaries into ASAR archives. Sometimes, this creates a problem as the path to the binary changes, but your `path.join(__dirname, 'binary')` is not changed. To make it work you need to fix the path. Convert `app.asar` in path to `app.asar.unpacked`.
+Due to [limitations of ASAR](https://www.electronjs.org/docs/latest/tutorial/asar-archives#limitations-of-the-node-api), we cannot pack all files into ASAR archives. Sometimes, this creates a problem as the path to the file changes, but your `path.join(__dirname, 'binary')` is not changed. To make it work you need to fix the path. Convert `app.asar` in path to `app.asar.unpacked`.
 
 You can use the `?asset&asarUnpack` suffix to support this. For example:
 
@@ -121,11 +97,62 @@ const path = require("path");
 const bin = path.join(__dirname, "../../resources/hello.exe").replace("app.asar", "app.asar.unpacked");
 ```
 
-## Importing Asset in Renderer
+## Importing Worker Threads
 
-In renderer, static asset handling is the same as regular web app.
+### Import with Query Suffixes
 
-See Vite's [Static Asset Handling](https://vitejs.dev/guide/assets.html).
+A node worker can be directly imported by appending `?nodeWorker` to the import request. The default export will be a node worker constructor:
+
+```js
+import createWorker from './worker?nodeWorker'
+
+createWorker({ workerData: 'worker' })
+    .on('message', (message) => {
+      console.log(`Message from worker: ${message}`)
+    })
+    .postMessage('')
+```
+
+This syntax requires no configuration and is the `recommended` way to create node workers.
+
+### Import with Constructors
+
+A node worker also can be imported using `new Worker()`:
+
+```js
+import { resolve } from 'node:path'
+import { Worker } from 'node:worker_threads'
+
+new Worker(resolve(__dirname, './worker.js'), {})
+```
+
+This syntax requires configuration to bundle the worker file：
+
+```js
+// electron.vite.config.ts
+import { resolve } from 'path'
+import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
+
+export default defineConfig({
+  main: {
+    plugins: [externalizeDepsPlugin()],
+    build: {
+      rollupOptions: {
+        input: {
+          index: resolve(__dirname, 'src/main/index.ts'),
+          worker: resolve(__dirname, 'src/main/worker.ts')
+        }
+      }
+    }
+  },
+  // ...
+})
+```
+
+### Examples
+
+You can learn more by playing with the [example](https://github.com/alex8088/electron-vite-worker-example).
+
 
 ## Importing Native Node Modules
 
