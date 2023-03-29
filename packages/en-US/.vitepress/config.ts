@@ -12,7 +12,7 @@ const sidebar: DefaultTheme.Sidebar = {
         { text: 'Project Structure', link: '/guide/project-structure' },
         { text: 'Development', link: '/guide/dev' },
         { text: 'Asset Handling', link: '/guide/assets' },
-        { text: 'Use HMR in Renderer', link: '/guide/hmr-in-renderer' },
+        { text: 'Using HMR', link: '/guide/hmr' },
         { text: 'Hot Reloading', link: '/guide/hot-reloading' },
         { text: 'Building for Production', link: '/guide/build' },
         { text: 'Source Code Protection', link: '/guide/source-code-protection' },

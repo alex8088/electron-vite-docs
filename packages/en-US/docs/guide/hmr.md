@@ -1,6 +1,6 @@
-# Use HMR in Renderer
+# Using HMR
 
-In order to use HMR in renderer, you need to use the `environment variables` to determine whether the window browser loads a local html file or a local URL.
+In order to use HMR in the renderer, you need to use the `environment variables` to determine whether the window browser loads a local html file or a local URL.
 
 ```js
 function createWindow() {

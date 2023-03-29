@@ -49,7 +49,7 @@ Furthermore, electron-vite has many built-in configurations, such as `outDir`, `
 
 Thanks to Vite's extremely fast HMR feature, we use it in renderer development. It will extremely improve Electron's development efficiency.
 
-Check out the [Use HMR in Renderers](/guide/hmr-in-renderer) section to learn more about this feature.
+Check out the [Using HMR](/guide/hmr) section to learn more about this feature.
 
 ## Hot Reloading
 
