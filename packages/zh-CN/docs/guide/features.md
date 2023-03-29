@@ -57,11 +57,11 @@ electron-vite 可以智能地为 Electron 的独特环境打包源代码。
 
 查阅 [热重载](/guide/hot-reloading) 部分，了解此功能的更多详细信息。
 
-## 静态资源处理
+## 资源处理
 
-除了像 Vite 一样支持 web 应用程序中的 [静态资源处理](https://vitejs.dev/guide/assets.html) 之外，electron-vite 还优化了 Electron 主进程中的静态资源处理。
+除了像 Vite 一样支持 web 应用程序中的 [静态资源处理](https://vitejs.dev/guide/assets.html) 之外，electron-vite 还优化了 Electron 主进程中的资源处理。
 
-查阅 [静态资源处理](/guide/assets) 部分，了解此功能的更多详细信息。
+查阅 [资源处理](/guide/assets) 部分，了解此功能的更多详细信息。
 
 ## 源代码保护
 
