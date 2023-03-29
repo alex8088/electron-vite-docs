@@ -1,66 +1,49 @@
-# 静态资源处理
+# 资源处理
 
 ::: tip 提示
-静态资源处理功能从 1.0.17 版本开始可用。
+本章节中的资源处理功能仅适用于主进程。关于渲染进程的静态资源处理，请参阅 Vite 的 [静态资源处理](https://cn.vitejs.dev/guide/assets.html)。
 :::
 
 ## Public 目录
 
-### 对于主进程和预加载脚本
+公共目录默认为 `<root>/resources`，专用于主进程和预加载脚本。它可以通过 `main.build.publicDir` 和 `preload.build.publicDir` 选项进行配置。
 
-如果你有下列这些资源：
-
-- 被源码引用（例如 `*.node`, `*.wasm`, `*.exe`, `*.png`）
-- 必须保持原有文件名（没有经过 hash）
-- 不想被打包到 ASAR 存档中（[ASAR 的局限性](https://www.electronjs.org/docs/latest/tutorial/asar-archives#limitations-of-the-node-api)）
-
-那么你可以将该资源放在指定的 `public` 目录中，它应位于你的项目根目录。
-
-目录默认是 `<root>/resources`，但可以通过 [publicDir](https://vitejs.dev/config/shared-options.html#publicdir) 选项来配置。
+如果你有 `图标`、`可执行程序`、`wasm 文件` 等资源，可以将它们放在这个目录中。
 
 请注意：
 
-- `public` 目录中的所有资源都不会复制到输出目录。所以在打包 app 的时候，`public` 目录应该一起打包。
-- 推荐使用 `?asset` 后缀导入 `public` 中的资源。
+- 公共目录中的所有资源都不会复制到输出目录。所以在打包 app 的时候，公共目录应该一起打包。
+- 推荐使用 `?asset` 后缀导入公共资源。
 
-### 对于渲染进程
+::: warning 提示
+值得注意的是渲染进程中的公共资源处理不同于主进程和预加载脚本。
 
-默认情况下，渲染器的工作目录位于 `src/renderer`，因此需要在该目录下创建公共资源目录。默认的公共目录名为 `public`，也可以通过 [publicDir](https://vitejs.dev/config/shared-options.html#publicdir) 指定。
-
-值得注意的是渲染器中的公共资源处理不同于主进程和预加载脚本。有关详细信息，请参阅 [Public 目录](https://vitejs.dev/guide/assets.html#the-public-directory)。
-
-## ASAR 存档
-
-Electron 应用程序的源代码通常会打包到 ASAR 存档中，这是一种为 Electron 应用程序而设计的简易存档格式。
-
-但 ASAR 存档有局限性：
-
-- 某些 Node API 需要额外解压缩到一个临时文件中，并将临时文件的路径传递给 API 以使其工作。这会为这些 API 增加一些开销。比如 `child_process.execFile`、`fs.open`、`process.dlopen` 等。
-- 有一些 Node API 不支持在 ASAR 存档中执行二进制文件，例如 `child_process.exec`、`child_process.spawn`。
-
-如上所述，最好不要将这些资源打包到 ASAR 存档中。
-
-有那些不应该打包的二进制文件：
-
-- 原生 Node 模块，如 `sqlite`、`fluent-ffmpeg` 等。
-- 引用的二进制文件，如 `*.node`、`*.app`、`*.exe` 等。
-
-例如，在 `electron-builder` 中你可以这样配置：
-
-```yaml
-asarUnpack:
-  - node_modules/sqlite3
-  - resources/*
-  - out/main/chunks/*.node
-```
-
-了解有关 [ASAR 存档](https://www.electronjs.org/docs/latest/tutorial/asar-archives) 的更多信息。
-
-::: tip 提示
-建议将这些资源放在 public 目录中，这样可以更容易配置排除项，不将它们打包到 asar 存档中。
+- 默认情况下，渲染进程的工作目录位于 `src/renderer`，因此需要在该目录下创建公共资源目录。默认的公共目录名为 `public`，也可以通过 `renderer.build.publicDir` 指定。
+- 渲染进程的公共资源将被复制到输出目录。
 :::
 
-## 在主进程中导入资源
+
+## 类型定义
+
+如果你是 TypeScript 用户，请确保添加一个 `*.d.ts` 声明文件以获得类型检查和智能感知：
+
+```js
+/// <reference types="electron-vite/node" />
+```
+
+同时，你也可以将 `electron-vite/node` 添加到 `tsconfig` 中的 `compilerOptions.types` 下：
+
+```json
+{
+  "compilerOptions": {
+    "types": ["electron-vite/node"]
+  }
+}
+```
+
+这将为资源导入提供类型定义（例如：导入 `*?asset` 文件）。
+
+## 将资源引入为文件路径
 
 在主进程中，可以使用 `?asset` 后缀将资源作为文件路径导入：
 
@@ -98,15 +81,9 @@ const appIcon = path.join(__dirname, "../../resources/icon.ico");
 
 并且 `resources/icon.ico` 不会被复制到输出目录。
 
-默认情况下，electron-vite 在 [electron-vite/node.d.ts](https://github.com/alex8088/electron-vite/blob/master/node.d.ts) 中提供了 `*?asset` 的类型定义。如果你是 TypeScript 用户，请确保在 `env.d.ts` 中添加类型定义以获得类型检查和智能感知：
-
-```js
-/// <reference types="electron-vite/node" />
-```
-
 ### `app.asar.unpacked` 文件路径问题
 
-我们知道 ASAR 的局限性，不会将二进制文件打包到 ASAR 存档中。有时，这会产生一个问题，因为二进制文件的路径会发生变化，但你的 `path.join(__dirname, 'binary')` 并没有改变。要使其正常工作，需要修复路径。将路径中的 `app.asar` 转换为 `app.asar.unpacked`。
+由于 [ASAR 的限制](https://www.electronjs.org/docs/latest/tutorial/asar-archives#limitations-of-the-node-api)，我们不能将所有文件打包到 ASAR 存档中。有时，这会产生一个问题，因为二进制文件的路径会发生变化，但你的 `path.join(__dirname, 'binary')` 并没有改变。要使其正常工作，需要修复路径。将路径中的 `app.asar` 转换为 `app.asar.unpacked`。
 
 你可以使用 `?asset&asarUnpack` 后缀来支持。例如：
 
@@ -121,11 +98,62 @@ const path = require("path");
 const bin = path.join(__dirname, "../../resources/hello.exe").replace("app.asar", "app.asar.unpacked");
 ```
 
-## 在渲染进程中导入资源
+## 导入 Worker Threads
 
-在渲染进程中，静态资源处理与常规 web 应用程序相同。
+### 带有查询后缀的导入
 
-请参阅 Vite 的 [静态资源处理](https://vitejs.dev/guide/assets.html)。
+你可以在导入请求上添加 `?nodeWorker` 查询参数来直接导入一个 node worker。默认导出会是一个 node worker 的构造函数：
+
+```js
+import createWorker from './worker?nodeWorker'
+
+createWorker({ workerData: 'worker' })
+    .on('message', (message) => {
+      console.log(`Message from worker: ${message}`)
+    })
+    .postMessage('')
+```
+
+此语法不需要配置，是创建 worker 的 推荐 方式。
+
+### 通过构造器导入
+
+也可以使用 `new Worker()` 导入 node worker：
+
+```js
+import { resolve } from 'node:path'
+import { Worker } from 'node:worker_threads'
+
+new Worker(resolve(__dirname, './worker.js'), {})
+```
+
+此语法需要配置来打包 worker 文件：
+
+```js
+// electron.vite.config.ts
+import { resolve } from 'path'
+import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
+
+export default defineConfig({
+  main: {
+    plugins: [externalizeDepsPlugin()],
+    build: {
+      rollupOptions: {
+        input: {
+          index: resolve(__dirname, 'src/main/index.ts'),
+          worker: resolve(__dirname, 'src/main/worker.ts')
+        }
+      }
+    }
+  },
+  // ...
+})
+```
+
+### 示例
+
+你可以通过演练 [示例](https://github.com/alex8088/electron-vite-worker-example) 来了解更多信息。
+
 
 ## 导入原生 Node 模块
 
