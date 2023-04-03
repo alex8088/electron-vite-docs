@@ -39,7 +39,9 @@ export default defineConfig({
 })
 ```
 
+::: tip NOTE
 It should be pointed out that the best practice is to put the bundled code in **one directory**, as they are all necessary for the Electron app to run, unlike source code. This makes it easy to exclude source code to reduce the size of the package when packaging Electron app.
+:::
 
 ## Customizing the Build
 
@@ -70,32 +72,42 @@ export default defineConfig({
 
 A good chunking strategy is very important to the performance of Electron app.
 
-From Vite 2.9, `manualChunks` is no longer modified by default. You can continue to use the Split Vendor Chunk strategy by adding the `splitVendorChunkPlugin` in your config file:
+You can configure how chunks are split using `build.rollupOptions.output.manualChunks` (see [Rollup docs](https://rollupjs.org/configuration-options/#output-manualchunks)). In addition, you can also add the `splitVendorChunkPlugin` provided by Vite to use the `Split Vendor Chunk` strategy.
 
 ```js
-// electron.vite.config.js
+// electron.vite.config.ts
 import { defineConfig, splitVendorChunkPlugin } from 'electron-vite'
 
 export default defineConfig({
   main: {
-    plugins: [splitVendorChunkPlugin()]
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id): string | void {
+            if (id.includes('foo')) {
+              return 'foo'
+            }
+          }
+        }
+      }
+    }
   },
-  preload: {
-    plugins: [splitVendorChunkPlugin()]
-  },
+  // ...
   renderer: {
     plugins: [splitVendorChunkPlugin()]
   }
 })
 ```
 
-::: tip TIP
+::: tip NOTE
 The `splitVendorChunkPlugin` exports from `Vite`.
 :::
 
 ## Externals
 
-The `build.rollupOptions.external` configuration option provides a way of excluding dependencies from the output bundles. This option is typically most useful to Electron developer. For example, using `sqlite3` node addon in Electron:
+The `build.rollupOptions.external` (see [Rollup docs](https://rollupjs.org/configuration-options/#external)) configuration option provides a way of excluding dependencies from the output bundles. This option is typically most useful to Electron developer.
+
+For example, using `sqlite3` node addon in Electron:
 
 ```js
 // electron.vite.config.js
@@ -115,7 +127,7 @@ In the above configuration, it indicates that the module `sqlite3` should exclud
 
 By default, electron-vite will add the `electron` module and all `node` built-in modules as external dependencies. If developers add their own external dependencies, they will be automatically merged with them. Learn more about [Built-in Config](/config/#built-in-config).
 
-Additionally, electron-vite provides an `externalizeDepsPlugin` to automatically externalize `package.json` dependencies.
+Additionally, electron-vite provides an `externalizeDepsPlugin` to automatically externalize `package.json` dependencies. We don't have to add one by one to the `external` option.
 
 ```js
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
@@ -130,6 +142,8 @@ export default defineConfig({
   // ...
 })
 ```
+
+See [`dependencies` vs `devDependencies`](/guide/dev#dependencies-vs-devdependencies) for more details.
 
 ::: tip Recommend
 For the main process and preload scripts, the best practice is to externalize dependencies. For renderers, it is usually fully bundle, so dependencies are best installed in `devDependencies`. This makes the final package more smaller.
