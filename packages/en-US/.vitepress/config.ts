@@ -14,6 +14,7 @@ const sidebar: DefaultTheme.Sidebar = {
         { text: 'Using HMR', link: '/guide/hmr' },
         { text: 'Hot Reloading', link: '/guide/hot-reloading' },
         { text: 'Building for Production', link: '/guide/build' },
+        { text: 'Distribution', link: '/guide/distribution' },
         { text: 'Source Code Protection', link: '/guide/source-code-protection' },
         { text: 'TypeScript Decorator', link: '/guide/typescript-decorator' },
         { text: 'Env Variables and Modes', link: '/guide/env-and-mode' },
