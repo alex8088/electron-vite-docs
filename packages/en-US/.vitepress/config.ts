@@ -9,7 +9,6 @@ const sidebar: DefaultTheme.Sidebar = {
         { text: 'Getting Started', link: '/guide/' },
         { text: 'Features', link: '/guide/features' },
         { text: 'CLI', link: '/guide/cli' },
-        { text: 'Project Structure', link: '/guide/project-structure' },
         { text: 'Development', link: '/guide/dev' },
         { text: 'Asset Handling', link: '/guide/assets' },
         { text: 'Using HMR', link: '/guide/hmr' },

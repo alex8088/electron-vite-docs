@@ -1,4 +1,108 @@
+---
+outline: deep
+---
+
 # Development
+
+## Project Structure
+
+### Conventions
+
+It is recommended to use the following project structure:
+
+```
+.
+├──src
+│  ├──main
+│  │  ├──index.ts
+│  │  └──...
+│  ├──preload
+│  │  ├──index.ts
+│  │  └──...
+│  └──renderer    # with vue, react, etc.
+│     ├──src
+│     ├──index.html
+│     └──...
+├──electron.vite.config.ts
+├──package.json
+└──...
+```
+
+With this convention, electron-vite can work with **minimal configuration**.
+
+When running electron-vite, it will automatically find the main process, preload script and renderer entry ponits. The default entry points：
+
+- **Main process:** `<root>/src/main/{index|main}.{js|ts|mjs|cjs}`
+- **Preload script:** `<root>/src/preload/{index|preload}.{js|ts|mjs|cjs}`
+- **Renderer:** `<root>/src/renderer/index.html`
+
+It will throw an error if the entry points cannot be found. You can fix it by setting the `build.rollupOptions.input` option.
+
+See the example in [the next](#customizing) section.
+
+### Customizing
+
+Even though we strongly recommend the project structure above, it is not a requirement. You can configure it to meet your scenes.
+
+Suppose you have the following project structure:
+
+```
+.
+├──electron
+│  ├──main
+│  │  ├──index.ts
+│  │  └──...
+│  └──preload
+│     ├──index.ts
+│     └──...
+├──src   # with vue, react, etc.
+├──index.html
+├──electron.vite.config.ts
+├──package.json
+└──...
+```
+
+Your `electron.vite.config.ts` should be:
+
+```js
+import { defineConfig } from 'electron-vite'
+import { resolve } from 'path'
+
+export default defineConfig({
+  main: {
+    build: {
+      rollupOptions: {
+        input: {
+          index: resolve(__dirname, 'electron/main/index.ts')
+        }
+      }
+    }
+  },
+  preload: {
+    build: {
+      rollupOptions: {
+        input: {
+          index: resolve(__dirname, 'electron/preload/index.ts')
+        }
+      }
+    }
+  },
+  renderer: {
+    root: '.',
+    build: {
+      rollupOptions: {
+        input: {
+          index: resolve(__dirname, 'index.html')
+        }
+      }
+    }
+  }
+})
+```
+
+::: warning NOTE
+By default, the renderer's working directory is located in `src/renderer`. In this example, the renderer `root` option should be set to `'.'`.
+:::
 
 ## Using Preload Scripts
 
@@ -65,13 +169,33 @@ const func = async () => {
 func()
 ```
 
-### When to Use
+### Limitations for Sandboxing
 
-- Use Node.js APIs, e.g. `fs`.
-- Use Electron Renderer Modules, e.g. `ipcRenderer`, `webFrame`.
-- Communicate and exchange data with the main process.
+From Electron 20 onwards, preload scripts are sandboxed by default and no longer have access to a full Node.js environment. Practically, this means that you have a polyfilled require function (similar to Node's require module) that only has access to a limited set of APIs.
 
-### About Development Efficiency
+| Available API | Details |
+| :--------------- | :--------------- |
+| Electron modules  | Only [Renderer Process Modules](https://www.electronjs.org/docs/latest/api/context-bridge)  |
+| Node.js modules   | `events`, `timers`, `url`     |
+| Polyfilled globals| `Buffer`, `process`, `clearImmediate`, `setImmediate` |
+
+::: tip NOTE
+Because the `require` function is a polyfill with limited functionality, you will not be able to use CommonJS modules to separate your preload script into multiple files, unless `sandbox: false` is specified.
+:::
+
+In Electron, renderer sandboxing can be disabled on a per-process basis with the `sandbox: false` preference in the [BrowserWindow](https://www.electronjs.org/docs/latest/api/browser-window) constructor.
+
+```ts
+const win = new BrowserWindow({
+  webPreferences: {
+    sandbox: false
+  }
+})
+```
+
+Learn more about [Electron Process Sandboxing](https://www.electronjs.org/docs/latest/tutorial/sandbox).
+
+### Efficient
 
 Perhaps some developers think that using preload scripts is inconvenient and inflexible. But why we recommend:
 
@@ -97,14 +221,6 @@ if (process.contextIsolated) {
 }
 ```
 
-Or
-
-```js
-import { exposeElectronAPI } from '@electron-toolkit/preload'
-
-exposeElectronAPI()
-```
-
 Then, use the Electron APIs directly in the renderer process：
 
 ```js
@@ -124,6 +240,10 @@ window.electron.ipcRenderer.on('electron:reply', (_, args) => {
 
 Learn more about [@electron-toolkit/preload](https://github.com/alex8088/electron-toolkit/tree/master/packages/preload).
 
+::: tip NOTE
+`@electron-toolkit/preload` need to disable the `sandbox`.
+:::
+
 ::: warning IPC SECURITY
 The safest way is to use a helper function to wrap the `ipcRenderer` call rather than expose the ipcRenderer module directly via context bridge.
 :::
@@ -136,51 +256,51 @@ Perhaps there's a better way to support this in the future. But It is important 
 
 ## `dependencies` vs `devDependencies`
 
-**For the main process and preload scripts**, the best practice is to externalize dependencies and only bundle our own code.
+- **For the main process and preload scripts**, the best practice is to externalize dependencies and only bundle our own code.
 
-**We need to install the dependencies required by the app into the `dependencies` of `package.json`**. Then use `externalizeDepsPlugin` to externalize them without bundle them.
+  We need to install the dependencies required by the app into the `dependencies` of `package.json`. Then use `externalizeDepsPlugin` to externalize them without bundle them.
 
-```js{5,8}
-import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
+  ```js{5,8}
+  import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 
-export default defineConfig({
-  main: {
-    plugins: [externalizeDepsPlugin()]
-  },
-  preload: {
-    plugins: [externalizeDepsPlugin()]
-  },
-  // ...
-})
-```
+  export default defineConfig({
+    main: {
+      plugins: [externalizeDepsPlugin()]
+    },
+    preload: {
+      plugins: [externalizeDepsPlugin()]
+    },
+    // ...
+  })
+  ```
 
-When packaging the app, these dependencies will also be packaged together, such as `electron-builder`. Don't worry about them being lost. On the other hand, `devDependencies` will not be packaged.
+  When packaging the app, these dependencies will also be packaged together, such as `electron-builder`. Don't worry about them being lost. On the other hand, `devDependencies` will not be packaged.
 
-It is important to note that some modules that only support `ESM` (e.g. `lowdb`, `execa`, `node-fetch`), we should not externalize it. We should let `electron-vite` bundle it into a `CJS` standard module to support Electron.
+  It is important to note that some modules that only support `ESM` (e.g. `lowdb`, `execa`, `node-fetch`), we should not externalize it. We should let `electron-vite` bundle it into a `CJS` standard module to support Electron.
 
-```js {5}
-import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
+  ```js {5}
+  import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 
-export default defineConfig({
-  main: {
-    plugins: [externalizeDepsPlugin({ exclude: ['lowdb'] })],
-    build: {
-      rollupOptions: {
-        output: {
-          manualChunks(id) {
-            if (id.includes('lowdb')) {
-              return 'lowdb'
+  export default defineConfig({
+    main: {
+      plugins: [externalizeDepsPlugin({ exclude: ['lowdb'] })],
+      build: {
+        rollupOptions: {
+          output: {
+            manualChunks(id) {
+              if (id.includes('lowdb')) {
+                return 'lowdb'
+              }
             }
           }
         }
       }
-    }
-  },
-  // ...
-})
-```
+    },
+    // ...
+  })
+  ```
 
-**For renderers**, it is usually fully bundle, so dependencies are best installed in `devDependencies`. This makes the final package more smaller.
+- **For renderers**, it is usually fully bundle, so dependencies are best installed in `devDependencies`. This makes the final package more smaller.
 
 ## Multiple Windows App
 
