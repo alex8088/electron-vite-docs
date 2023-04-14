@@ -1,4 +1,108 @@
+---
+outline: deep
+---
+
 # 开发
+
+## 项目结构
+
+### 约定
+
+推荐使用如下项目结构：
+
+```
+.
+├──src
+│  ├──main
+│  │  ├──index.ts
+│  │  └──...
+│  ├──preload
+│  │  ├──index.ts
+│  │  └──...
+│  └──renderer    # with vue, react, etc.
+│     ├──src
+│     ├──index.html
+│     └──...
+├──electron.vite.config.ts
+├──package.json
+└──...
+```
+
+遵循此约定，electron-vite 可以用**最少的配置**进行工作。
+
+当运行 electron-vite 时，它会自动寻找主进程、渲染器和预加载脚本的入口文件。默认的入口配置：
+
+- **主进程：** `<root>/src/main/{index|main}.{js|ts|mjs|cjs}`
+- **预加载脚本：** `<root>/src/preload/{index|preload}.{js|ts|mjs|cjs}`
+- **渲染器：** `<root>/src/renderer/index.html`
+
+如果找不到入口点，它将抛出一个错误。你可以通过设置 `build.rollupOptions.input` 选项来修复它。
+
+请在 [下一小节](#customizing) 中查看示例。
+
+### 自定义
+
+尽管我们强烈推荐上面的项目结构，但这不是必需的。你可以对其进行配置以满足你的使用场景。
+
+假设你有下面这样的项目文件结构：
+
+```
+.
+├──electron
+│  ├──main
+│  │  ├──index.ts
+│  │  └──...
+│  └──preload
+│     ├──index.ts
+│     └──...
+├──src   # with vue, react, etc.
+├──index.html
+├──electron.vite.config.ts
+├──package.json
+└──...
+```
+
+你的 `electron.vite.config.ts` 文件应该是这样：
+
+```js
+import { defineConfig } from 'electron-vite'
+import { resolve } from 'path'
+
+export default defineConfig({
+  main: {
+    build: {
+      rollupOptions: {
+        input: {
+          index: resolve(__dirname, 'electron/main/index.ts')
+        }
+      }
+    }
+  },
+  preload: {
+    build: {
+      rollupOptions: {
+        input: {
+          index: resolve(__dirname, 'electron/preload/index.ts')
+        }
+      }
+    }
+  },
+  renderer: {
+    root: '.',
+    build: {
+      rollupOptions: {
+        input: {
+          index: resolve(__dirname, 'index.html')
+        }
+      }
+    }
+  }
+})
+```
+
+::: warning 提示
+默认情况下，渲染器的工作目录位于 `src/renderer` 中。在此示例中，渲染器的 `root` 选项应设置为 `“.”`。
+:::
 
 ## 使用预加载脚本
 
@@ -65,13 +169,33 @@ const func = async () => {
 func()
 ```
 
-### 何时使用
+### 沙盒的限制
 
-- 使用 Node.js API，例如 `fs`。
-- 使用 Electron 渲染器模块，例如 `ipcRenderer`，`webFrame`。
-- 与主进程通信和交换数据。
+从 Electron 20 开始，预加载脚本默认沙盒化，不再拥有完整 Node.js 环境的访问权。实际上，这意味着你只拥有一个 polyfilled 的 require 函数（类似于 Node 的 require 模块），它只能访问一组有限的 API。
 
-### 关于开发效率
+| 可用的 API | 详细信息 |
+| :--------------- | :--------------- |
+| Electron 模块  | 仅 [渲染进程模块](https://www.electronjs.org/zh/docs/latest/api/context-bridge)  |
+| Node.js 模块   | `events`, `timers`, `url`     |
+| Polyfilled 的全局模块 | `Buffer`, `process`, `clearImmediate`, `setImmediate` |
+
+::: tip 提示
+因为 `require` 函数是一个功能有限的 polyfill，你无法把 preload 脚本拆成多个文件并作为 CommonJS 模块来加载，除非指定了 `sandbox: false`。
+:::
+
+在 Electron 中，可以使用 [BrowserWindow](https://www.electronjs.org/zh/docs/latest/api/browser-window) 构造函数中的 `sandbox: false` 选项在每个进程的基础上禁用渲染器沙盒。
+
+```ts
+const win = new BrowserWindow({
+  webPreferences: {
+    sandbox: false
+  }
+})
+```
+
+了解有关 [Electron 进程沙盒](https://www.electronjs.org/zh/docs/latest/tutorial/sandbox) 的更多信息。
+
+### 高效
 
 也许有些开发人员认为使用预加载脚本不方便且不灵活。但我们为什么要推荐：
 
@@ -97,14 +221,6 @@ if (process.contextIsolated) {
 }
 ```
 
-或者
-
-```js
-import { exposeElectronAPI } from '@electron-toolkit/preload'
-
-exposeElectronAPI()
-```
-
 然后，在渲染进程中直接使用 Electron APIs：
 
 ```js
@@ -124,6 +240,10 @@ window.electron.ipcRenderer.on('electron:reply', (_, args) => {
 
 了解更多有关 [@electron-toolkit/preload](https://github.com/alex8088/electron-toolkit/tree/master/packages/preload)。
 
+::: tip 提示
+`@electron-toolkit/preload` 需要禁用 `sandbox`。
+:::
+
 ::: warning IPC 安全问题
 最安全的方法是使用辅助函数来包装 `ipcRenderer` 调用，而不是直接通过 context bridge 暴露 ipcRenderer 模块。
 :::
@@ -136,51 +256,51 @@ window.electron.ipcRenderer.on('electron:reply', (_, args) => {
 
 ## `dependencies` vs `devDependencies`
 
-**对于主进程和预加载脚本**，最佳实践是将依赖项外部化，只打包自己的代码。
+- **对于主进程和预加载脚本**，最佳实践是将依赖项外部化，只打包自己的代码。
 
-**我们需要将应用程序需要的依赖安装到 `package.json` 的 `dependencies` 中**。然后使用 `externalizeDepsPlugin` 将它们外部化而不打包它们。
+  我们需要将应用程序需要的依赖安装到 `package.json` 的 `dependencies` 中。然后使用 `externalizeDepsPlugin` 将它们外部化而不打包它们。
 
-```js{5,8}
-import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
+  ```js{5,8}
+  import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 
-export default defineConfig({
-  main: {
-    plugins: [externalizeDepsPlugin()]
-  },
-  preload: {
-    plugins: [externalizeDepsPlugin()]
-  },
-  // ...
-})
-```
+  export default defineConfig({
+    main: {
+      plugins: [externalizeDepsPlugin()]
+    },
+    preload: {
+      plugins: [externalizeDepsPlugin()]
+    },
+    // ...
+  })
+  ```
 
-在打包应用程序的时候，这些依赖也会一起打包，比如 `electron-builder`。不用担心他们会丢失。另一方面，`devDependencies` 则不会被打包。
+  在打包应用程序的时候，这些依赖也会一起打包，比如 `electron-builder`。不用担心他们会丢失。另一方面，`devDependencies` 则不会被打包。
 
-值得注意的是一些只支持 `ESM` 的模块（例如 `lowdb`、`execa`、`node-fetch`），我们不应该将其外部化。我们应该让 `electron-vite` 把它打包成一个 `CJS` 标准模块来支持 Electron。
+  值得注意的是一些只支持 `ESM` 的模块（例如 `lowdb`、`execa`、`node-fetch`），我们不应该将其外部化。我们应该让 `electron-vite` 把它打包成一个 `CJS` 标准模块来支持 Electron。
 
-```js {5}
-import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
+  ```js {5}
+  import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 
-export default defineConfig({
-  main: {
-    plugins: [externalizeDepsPlugin({ exclude: ['lowdb'] })],
-    build: {
-      rollupOptions: {
-        output: {
-          manualChunks(id) {
-            if (id.includes('lowdb')) {
-              return 'lowdb'
+  export default defineConfig({
+    main: {
+      plugins: [externalizeDepsPlugin({ exclude: ['lowdb'] })],
+      build: {
+        rollupOptions: {
+          output: {
+            manualChunks(id) {
+              if (id.includes('lowdb')) {
+                return 'lowdb'
+              }
             }
           }
         }
       }
-    }
-  },
-  // ...
-})
-```
+    },
+    // ...
+  })
+  ```
 
-**对于渲染器**，它通常是完全打包的，所以依赖项最好安装在 `devDependencies` 中。这使得最终的分发包更小。
+- **对于渲染器**，它通常是完全打包的，所以依赖项最好安装在 `devDependencies` 中。这使得最终的分发包更小。
 
 ## 多窗口应用程序
 

@@ -9,7 +9,6 @@ const sidebar: DefaultTheme.Sidebar = {
         { text: '快速开始', link: '/guide/' },
         { text: '功能', link: '/guide/features' },
         { text: '命令行界面', link: '/guide/cli' },
-        { text: '项目结构', link: '/guide/project-structure' },
         { text: '开发', link: '/guide/dev' },
         { text: '资源处理', link: '/guide/assets' },
         { text: '渲染进程 HMR', link: '/guide/hmr' },
