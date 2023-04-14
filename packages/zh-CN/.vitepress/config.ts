@@ -14,6 +14,7 @@ const sidebar: DefaultTheme.Sidebar = {
         { text: '渲染进程 HMR', link: '/guide/hmr' },
         { text: '热重载', link: '/guide/hot-reloading' },
         { text: '构建生产版本', link: '/guide/build' },
+        { text: '分发', link: '/guide/distribution' },
         { text: '源代码保护', link: '/guide/source-code-protection' },
         { text: 'TS 装饰器', link: '/guide/typescript-decorator' },
         { text: '环境变量和模式', link: '/guide/env-and-mode' },
