@@ -13,9 +13,9 @@
     "dev": "pnpm run -C packages/en-US dev",
     "build": "pnpm run -C packages/en-US build",
     "serve": "pnpm run -C packages/en-US serve",
-    "dev:cn": "pnpm run -C packages/zh-CN dev",
-    "build:cn": "pnpm run -C packages/zh-CN build",
-    "serve:cn": "pnpm run -C packages/zh-CN serve"
+    "dev:zh": "pnpm run -C packages/zh-CN dev",
+    "build:zh": "pnpm run -C packages/zh-CN build",
+    "serve:zh": "pnpm run -C packages/zh-CN serve"
   },
   "simple-git-hooks": {
     "commit-msg": "npx commit-lint $1"
