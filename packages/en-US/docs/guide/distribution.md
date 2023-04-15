@@ -1,6 +1,6 @@
 # Distribution
 
-## ASAR Archives Limitations
+## Limitations of ASAR Archives
 
 The Electron app's source code are usually bundled into an ASAR archive, which is a simple extensive archive format designed for Electron apps.
 
