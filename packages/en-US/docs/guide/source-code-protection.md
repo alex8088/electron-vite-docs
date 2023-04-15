@@ -49,6 +49,7 @@ electron-vite inspired by [bytenode](https://github.com/bytenode/bytenode), the 
 In addition, electron-vite also solves some problems that `bytenode` can't solve:
 
 - Fixed the issue where async arrow functions could crash Electron apps.
+- Protect strings.
 
 ::: warning Warning
 The `Function.prototype.toString` is not supported, because the source code does not follow the bytecode distribution, so the source code for the function is not available.
