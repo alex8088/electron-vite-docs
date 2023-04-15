@@ -4,7 +4,7 @@ title: 下一代 Electron 开发与构建工具
 hero:
   name: electron-vite
   text: 下一代 Electron 开发与构建工具
-  tagline: 基于 Vite，非常快，简单并且易学易用！
+  tagline: 基于 Vite，快速、简单且功能强大！
   image:
     src: /favicon.svg
     alt: logo
@@ -20,11 +20,11 @@ features:
     title: Vite 支持
     details: 继承 Vite 的所有优点，使用方式与 Vite 相同。
   - icon: 🛠
-    title: 集中配置
-    details: 将主进程、渲染器和预载脚本的 Vite 配置合并到一个文件。
-  - icon: 💡
     title: 预配置
     details: 针对 Electron 预先配置，不用担心配置问题。
+  - icon: 💡
+    title: 优化资源处理
+    details: 优化 Electron 主进程的资源处理。
   - icon: 🚀
     title: 热替换 HMR
     details: 渲染器支持模块热替换（HMR）。
