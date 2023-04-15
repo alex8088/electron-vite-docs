@@ -49,6 +49,7 @@ electron-vite 受 [bytenode](https://github.com/bytenode/bytenode) 启发，具�
 此外，electron-vite 还解决了一些 `bytenode` 无法解决的问题：
 
 - 修复了异步箭头函数可能导致 Electron 应用程序崩溃的问题。
+- 保护字符串。
 
 ::: warning 警告
 不支持 `Function.prototype.toString`，原因是源代码并不跟随字节码分发，因此取不到函数的源代码。
