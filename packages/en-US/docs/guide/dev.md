@@ -169,7 +169,7 @@ const func = async () => {
 func()
 ```
 
-### Limitations for Sandboxing
+### Limitations of Sandboxing
 
 From Electron 20 onwards, preload scripts are sandboxed by default and no longer have access to a full Node.js environment. Practically, this means that you have a polyfilled require function (similar to Node's require module) that only has access to a limited set of APIs.
 
