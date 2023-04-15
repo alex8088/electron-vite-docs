@@ -4,7 +4,7 @@ title: Next Generation Electron Build Tooling
 hero:
   name: electron-vite
   text: Next Generation Electron Build Tooling
-  tagline: Based on Vite. It's fast, simple and approachable!
+  tagline: Based on Vite. It's fast, simple and powerful!
   image:
     src: /favicon.svg
     alt: logo
@@ -20,11 +20,11 @@ features:
     title: Vite Powered
     details: Inherit all the benefits of Vite and use the same way as Vite.
   - icon: 🛠
-    title: Centralized Configuration
-    details: Main process, preload scripts and renderer Vite configuration combined into one file.
-  - icon: 💡
     title: Pre-configured
     details: Pre-configured for Electron, don't worry about configuration.
+  - icon: 💡
+    title: Optimize Asset Handling
+    details: Optimize asset handling for Electron main process.
   - icon: 🚀
     title: Fast HMR
     details: HMR for renderer processes.
