@@ -18,7 +18,8 @@ const sidebar: DefaultTheme.Sidebar = {
         { text: '源代码保护', link: '/guide/source-code-protection' },
         { text: 'TS 装饰器', link: '/guide/typescript-decorator' },
         { text: '环境变量和模式', link: '/guide/env-and-mode' },
-        { text: '调试', link: '/guide/debugging' }
+        { text: '调试', link: '/guide/debugging' },
+        { text: '故障排除', link: '/guide/troubleshooting' }
       ]
     },
     {
