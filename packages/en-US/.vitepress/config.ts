@@ -18,7 +18,8 @@ const sidebar: DefaultTheme.Sidebar = {
         { text: 'Source Code Protection', link: '/guide/source-code-protection' },
         { text: 'TypeScript Decorator', link: '/guide/typescript-decorator' },
         { text: 'Env Variables and Modes', link: '/guide/env-and-mode' },
-        { text: 'Debugging', link: '/guide/debugging' }
+        { text: 'Debugging', link: '/guide/debugging' },
+        { text: 'Troubleshooting', link: '/guide/troubleshooting' }
       ]
     },
     {
