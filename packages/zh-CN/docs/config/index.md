@@ -188,24 +188,6 @@ export default defineConfig(({ command, mode }) => {
 | `build.minify`                 | `false` |
 | `envPrefix`                    | `RENDERER_VITE_` |
 
-### `main` and `preload` 的 define 项设置：
-
-在 Web 开发中，Vite 会将 `'process.env.'` 替换为 `'({}).'`，这是合理和正确的。但在 Nodejs 开发中，我们有时候需要使用 `process.env` ，所以 `electron-vite` 重新预设全局变量替换，恢复其使用，预设如下：
-
-```js
-export default {
-  main: {
-    define: {
-      'process.env': 'process.env'
-    }
-  }
-}
-```
-
-::: tip 提示
-如果你想在已有的项目中使用这些预设配置，可以使用 Vite 的插件 [vite-plugin-electron-config](https://github.com/alex8088/vite-plugin-electron-config)
-:::
-
 ## Vite 配置参考
 
 请参阅 [Vite 配置](https://cn.vitejs.dev/config).
