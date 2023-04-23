@@ -8,12 +8,12 @@ The command will build the main process and preload scripts source code, and sta
 
 ## `electron-vite preview`
 
-The command will build the main process, renderers and preload scripts source code, and start the Electron app to preview.
+The command will build the main process, preload scripts and renderer source code, and start the Electron app to preview.
 
 
 ## `electron-vite build`
 
-The command will build the main process, renderers and preload scripts source code. Usually before packaging the Electron application, you need to execute this command.
+The command will build the main process, preload scripts and renderer source code. Usually before packaging the Electron application, you need to execute this command.
 
 ## Options
 
@@ -30,6 +30,7 @@ The command will build the main process, renderers and preload scripts source co
 | `-h, --help`	            | Display available CLI options |
 | `--skipBuild`	            | Skip build for `preview` command |
 | `--remoteDebuggingPort`	  | Port for remote debugging |
+| `--rendererOnly`	        | Only dev server for the renderer |
 
 ::: tip NOTE
 The `--ignoreConfigWarning` option allows you to ignore warnings when config missing. For example, do not use preload scripts.
@@ -37,4 +38,10 @@ The `--ignoreConfigWarning` option allows you to ignore warnings when config mis
 The `--skipBuild` option is only used for `preview` command to skip build and start the Electron app to preview.
 
 The `--remoteDebuggingPort` option is only used for debugging in dev mode.
+
+The `--rendererOnly` option is only used for `dev` command to skip the main process and preload scripts builds, and start dev server for renderer only. This option will greatly increase dev command speed.
+:::
+
+::: warning WARNING
+When using the `--rendererOnly` option, the electron-vite command must be run at least once. In addition, you need to use it without changing the main process and preload scripts source code.
 :::
