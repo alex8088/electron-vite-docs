@@ -188,24 +188,6 @@ export default defineConfig(({ command, mode }) => {
 | `build.minify`                 | `false` |
 | `envPrefix`                    | `RENDERER_VITE_` |
 
-### Define option for `main` and `preload`
-
-In web development, Vite will transform `'process.env.'` to `'({}).'`. This is reasonable and correct. But in nodejs development, we sometimes need to use `process.env`, so `electron-vite` will automatically add config define field to redefine global variable replacements like this:
-
-```js
-export default {
-  main: {
-    define: {
-      'process.env': 'process.env'
-    }
-  }
-}
-```
-
-::: tip TIPS
-If you want to use these configurations in an existing project, please see the Vite plugin [vite-plugin-electron-config](https://github.com/alex8088/vite-plugin-electron-config)
-:::
-
 ## Vite Config Reference
 
 See [Vite config](https://vitejs.dev/config).
