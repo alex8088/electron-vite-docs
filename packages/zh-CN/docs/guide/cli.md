@@ -29,6 +29,7 @@
 | `-h, --help`	            | 显示可用的 CLI 选项 |
 | `--skipBuild`	            | 为 `preview` 命令跳过构建 |
 | `--remoteDebuggingPort`	  | 远程调试端口 |
+| `--rendererOnly`	        | 仅为渲染器启动开发服务 |
 
 ::: tip 提示
 `--ignoreConfigWarning` 选项允许你在配置缺失时忽略警告。例如，不需要使用预加载脚本。
@@ -36,4 +37,10 @@
 `--skipBuild` 选项仅用于 `preview` 命令跳过构建并启动 Electron 应用程序进行预览。
 
 `--remoteDebuggingPort` 选项仅用于开发模式下的调试。
+
+`--rendererOnly` 选项仅用于 `dev` 命令以跳过主进程和预加载脚本构建，并仅为渲染器启动开发服务。此选项将大大提高 dev 命令速度。
+:::
+
+::: warning 警告
+使用 `--rendererOnly` 选项时，electron-vite 命令必须至少运行过一次。此外，你需要在不更改主进程和预加载脚本源代码的情况下使用它。
 :::
