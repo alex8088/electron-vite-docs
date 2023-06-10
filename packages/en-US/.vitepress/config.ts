@@ -84,7 +84,7 @@ export default defineConfig({
     ],
     localeLinks: {
       text: 'English',
-      items: [{ text: '简体中文', link: 'https://cn-evite.netlify.app/' }]
+      items: [{ text: '简体中文', link: 'https://cn.electron-vite.org/' }]
     },
     logo: '/favicon.svg',
     footer: {
