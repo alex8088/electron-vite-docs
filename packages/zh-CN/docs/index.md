@@ -1,9 +1,9 @@
 ---
 layout: home
-title: 下一代 Electron 开发与构建工具
+title: 下一代 Electron 开发构建工具
 hero:
   name: electron-vite
-  text: 下一代 Electron 开发与构建工具
+  text: 下一代 Electron 开发构建工具
   tagline: 基于 Vite，快速、简单且功能强大！
   image:
     src: /favicon.svg
