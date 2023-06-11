@@ -44,3 +44,9 @@ features:
     title: 开箱即用
     details: 开箱即用支持 Typescript、Vue、React、Svelte 和 SolidJS 等。
 ---
+
+<script lang="ts" setup>
+import Sponsor from '../.vitepress/theme/components/Sponsor.vue'
+</script>
+
+<Sponsor />
