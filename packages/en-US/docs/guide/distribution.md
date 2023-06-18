@@ -93,6 +93,58 @@ publish:
 }
 ```
 
+## Distributing Apps With Electron Forge
+
+Electron Forge is a tool for packaging and publishing Electron applications.
+
+1. You can create a configuration file `forge.config.cjs` for Electron Forge with the content below.
+
+```js
+module.exports = {
+  packagerConfig: {
+    ignore: [
+      /^\/src/,
+      /(.eslintrc.json)|(.gitignore)|(electron.vite.config.ts)|(forge.config.cjs)|(tsconfig.*)/,
+    ],
+  },
+  rebuildConfig: {},
+  makers: [
+    {
+      name: '@electron-forge/maker-squirrel',
+      config: {},
+    },
+    {
+      name: '@electron-forge/maker-zip',
+      platforms: ['darwin'],
+    },
+    {
+      name: '@electron-forge/maker-deb',
+      config: {},
+    },
+    {
+      name: '@electron-forge/maker-rpm',
+      config: {},
+    },
+  ],
+};
+```
+
+2. Add the scripts and dependencies to the `package.json`:
+
+```json
+"scripts": {
+  "package": "electron-vite build && electron-forge package",
+  "make ": "electron-vite build && electron-forge make"
+},
+"devDependencies": {
+  "@electron-forge/cli": "^6.2.1",
+  "@electron-forge/maker-deb": "^6.2.1",
+  "@electron-forge/maker-rpm": "^6.2.1",
+  "@electron-forge/maker-squirrel": "^6.2.1",
+  "@electron-forge/maker-zip": "^6.2.1",
+}
+```
+
 ## Github Action CI/CD
 
 You can create a workflow file `.github/workflow/release.yml` in the root of your project with the content below. The workflow will help you build and package Electron app in Windows, MacOS and Linux.
