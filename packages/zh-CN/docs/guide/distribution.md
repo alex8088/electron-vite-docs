@@ -93,6 +93,59 @@ publish:
 }
 ```
 
+
+## 使用 Electron Forge 分发应用程序
+
+Electron Forge 是一个用于打包和发布 Electron 应用程序的工具。
+
+1. 你可以为 Electron Forge 创建一个配置文件 `forge.config.cjs`，内容如下：
+
+```js
+module.exports = {
+  packagerConfig: {
+    ignore: [
+      /^\/src/,
+      /(.eslintrc.json)|(.gitignore)|(electron.vite.config.ts)|(forge.config.cjs)|(tsconfig.*)/,
+    ],
+  },
+  rebuildConfig: {},
+  makers: [
+    {
+      name: '@electron-forge/maker-squirrel',
+      config: {},
+    },
+    {
+      name: '@electron-forge/maker-zip',
+      platforms: ['darwin'],
+    },
+    {
+      name: '@electron-forge/maker-deb',
+      config: {},
+    },
+    {
+      name: '@electron-forge/maker-rpm',
+      config: {},
+    },
+  ],
+};
+```
+
+2. 将执行脚本和依赖添加到 `package.json`：
+
+```json
+"scripts": {
+  "package": "electron-vite build && electron-forge package",
+  "make ": "electron-vite build && electron-forge make"
+},
+"devDependencies": {
+  "@electron-forge/cli": "^6.2.1",
+  "@electron-forge/maker-deb": "^6.2.1",
+  "@electron-forge/maker-rpm": "^6.2.1",
+  "@electron-forge/maker-squirrel": "^6.2.1",
+  "@electron-forge/maker-zip": "^6.2.1",
+}
+```
+
 ## Github Action CI/CD
 
 你可以使用以下内容在项目的根目录中创建工作流文件 `.github/workflow/release.yml`。该工作流将帮助你在 Windows、MacOS 和 Linux 中构建和打包 Electron 应用程序。
