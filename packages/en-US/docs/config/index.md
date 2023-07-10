@@ -156,6 +156,9 @@ export default defineConfig(({ command, mode }) => {
 | `build.assetDir`               | `chunks` |
 | `build.minify`                 | `false` |
 | `build.copyPublicDir`          | `false`, alway |
+| `resolve.browserField`        | `false`, disable resolving to `browser` field |
+| `resolve.mainFields`          | `['module', 'jsnext:main', 'jsnext']` |
+| `resolve.conditions`          | `['node']`, first resolve `require` exports |
 | `publicDir`                    | `resources` |
 | `envPrefix`                    | `MAIN_VITE_` |
 
