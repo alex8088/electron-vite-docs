@@ -151,11 +151,14 @@ export default defineConfig(({ command, mode }) => {
 | `build.outDir`        | `out\main`（相对于项目根目录） |
 | `build.lib.entry`     | `src\main\{index\|main}.{js\|ts\|mjs\|cjs}`，找不到则为空字符串 |
 | `build.lib.formats`   | `cjs` |
-| `build.reportCompressedSize`   | `false`, 禁用 gzip 压缩大小报告， 提高构建性能 |
+| `build.reportCompressedSize`   | `false`, 禁用 gzip 压缩大小报告，提高构建性能 |
 | `build.rollupOptions.external` | `electron` 和所有 `node` 内置模块 |
 | `build.assetDir`               | `chunks` |
 | `build.minify`                 | `false` |
 | `build.copyPublicDir`          | `false`, 不可改写 |
+| `resolve.browserField`        | `false`，不启用 `browser` 字段解析  |
+| `resolve.mainFields`          | `['module', 'jsnext:main', 'jsnext']` |
+| `resolve.conditions`          | `['node']`，优先解析 `require` 导出 |
 | `publicDir`                    | `resources` |
 | `envPrefix`                    | `MAIN_VITE_` |
 
