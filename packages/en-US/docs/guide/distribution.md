@@ -132,9 +132,12 @@ module.exports = {
 2. Add the scripts and dependencies to the `package.json`:
 
 ```json
+"main": "./dist/main/index.js",
 "scripts": {
-  "package": "electron-vite build && electron-forge package",
-  "make ": "electron-vite build && electron-forge make"
+  "start": "electron-vite preview --outDir=dist",
+  "dev": "electron-vite dev --outDir=dist",
+  "package": "electron-vite build --outDir=dist && electron-forge package",
+  "make ": "electron-vite build --outDir=dist && electron-forge make"
 },
 "devDependencies": {
   "@electron-forge/cli": "^6.2.1",
@@ -144,6 +147,10 @@ module.exports = {
   "@electron-forge/maker-zip": "^6.2.1",
 }
 ```
+
+::: warning Warning
+Electron Forge's default output directory is `out` and forbids to override, which conflicts with electron-vite. So we can set `outDir` to `dist`.
+:::
 
 ## Github Action CI/CD
 
