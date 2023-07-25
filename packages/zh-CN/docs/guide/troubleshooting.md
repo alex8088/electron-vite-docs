@@ -10,7 +10,7 @@
 
 1. 在开发模式（dev）下，可以使用 `debugger` 方式断点调试问题。
 2. 打包前，先执行 `preview` 命令，预览打包后的情况，更早发现问题。
-3. 打包后，可以附加参数 `--trace-warnings` 到应用程序运行，查看错误信息。例如：`.\app.exe --trace-warnings`。
+3. 打包后，可以附加参数 `--trace-warnings` 到应用程序运行，查看错误信息。例如：`.\app.exe --trace-warnings`（在 Windows 中），`open app.app --args --trace-warnings`（在 MacOS 中）。
 4. 通常 preview 命令运行正常，而打包后不正常，大概率是依赖模块未被打包进应用程序，请检查依赖模块是否安装在 `dependencies`中，也可能是 pnpm 问题（如果使用了的话）。
 
 ## 开发
