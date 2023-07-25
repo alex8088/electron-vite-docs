@@ -248,6 +248,16 @@ Learn more about [@electron-toolkit/preload](https://github.com/alex8088/electro
 The safest way is to use a helper function to wrap the `ipcRenderer` call rather than expose the ipcRenderer module directly via context bridge.
 :::
 
+### Webview
+
+The easiest way to attach a preload script to a webview is through the webContents `will-attach-webview` event handler.
+
+```ts
+mainWindow.webContents.on('will-attach-webview', (e, webPreferences) => {
+  webPreferences.preload = join(__dirname, '../preload/index.js')
+})
+```
+
 ## `nodeIntegration`
 
 Currently, electorn-vite not support `nodeIntegration`. One of the important reasons is that vite's  HMR is implemented based on native ESM. But there is also a way to support that is to use `require` to import the node module which is not very elegant. Or you can use plugin [vite-plugin-commonjs-externals](https://github.com/xiaoxiangmoe/vite-plugin-commonjs-externals) to handle.
@@ -332,3 +342,31 @@ export default {
   }
 }
 ```
+
+::: tip How to Load Multi-Page
+Check out the [Using HMR](./hmr.md) section for more details.
+:::
+
+## Passing CLI Arguments to Electron App
+
+It is recommended to handle command line via [Env Variables and Modes](./env-and-mode.md):
+
+- For Electron CLI command:
+
+```ts
+import { app } from 'electron'
+if (import.meta.env.MAIN_VITE_LOG === 'true') {
+  app.commandLine.appendSwitch('enable-logging', 'electron_debug.log')
+}
+```
+
+In development, you can use the above method to handle. After distribution, you can directly attach arguments supported by Electron. e.g. `.\app.exe --enable-logging`.
+
+- For app arguments:
+
+```ts
+const param = import.meta.env.MAIN_VITE_MY_PARAM === 'true' || /--myparam/.test(process.argv[2])
+```
+
+  1. In development, using ` import.meta.env` and `Modes` to decide whether to use.
+  2. In production (app), using `process.argv` to handle.
