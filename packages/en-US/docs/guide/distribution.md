@@ -154,7 +154,7 @@ Electron Forge's default output directory is `out` and forbids to override, whic
 
 ## Github Action CI/CD
 
-You can create a workflow file `.github/workflow/release.yml` in the root of your project with the content below. The workflow will help you build and package Electron app in Windows, MacOS and Linux.
+You can create a workflow file `.github/workflows/release.yml` in the root of your project with the content below. The workflow will help you build and package Electron app in Windows, MacOS and Linux.
 
 ```yaml
 name: Build/release Electron app
