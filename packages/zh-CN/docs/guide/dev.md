@@ -248,6 +248,16 @@ window.electron.ipcRenderer.on('electron:reply', (_, args) => {
 最安全的方法是使用辅助函数来包装 `ipcRenderer` 调用，而不是直接通过 context bridge 暴露 ipcRenderer 模块。
 :::
 
+### Webview
+
+将预加载脚本附加到 webview 的最简单方法是通过 webContents 的 `will-attach-webview` 事件处理。
+
+```ts
+mainWindow.webContents.on('will-attach-webview', (e, webPreferences) => {
+  webPreferences.preload = join(__dirname, '../preload/index.js')
+})
+```
+
 ## `nodeIntegration`
 
 目前，electorn-vite 不支持 `nodeIntegration`。其中一个重要的原因是 Vite 的 HMR 是基于原生 ESM 实现的。但是还有一种支持方式就是使用 `require` 导入 node 模块，不太优雅。或者你可以使用插件 [vite-plugin-commonjs-externals](https://github.com/xiaoxiangmoe/vite-plugin-commonjs-externals) 来处理。
@@ -332,3 +342,31 @@ export default {
   }
 }
 ```
+
+::: tip 如何加载多页
+查阅 [渲染进程 HMR](./hmr.md) 章节，了解更多详细信息。
+:::
+
+##  传递 CLI 参数给 Electron 应用程序
+
+建议通过[环境变量和模式](./env-and-mode.md)来处理命令行参数：
+
+- 对于 Electron CLI 命令：
+
+```ts
+import { app } from 'electron'
+if (import.meta.env.MAIN_VITE_LOG === 'true') {
+  app.commandLine.appendSwitch('enable-logging', 'electron_debug.log')
+}
+```
+
+在开发中，可以使用上面的方法来处理。分发后，你可以直接附加 Electron 支持的参数。例如 `.\app.exe --enable-logging`。
+
+- 对于应用程序参数：
+
+```ts
+const param = import.meta.env.MAIN_VITE_MY_PARAM === 'true' || /--myparam/.test(process.argv[2])
+```
+
+  1. 在开发中，使用 ` import.meta.env` 和 `Modes` 来决定是否使用。
+  2. 在生产中，使用 `process.argv` 来处理。
