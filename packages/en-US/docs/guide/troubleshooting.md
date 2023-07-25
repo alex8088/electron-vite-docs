@@ -10,7 +10,7 @@ Through the following steps, you can quickly find the problems:
 
 1. In development mode, you can debug problem via the `debugger` breakpoint.
 2. Before packaging, please run the `preview` command to preview the situation after packaging and find problems early.
-3. After packaging, you can append argument `--trace-warnings` to the app to view the error message. e.g. `.\app.exe --trace-warnings`.
+3. After packaging, you can append argument `--trace-warnings` to the app to view the error message. e.g. `.\app.exe --trace-warnings`(in Windows), `open app.app --args --trace-warnings`(in MacOS).
 4. Usually the preview command works fine, but it is not normal after packaging. The high probability is that the dependent modules have not been packaged into the app. Please check whether the dependent modules are installed in `dependencies`, or it may be a pnpm problem (if it is used).
 
 ## Development
