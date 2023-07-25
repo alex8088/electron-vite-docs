@@ -2,6 +2,10 @@
 
 electron-vite supports debugging both the main process and the renderer process code.
 
+::: tip TIP
+When you customize the build output directory via the `--outDir` CLI argument, the debugger configuration should also add this argument. But this is not needed when customizing via `build.outDir` of the configuration file.
+:::
+
 ## VSCode
 
 Add a file `.vscode/launch.json` with the following configuration:
