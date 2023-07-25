@@ -155,7 +155,7 @@ Electron Forge 的默认输出目录为 `out`，且禁止改写，这与 electro
 
 ## Github Action CI/CD
 
-你可以使用以下内容在项目的根目录中创建工作流文件 `.github/workflow/release.yml`。该工作流将帮助你在 Windows、MacOS 和 Linux 中构建和打包 Electron 应用程序。
+你可以使用以下内容在项目的根目录中创建工作流文件 `.github/workflows/release.yml`。该工作流将帮助你在 Windows、MacOS 和 Linux 中构建和打包 Electron 应用程序。
 
 ```yaml
 name: Build/release Electron app
