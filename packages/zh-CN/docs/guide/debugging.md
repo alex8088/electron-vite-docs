@@ -2,6 +2,10 @@
 
 electron-vite 支持调试主进程和渲染进程代码。
 
+::: tip 提示
+当你通过 `--outDir` CLI 参数自定义构建输出目录时，调试器配置也需要添加此参数。但通过配置文件的 `build.outDir` 进行自定义时则不需要这样做。
+:::
+
 ## VSCode
 
 添加文件 `.vscode/launch.json`，配置内容为：
