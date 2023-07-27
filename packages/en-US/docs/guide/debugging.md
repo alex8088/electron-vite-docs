@@ -76,3 +76,21 @@ Also Create a `Attach to Node.js/Chrome` run configuration. Use the following se
 | Port      | 9222             |
 
 Then run these configuration in debug mode.
+
+## V8 Inspector, e.g. Chrome DevTools
+
+electron-vite also supports debugging without IDEs. Use one of the following commands to launch electron-vite.
+
+```sh
+# Electron will listen for V8 inspector.
+electron-vite --inspect --sourcemap
+
+# Like --inspect but pauses execution on the first line of JavaScript.
+electron-vite --inspect-brk --sourcemap
+```
+
+Once electron-vite starts, you can use `Chrome DevTools` for this by opening `chrome://inspect` on browser and connecting to V8 inspector.
+
+::: tip NOTE
+If you want to debug the source code instead of the bundled code, you should append the `--sourcemap` option.
+:::
