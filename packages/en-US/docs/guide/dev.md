@@ -362,6 +362,10 @@ if (import.meta.env.MAIN_VITE_LOG === 'true') {
 
 In development, you can use the above method to handle. After distribution, you can directly attach arguments supported by Electron. e.g. `.\app.exe --enable-logging`.
 
+::: tip NOTE
+electron-vite already supports `inspect`, `inspect-brk` and `remote-debugging-port` commands, so you don’t need to do this for those commands. See [Command Line Interface](./cli.md#dev-options) for more details.
+:::
+
 - For app arguments:
 
 ```ts
