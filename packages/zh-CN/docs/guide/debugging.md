@@ -76,3 +76,21 @@ electron-vite 支持调试主进程和渲染进程代码。
 | Port      | 9222             |
 
 然后在调试模式下运行这些配置。
+
+## V8 Inspector, e.g. Chrome DevTools
+
+electron-vite 还支持在没有 IDE 的情况下调试。可以使用以下命令之一启动 electron-vite。
+
+```sh
+# Electron will listen for V8 inspector.
+electron-vite --inspect --sourcemap
+
+# Like --inspect but pauses execution on the first line of JavaScript.
+electron-vite --inspect-brk --sourcemap
+```
+
+一旦 electron-vite 启动，你可以通过在浏览器上打开 `chrome://inspect` 并连接到 V8 inspector 来使用 `Chrome DevTools` 调试。
+
+::: tip 提示
+如果你想调试源代码而不是打包后的代码，则应该附加 `--sourcemap` 选项。
+:::
