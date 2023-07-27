@@ -362,6 +362,10 @@ if (import.meta.env.MAIN_VITE_LOG === 'true') {
 
 在开发中，可以使用上面的方法来处理。分发后，你可以直接附加 Electron 支持的参数。例如 `.\app.exe --enable-logging`。
 
+::: tip 提示
+electron-vite 已经支持 `inspect`、`inspect-brk` 和 `remote-debugging-port` 命令，所以你不需要为这些命令做这样的处理。有关更多详细信息，请参阅[命令行界面](./cli.md#dev-选项)。
+:::
+
 - 对于应用程序参数：
 
 ```ts
