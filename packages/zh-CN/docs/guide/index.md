@@ -75,7 +75,7 @@ export default {
 {
   "name": "electron-app",
   "version": "1.0.0",
-  "main": "./out/main/index.js",
+  "main": "./out/main/index.js"
 }
 ```
 
@@ -85,39 +85,30 @@ Electron 的工作目录将是输出目录，而不是你的源代码目录。�
 
 ## 搭建第一个 electron-vite 项目
 
-使用 NPM
+在命令行中运行以下命令：
 
-```sh
+::: code-group
+
+```sh [npm]
 npm create @quick-start/electron
 ```
 
-使用 Yarn
-
-```sh
+```sh [yarn]
 yarn create @quick-start/electron
 ```
 
-使用 PNPM
-
-```sh
+```sh [pnpm]
 pnpm create @quick-start/electron
 ```
+:::
 
 然后按照提示操作即可!
 
-<div class="language-sh"><span class="copy"></span><pre><code><span class="line"><span style="color:#A6ACCD;"><span style="color:var(--vp-c-green);">✔</span> Project name: <span style="color:#888;">…</span> </span><span style="color:#89DDFF;">&lt;</span><span style="color:#888;">electron-app</span><span style="color:#89DDFF;">&gt;</span></span>
-<span class="line"><span style="color:#A6ACCD;"><span style="color:var(--vp-c-green);">✔</span> Select a framework: <span style="color:#888;">›</span> <span style="color:#89DDFF;text-decoration:underline;">vue</span></span></span>
-<span class="line"><span style="color:#A6ACCD;"><span style="color:var(--vp-c-green);">✔</span> Add TypeScript?</span><span style="color:#888;"> … No / <span style="color:#89DDFF;text-decoration:underline;">Yes</span></span></span>
-<span class="line"><span style="color:#A6ACCD;"><span style="color:var(--vp-c-green);">✔</span> Add Electron updater plugin?</span><span style="color:#888;"> … No / <span style="color:#89DDFF;text-decoration:underline;">Yes</span></span></span>
-<span class="line"><span style="color:#A6ACCD;"><span style="color:var(--vp-c-green);">✔</span> Enable Electron download mirror proxy?</span><span style="color:#888;"> … No / <span style="color:#89DDFF;text-decoration:underline;">Yes</span></span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#A6ACCD;">Scaffolding project in</span><span style="color:#A6ACCD;"> ./</span><span style="color:#89DDFF;">&lt;</span><span style="color:#888;">electron-app</span><span style="color:#89DDFF;">&gt;</span><span style="color:#A6ACCD;">...</span></span>
-<span class="line"><span style="color:#A6ACCD;">Done.</span></span>
-<span class="line"></span></code></pre></div>
+<<< @/snippets/scaffold.ansi
 
 你还可以通过附加的命令行选项直接指定项目名称和你想要使用的模板。例如，要构建一个 Electron + Vue 项目，运行:
 
-```bash
+```sh
 # npm 6.x
 npm create @quick-start/electron my-app --template vue
 
@@ -147,7 +138,7 @@ pnpm create @quick-start/electron my-app --template vue
 
 create-electron 是一个快速生成主流 Electron 框架基础模板的工具。你还可以用如 [degit](https://github.com/Rich-Harris/degit) 之类的工具，使用 [electron-vite-boilerplate](https://github.com/alex8088/electron-vite-boilerplate) 模板来搭建项目。
 
-```bash
+```sh
 npx degit alex8088/electron-vite-boilerplate electron-app
 cd electron-app
 

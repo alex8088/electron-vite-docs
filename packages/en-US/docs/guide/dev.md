@@ -185,7 +185,7 @@ Because the `require` function is a polyfill with limited functionality, you wil
 
 In Electron, renderer sandboxing can be disabled on a per-process basis with the `sandbox: false` preference in the [BrowserWindow](https://www.electronjs.org/docs/latest/api/browser-window) constructor.
 
-```ts
+```js
 const win = new BrowserWindow({
   webPreferences: {
     sandbox: false
@@ -252,7 +252,7 @@ The safest way is to use a helper function to wrap the `ipcRenderer` call rather
 
 The easiest way to attach a preload script to a webview is through the webContents `will-attach-webview` event handler.
 
-```ts
+```js
 mainWindow.webContents.on('will-attach-webview', (e, webPreferences) => {
   webPreferences.preload = join(__dirname, '../preload/index.js')
 })
@@ -270,7 +270,7 @@ Perhaps there's a better way to support this in the future. But It is important 
 
   We need to install the dependencies required by the app into the `dependencies` of `package.json`. Then use `externalizeDepsPlugin` to externalize them without bundle them.
 
-  ```js{5,8}
+  ```js {5,8}
   import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 
   export default defineConfig({
@@ -353,7 +353,7 @@ It is recommended to handle command line via [Env Variables and Modes](./env-and
 
 - For Electron CLI command:
 
-```ts
+```js
 import { app } from 'electron'
 if (import.meta.env.MAIN_VITE_LOG === 'true') {
   app.commandLine.appendSwitch('enable-logging', 'electron_debug.log')
@@ -368,7 +368,7 @@ electron-vite already supports `inspect`, `inspect-brk` and `remote-debugging-po
 
 - For app arguments:
 
-```ts
+```js
 const param = import.meta.env.MAIN_VITE_MY_PARAM === 'true' || /--myparam/.test(process.argv[2])
 ```
 

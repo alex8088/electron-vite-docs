@@ -185,7 +185,7 @@ func()
 
 在 Electron 中，可以使用 [BrowserWindow](https://www.electronjs.org/zh/docs/latest/api/browser-window) 构造函数中的 `sandbox: false` 选项在每个进程的基础上禁用渲染器沙盒。
 
-```ts
+```js
 const win = new BrowserWindow({
   webPreferences: {
     sandbox: false
@@ -252,7 +252,7 @@ window.electron.ipcRenderer.on('electron:reply', (_, args) => {
 
 将预加载脚本附加到 webview 的最简单方法是通过 webContents 的 `will-attach-webview` 事件处理。
 
-```ts
+```js
 mainWindow.webContents.on('will-attach-webview', (e, webPreferences) => {
   webPreferences.preload = join(__dirname, '../preload/index.js')
 })
@@ -270,7 +270,7 @@ mainWindow.webContents.on('will-attach-webview', (e, webPreferences) => {
 
   我们需要将应用程序需要的依赖安装到 `package.json` 的 `dependencies` 中。然后使用 `externalizeDepsPlugin` 将它们外部化而不打包它们。
 
-  ```js{5,8}
+  ```js {5,8}
   import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 
   export default defineConfig({
@@ -353,7 +353,7 @@ export default {
 
 - 对于 Electron CLI 命令：
 
-```ts
+```js
 import { app } from 'electron'
 if (import.meta.env.MAIN_VITE_LOG === 'true') {
   app.commandLine.appendSwitch('enable-logging', 'electron_debug.log')
@@ -368,7 +368,7 @@ electron-vite 已经支持 `inspect`、`inspect-brk` 和 `remote-debugging-port`
 
 - 对于应用程序参数：
 
-```ts
+```js
 const param = import.meta.env.MAIN_VITE_MY_PARAM === 'true' || /--myparam/.test(process.argv[2])
 ```
 

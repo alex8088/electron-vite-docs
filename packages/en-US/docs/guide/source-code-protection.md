@@ -116,7 +116,7 @@ V8 bytecode does not protect strings, but electron-vite will transform these str
 
 For example, only protect `src/main/foo.ts`:
 
-```{5}
+```txt {5}
 .
 ├──src
 │  ├──main
@@ -175,7 +175,7 @@ const encryptKey = String.fromCharCode(65, 66, 67)
 
 The strings to be protected in the source code can be specified  via plugin `protectedStrings` option.
 
-```js{5}
+```js {5}
 import { defineConfig, bytecodePlugin } from 'electron-vite'
 
 export default defineConfig({
@@ -210,7 +210,7 @@ For example, building an 64-bit app for MacOS in arm64 MacOS, it will run with a
 
 But we can specify another configuration file and set the environment variable `ELECTRON_EXEC_PATH` to the path of (64-bit) Electron app. The bytecode compiler will compile with the specified Electron app.
 
-```js{5}
+```js {5}
 // specify `electron.x64.vite.config.ts` for building x64 Electron app
 import { defineConfig } from 'electron-vite'
 
@@ -226,7 +226,7 @@ export default defineConfig(() => {
 ::: tip NOTE
 You can use the `--arch` flag with npm install to install Electron for other architectures.
 
-```bash
+```sh
 npm install --arch=ia32 electron
 ```
 :::

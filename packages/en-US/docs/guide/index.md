@@ -75,7 +75,7 @@ When using electron-vite to bundle your code, the entry point of the Electron ap
 {
   "name": "electron-app",
   "version": "1.0.0",
-  "main": "./out/main/index.js",
+  "main": "./out/main/index.js"
 }
 ```
 
@@ -85,39 +85,30 @@ Learn more about [Build for production](/guide/build).
 
 ## Scaffolding Your First electron-vite Project
 
-With NPM
+Run the following command in your command line:
 
-```sh
+::: code-group
+
+```sh [npm]
 npm create @quick-start/electron
 ```
 
-With Yarn
-
-```sh
+```sh [yarn]
 yarn create @quick-start/electron
 ```
 
-With PNPM
-
-```sh
+```sh [pnpm]
 pnpm create @quick-start/electron
 ```
+:::
 
 Then follow the prompts!
 
-<div class="language-sh"><span class="copy"></span><pre><code><span class="line"><span style="color:#A6ACCD;"><span style="color:var(--vp-c-green);">✔</span> Project name: <span style="color:#888;">…</span> </span><span style="color:#89DDFF;">&lt;</span><span style="color:#888;">electron-app</span><span style="color:#89DDFF;">&gt;</span></span>
-<span class="line"><span style="color:#A6ACCD;"><span style="color:var(--vp-c-green);">✔</span> Select a framework: <span style="color:#888;">›</span> <span style="color:#89DDFF;text-decoration:underline;">vue</span></span></span>
-<span class="line"><span style="color:#A6ACCD;"><span style="color:var(--vp-c-green);">✔</span> Add TypeScript?</span><span style="color:#888;"> … No / <span style="color:#89DDFF;text-decoration:underline;">Yes</span></span></span>
-<span class="line"><span style="color:#A6ACCD;"><span style="color:var(--vp-c-green);">✔</span> Add Electron updater plugin?</span><span style="color:#888;"> … No / <span style="color:#89DDFF;text-decoration:underline;">Yes</span></span></span>
-<span class="line"><span style="color:#A6ACCD;"><span style="color:var(--vp-c-green);">✔</span> Enable Electron download mirror proxy?</span><span style="color:#888;"> … No / <span style="color:#89DDFF;text-decoration:underline;">Yes</span></span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#A6ACCD;">Scaffolding project in</span><span style="color:#A6ACCD;"> ./</span><span style="color:#89DDFF;">&lt;</span><span style="color:#888;">electron-app</span><span style="color:#89DDFF;">&gt;</span><span style="color:#A6ACCD;">...</span></span>
-<span class="line"><span style="color:#A6ACCD;">Done.</span></span>
-<span class="line"></span></code></pre></div>
+<<< @/snippets/scaffold.ansi
 
 You can also directly specify the project name and the template you want to use via additional command line options. For example, to scaffold an Electron + Vue project, run:
 
-```bash
+```sh
 # npm 6.x
 npm create @quick-start/electron my-app --template vue
 
@@ -147,7 +138,7 @@ See [create-electron](https://github.com/alex8088/quick-start/tree/master/packag
 
 create-electron is a tool to quickly start a project from a basic template for popular frameworks. Also you can use a tool like [degit](https://github.com/Rich-Harris/degit) to scaffold your project with the template [electron-vite-boilerplate](https://github.com/alex8088/electron-vite-boilerplate).
 
-```bash
+```sh
 npx degit alex8088/electron-vite-boilerplate electron-app
 cd electron-app
 

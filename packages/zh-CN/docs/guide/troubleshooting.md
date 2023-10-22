@@ -41,7 +41,7 @@ Electron 不支持 `ESM`，所以主进程和预加载脚本的构建标准仍�
 
 要解决这个问题：
 
-```ts
+```js
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 
 export default defineConfig({
@@ -64,7 +64,7 @@ Electron 不处理（浏览器）历史并使用同步 URL 加载页面。所以
 
 当使用 hash 路由时，可以通过 `BrowserWindow.loadFile` 的第二个参数设置 hash 值来加载页面。
 
-```ts
+```js
 win.loadFile(path.join(__dirname, '../renderer/index.html'), { hash: 'home' })
 ```
 

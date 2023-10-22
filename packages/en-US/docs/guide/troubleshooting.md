@@ -41,7 +41,7 @@ Electron doesn't support `ESM`, so the build standard for the main process and p
 
 To solve this:
 
-```ts
+```js
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 
 export default defineConfig({
@@ -63,7 +63,7 @@ Electron does not handle (browser) history and works with the synchronized URL. 
 
 When using hash router, you can set the hash value through the second argument of `BrowserWindow.loadFile` to load the page.
 
-```ts
+```js
 win.loadFile(path.join(__dirname, '../renderer/index.html'), { hash: 'home' })
 ```
 

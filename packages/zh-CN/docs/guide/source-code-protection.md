@@ -117,7 +117,7 @@ V8 字节码不保护字符串，但是 electron-vite 会将这些字符串转�
 
 例如，只要保护 `src/main/foo.ts`：
 
-```{5}
+```txt {5}
 .
 ├──src
 │  ├──main
@@ -176,7 +176,7 @@ const encryptKey = String.fromCharCode(65, 66, 67)
 
 源代码中要保护的字符串可以通过插件 `protectedStrings` 选项指定。
 
-```js{5}
+```js {5}
 import { defineConfig, bytecodePlugin } from 'electron-vite'
 
 export default defineConfig({
@@ -212,7 +212,7 @@ export default defineConfig({
 
 但是，我们可以指定另一个配置文件并将环境变量 `ELECTRON_EXEC_PATH` 设置为（64 位）Electron 应用程序的路径。字节码编译器将使用指定的 Electron 应用程序进行编译。
 
-```js{5}
+```js {5}
 // specify `electron.x64.vite.config.ts` for building x64 Electron app
 import { defineConfig } from 'electron-vite'
 
@@ -228,7 +228,7 @@ export default defineConfig(() => {
 ::: tip 提示
 可以将 `--arch` 标志与 npm install 一起使用来安装其他架构的 Electron。
 
-```bash
+```sh
 npm install --arch=ia32 electron
 ```
 :::

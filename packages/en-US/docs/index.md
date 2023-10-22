@@ -1,12 +1,13 @@
 ---
 layout: home
-title: Next Generation Electron Build Tooling
+title: electron-vite
+titleTemplate: Next Generation Electron Build Tooling
 hero:
   name: electron-vite
   text: Next Generation Electron Build Tooling
   tagline: Based on Vite. It's fast, simple and powerful!
   image:
-    src: /favicon.svg
+    src: /logo.svg
     alt: logo
   actions:
     - theme: brand

@@ -51,7 +51,7 @@ const nav: DefaultTheme.NavItem[] = [
     ]
   },
   {
-    text: 'v1.0.26',
+    text: 'v1.0.28',
     items: [
       {
         text: 'Changelog',
@@ -70,7 +70,13 @@ export default defineConfig({
   ],
   srcDir: 'docs',
   lastUpdated: true,
+  cleanUrls: true,
+  locales: {
+    root: {label: 'English',},
+    zh: {label: '简体中文',link: 'https://cn.electron-vite.org/'}
+  },
   themeConfig: {
+    logo: '/favicon.svg',
     algolia: {
       appId: '1NX9WWHEG7',
       apiKey: 'f6f0308484ed60fd61c8b2bb8d2ce2a9',
@@ -82,11 +88,6 @@ export default defineConfig({
         link: 'https://github.com/alex8088/electron-vite'
       }
     ],
-    localeLinks: {
-      text: 'English',
-      items: [{ text: '简体中文', link: 'https://cn.electron-vite.org/' }]
-    },
-    logo: '/favicon.svg',
     footer: {
       message: 'Released under the MIT License',
       copyright: 'Copyright © 2022-present Alex Wei & Powered by Vite'

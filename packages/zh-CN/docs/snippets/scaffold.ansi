@@ -1,0 +1,8 @@
+[0;32m✔[0m Project name:[0;2m … [0;36m<[0melectron-app[0;36m>[0m
+[0;32m✔[0m Select a framework:[0;2m › [0;32mvue[0m
+[0;32m✔[0m Add TypeScript?[0;2m … [0mNo [0;2m/ [0;4;36mYes[0m
+[0;32m✔[0m Add Electron updater plugin?[0;2m … [0mNo [0;2m/ [0;4;36mYes[0m
+[0;32m✔[0m Enable Electron download mirror proxy?[0;2m … [0mNo [0;2m/ [0;4;36mYes[0m[0m
+
+[0mScaffolding project in [0;2m./[0;36m<[0melectron-app[0;36m>[0;2m...[0m
+[0mDone.[0m

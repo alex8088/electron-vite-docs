@@ -22,17 +22,15 @@
   },
   "devDependencies": {
     "@alexwei/commit-lint": "^1.0.0",
-    "@types/node": "^16.11.48",
-    "simple-git-hooks": "^2.8.0",
-    "vitepress": "1.0.0-alpha.4"
+    "@types/node": "^18.18.6",
+    "simple-git-hooks": "^2.9.0",
+    "vitepress": "1.0.0-rc.22"
   },
   "pnpm": {
     "peerDependencyRules": {
       "ignoreMissing": [
         "@algolia/client-search",
-        "react",
-        "react-dom",
-        "@types/react"
+        "search-insights"
       ]
     }
   }

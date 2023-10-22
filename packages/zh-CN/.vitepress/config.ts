@@ -51,7 +51,7 @@ const nav: DefaultTheme.NavItem[] = [
     ]
   },
   {
-    text: 'v1.0.26',
+    text: 'v1.0.28',
     items: [
       {
         text: '更新日志',
@@ -70,11 +70,59 @@ export default defineConfig({
   ],
   srcDir: 'docs',
   lastUpdated: true,
+  cleanUrls: true,
+  locales: {
+    root: {label: '简体中文',},
+    en: {label: 'English',link: 'https://electron-vite.org/'}
+  },
   themeConfig: {
+    logo: '/favicon.svg',
+    outline: {
+      label: '本页目录'
+    },
     algolia: {
       appId: 'MP97N8JN52',
       apiKey: 'fdeec9a7ea376e3133d94ccc832bd5aa',
-      indexName: 'cn-evite'
+      indexName: 'cn-evite',
+      placeholder: '搜索文档',
+      translations: {
+        // button: {
+        //   buttonText: '搜索',
+        //   buttonAriaLabel: '搜索'
+        // },
+        modal: {
+          searchBox: {
+            resetButtonTitle: '清除查询条件',
+            resetButtonAriaLabel: '清除查询条件',
+            cancelButtonText: '取消',
+            cancelButtonAriaLabel: '取消'
+          },
+          startScreen: {
+            recentSearchesTitle: '搜索历史',
+            noRecentSearchesText: '没有搜索历史',
+            saveRecentSearchButtonTitle: '保存到搜索历史',
+            removeRecentSearchButtonTitle: '从搜索历史中移除',
+            favoriteSearchesTitle: '收藏',
+            removeFavoriteSearchButtonTitle: '从收藏中移除'
+          },
+          errorScreen: {
+            titleText: '无法获取结果',
+            helpText: '你可能需要检查你的网络连接'
+          },
+          footer: {
+            selectText: '选择',
+            navigateText: '切换',
+            closeText: '关闭',
+            searchByText: '搜索供应商'
+          },
+          noResultsScreen: {
+            noResultsText: '无法找到相关结果',
+            suggestedQueryText: '你可以尝试查询',
+            reportMissingResultsText: '你认为这个查询应该有结果？',
+            reportMissingResultsLinkText: '向我们反馈'
+          }
+        }
+      }
     },
     socialLinks: [
       {
@@ -82,11 +130,6 @@ export default defineConfig({
         link: 'https://github.com/alex8088/electron-vite'
       }
     ],
-    localeLinks: {
-      text: '简体中文',
-      items: [{ text: 'English', link: 'https://electron-vite.org' }]
-    },
-    logo: '/favicon.svg',
     footer: {
       message: 'Released under the MIT License',
       copyright: 'Copyright © 2022-present Alex Wei & Powered by Vite'
