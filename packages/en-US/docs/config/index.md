@@ -185,7 +185,7 @@ export default defineConfig(({ command, mode }) => {
 | `root`             | `src\renderer` |
 | `build.target`     | `chrome*`, automatically match Chrome compatible target for Electron (e.g. Electron 20 is `chrome104`) |
 | `build.outDir`     | `out\renderer` (relative to project root) |
-| `build.lib.entry`  | `\src\renderer\index.html`, empty string if not found |
+| `build.rollupOptions.input`  | `\src\renderer\index.html`, empty string if not found |
 | `build.modulePreload.polyfill` | `false`, there is no need to polyfill `Module Preload` for the Electron renderers |
 | `build.reportCompressedSize`   | `false`, disable gzip-compressed size reporting, increase build performance |
 | `build.minify`                 | `false` |
