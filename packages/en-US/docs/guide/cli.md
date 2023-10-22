@@ -28,6 +28,7 @@ The command will build the main process, preload scripts and renderer source cod
 | `--ignoreConfigWarning`   | Ignore config warning (default: `false`) |
 | `--sourcemap`             | Output source maps for debug (default: `false`) |
 | `--outDir <dir>`          | Output directory (default: `out`)  |
+| `--entry <file>`          | Specify electron entry file  |
 | `-v, --version`	          | Display version number |
 | `-h, --help`	            | Display available CLI options |
 
