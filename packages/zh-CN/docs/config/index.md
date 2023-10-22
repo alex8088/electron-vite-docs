@@ -185,7 +185,7 @@ export default defineConfig(({ command, mode }) => {
 | `root`             | `src\renderer` |
 | `build.target`     | `chrome*`，自动匹配 Electron 的 Chrome 兼容目标（例如：Electron 20 为 `chrome104`） |
 | `build.outDir`     | `out\renderer`（相对于项目根目录） |
-| `build.lib.entry`  | `\src\renderer\index.html`，找不到则为空字符串 |
+| `build.rollupOptions.input`  | `\src\renderer\index.html`，找不到则为空字符串 |
 | `build.modulePreload.polyfill` | `false`, 无需为 Electron 渲染器注入 `Module Preload` 的 polyfill |
 | `build.reportCompressedSize`   | `false`, 禁用 gzip 压缩大小报告， 提高构建性能 |
 | `build.minify`                 | `false` |
