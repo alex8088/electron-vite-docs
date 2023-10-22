@@ -1,3 +1,7 @@
+---
+outline: deep
+---
+
 # Asset Handling
 
 ::: tip NOTE
@@ -79,6 +83,14 @@ const appIcon = path.join(__dirname, "../../resources/icon.ico");
 ```
 
 And `resources/icon.ico` will not be copied to output dir.
+
+### Importing Json File as File Path
+
+When you import json file, it will be resolved to json object by Vite's json plugin. But sometimes we want to import it as file path, in this case we can use the `?commonjs-external&asset` suffix to import.
+
+```js
+import jsonFile from '../../resources/config.json?commonjs-external&asset'
+```
 
 ### `app.asar.unpacked` File Path Problem
 
