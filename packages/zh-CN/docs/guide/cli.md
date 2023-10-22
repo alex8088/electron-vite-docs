@@ -27,6 +27,7 @@
 | `--ignoreConfigWarning`   | 忽略配置缺失警告 (default: `false`) |
 | `--sourcemap`             | 输出 source maps 支持 debug (default: `false`) |
 | `--outDir <dir>`          | 设置输出目录 (default: `out`)  |
+| `--entry <file>`          | 指定 Electron 入口文件  |
 | `-v, --version`	          | 显示版本号 |
 | `-h, --help`	            | 显示可用的 CLI 选项 |
 
