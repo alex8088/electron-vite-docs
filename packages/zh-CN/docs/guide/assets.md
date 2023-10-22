@@ -1,3 +1,7 @@
+---
+outline: deep
+---
+
 # 资源处理
 
 ::: tip 提示
@@ -80,6 +84,15 @@ const appIcon = path.join(__dirname, "../../resources/icon.ico");
 ```
 
 并且 `resources/icon.ico` 不会被复制到输出目录。
+
+
+### 将 Json 文件引入为文件路径
+
+当你导入 json 文件时，Vite 的 json 插件会将其解析为 json 对象。但有时我们想将其作为文件路径导入，这种情况下我们可以使用 `?commonjs-external&asset` 后缀来导入。
+
+```js
+import jsonFile from '../../resources/config.json?commonjs-external&asset'
+```
 
 ### `app.asar.unpacked` 文件路径问题
 
