@@ -197,7 +197,7 @@ It is important to note that native node modules usually have to be imported dep
 In Vite, `.wasm` files can be processed via the `?init` suffix, which supports browsers but not Node.js (Electron main process).
 :::
 
-In main process, pre-compiled `.wasm` files can be imported with `?loader` - the default export will be an initialization function that returns a Promise of the wasm instance:
+In main process, pre-compiled `.wasm` files can be imported with `?loader`. The default export will be an initialization function that returns a Promise of the wasm instance:
 
 ```js
 import loadWasm from '../../resources/add.wasm?loader'
