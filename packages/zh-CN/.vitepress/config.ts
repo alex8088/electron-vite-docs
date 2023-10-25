@@ -80,6 +80,13 @@ export default defineConfig({
     outline: {
       label: '本页目录'
     },
+    sidebarMenuLabel: '菜单',
+    returnToTopLabel: '回到顶部',
+    lastUpdatedText: '最后更新时间',
+    docFooter: {
+      prev: '上一篇',
+      next: '下一篇'
+    },
     algolia: {
       appId: 'MP97N8JN52',
       apiKey: 'fdeec9a7ea376e3133d94ccc832bd5aa',
