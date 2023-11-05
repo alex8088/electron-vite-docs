@@ -81,7 +81,7 @@ export default defineConfig({
       label: '本页目录'
     },
     sidebarMenuLabel: '菜单',
-    returnToTopLabel: '回到顶部',
+    returnToTopLabel: '返回顶部',
     lastUpdatedText: '最后更新时间',
     docFooter: {
       prev: '上一篇',
