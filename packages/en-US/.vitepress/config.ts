@@ -15,7 +15,10 @@ const sidebar: DefaultTheme.Sidebar = {
         { text: 'Hot Reloading', link: '/guide/hot-reloading' },
         { text: 'Building for Production', link: '/guide/build' },
         { text: 'Distribution', link: '/guide/distribution' },
-        { text: 'Source Code Protection', link: '/guide/source-code-protection' },
+        {
+          text: 'Source Code Protection',
+          link: '/guide/source-code-protection'
+        },
         { text: 'TypeScript Decorator', link: '/guide/typescript-decorator' },
         { text: 'Env Variables and Modes', link: '/guide/env-and-mode' },
         { text: 'Debugging', link: '/guide/debugging' },
@@ -66,14 +69,15 @@ export default defineConfig({
   title: 'electron-vite',
   description: 'Next generation Electron build tooling based on Vite.',
   head: [
-    ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }]
+    ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
+    ['link', { rel: 'icon', href: '/favicon.png', type: 'image/png' }]
   ],
   srcDir: 'docs',
   lastUpdated: true,
   cleanUrls: true,
   locales: {
-    root: {label: 'English',},
-    zh: {label: '简体中文',link: 'https://cn.electron-vite.org/'}
+    root: { label: 'English' },
+    zh: { label: '简体中文', link: 'https://cn.electron-vite.org/' }
   },
   themeConfig: {
     logo: '/favicon.svg',
