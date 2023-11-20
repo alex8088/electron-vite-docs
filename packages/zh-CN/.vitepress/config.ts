@@ -66,7 +66,8 @@ export default defineConfig({
   title: 'electron-vite',
   description: 'Next generation Electron build tooling based on Vite.',
   head: [
-    ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }]
+    ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
+    ['link', { rel: 'icon', href: '/favicon.png', type: 'image/png' }]
   ],
   srcDir: 'docs',
   lastUpdated: true,
