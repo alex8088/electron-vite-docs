@@ -40,9 +40,10 @@ The `--ignoreConfigWarning` option allows you to ignore warnings when config mis
 
 | Options                   | Description                   |
 | ------------------------- | ----------------------------  |
-| `--inspect [port]`	      | Enable V8 inspector on the specified port (default: `5858`) |
+| `--inspect [port]`	    | Enable V8 inspector on the specified port (default: `5858`) |
 | `--inspectBrk [port]`	    | Like `--inspect` but pauses execution on the first line of JavaScript. |
-| `--remoteDebuggingPort`	  | Port for remote debugging |
+| `--remoteDebuggingPort`	| Port for remote debugging |
+| `--noSandbox`             | Forces renderer process to run un-sandboxed |
 | `--rendererOnly`	        | Only dev server for the renderer |
 
 ::: tip NOTE
@@ -51,6 +52,8 @@ The `--ignoreConfigWarning` option allows you to ignore warnings when config mis
 - The `--inspectBrk` option like `--inspect` option but pauses execution on the first line of JavaScript.
 
 - The `--remoteDebuggingPort` option is used for debugging with IDEs.
+
+- The `--noSandbox` option will force Electron run without sandboxing. It is commonly used to enable Electron to run as root on Linux.
 
 - The `--rendererOnly` option is only used for `dev` command to skip the main process and preload scripts builds, and start dev server for renderer only. This option will greatly increase dev command speed.
 :::
@@ -63,8 +66,11 @@ When using the `--rendererOnly` option, the electron-vite command must be run at
 
 | Options                   | Description                   |
 | ------------------------- | ----------------------------  |
+| `--noSandbox`             | Forces renderer process to run un-sandboxed |
 | `--skipBuild`	            | Skip build |
 
 ::: tip NOTE
-The `--skipBuild` option is only used for `preview` command to skip build and start the Electron app to preview.
+- The `--noSandbox` option will force Electron run without sandboxing. It is commonly used to enable Electron to run as root on Linux.
+
+- The `--skipBuild` option is only used for `preview` command to skip build and start the Electron app to preview.
 :::
