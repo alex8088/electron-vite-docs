@@ -39,9 +39,10 @@
 
 | 选项                       | 描述                   |
 | ------------------------- | ----------------------------  |
-| `--inspect [port]`	      | 指定端口启用 V8 inspector (default: `5858`) |
+| `--inspect [port]`	    | 指定端口启用 V8 inspector (default: `5858`) |
 | `--inspectBrk [port]`	    | 和`--inspect` 一样，但会暂停运行 |
-| `--remoteDebuggingPort`	  | 远程调试端口 |
+| `--remoteDebuggingPort`	| 远程调试端口 |
+| `--noSandbox`             | 强制渲染器进程在非沙盒环境下运行 |
 | `--rendererOnly`	        | 仅为渲染器启动开发服务 |
 
 ::: tip 提示
@@ -50,6 +51,8 @@
 - `--inspectBrk` 选项与 `--inspect` 选项类似，但会在 JavaScript 的第一行暂停执行。
 
 - `--remoteDebuggingPort` 选项用于 IDE 调试。
+
+- `--noSandbox` 选项将强制 Electron 在非沙盒环境下运行。它通常用于使 Electron 在 Linux 上以 root 身份运行。
 
 - `--rendererOnly` 选项仅用于 `dev` 命令以跳过主进程和预加载脚本构建，并仅为渲染器启动开发服务。此选项将大大提高 dev 命令速度。
 :::
@@ -65,5 +68,7 @@
 | `--skipBuild`	            | 跳过构建 |
 
 ::: tip 提示
-`--skipBuild` 选项仅用于 `preview` 命令跳过构建并启动 Electron 应用程序进行预览。
+- `--noSandbox` 选项将强制 Electron 在非沙盒环境下运行。它通常用于使 Electron 在 Linux 上以 root 身份运行。
+
+- `--skipBuild` 选项仅用于 `preview` 命令跳过构建并启动 Electron 应用程序进行预览。
 :::
