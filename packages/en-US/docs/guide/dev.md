@@ -347,30 +347,127 @@ export default {
 Check out the [Using HMR](./hmr.md) section for more details.
 :::
 
-## Passing CLI Arguments to Electron App
+## Passing Arguments to Electron App
 
-It is recommended to handle command line via [Env Variables and Modes](./env-and-mode.md):
+You can append a `--` after the electron-vite CLI with the arguments to be passed.
 
-- For Electron CLI command:
+- Passing Electron CLI flags:
 
-```js
-import { app } from 'electron'
-if (import.meta.env.MAIN_VITE_LOG === 'true') {
-  app.commandLine.appendSwitch('enable-logging', 'electron_debug.log')
+```json
+"scripts": {
+  "dev": "electron-vite dev -- --trace-warnings"
 }
 ```
 
-In development, you can use the above method to handle. After distribution, you can directly attach arguments supported by Electron. e.g. `.\app.exe --enable-logging`.
-
 ::: tip NOTE
-electron-vite already supports `inspect`, `inspect-brk` and `remote-debugging-port` commands, so you don’t need to do this for those commands. See [Command Line Interface](./cli.md#dev-options) for more details.
+electron-vite already supports `--inspect`, `--inspect-brk`, `--remote-debugging-port` and `--no-sandbox` commands, so you don't need to do this for these commands. See [Command Line Interface](./cli.md#dev-options) for more details.
 :::
 
-- For app arguments:
+- Passing application arguments
 
-```js
-const param = import.meta.env.MAIN_VITE_MY_PARAM === 'true' || /--myparam/.test(process.argv[2])
+```json
+"scripts": {
+  "dev": "electron-vite dev -- p1 p2"
+}
 ```
 
-  1. In development, using ` import.meta.env` and `Modes` to decide whether to use.
-  2. In production (app), using `process.argv` to handle.
+All arguments after the double-dash will be passed to Electron application, and you can use `process.argv` to handle them.
+
+## ESM Support in Electron
+
+Electron supports ES modules beginning in Electron 28. electron-vite 2.0 also supports using ESM to develop and build your Electron applications.
+
+### Limitations
+
+We should first know the limitations of ESM in Electron:
+
+1. Electron's main process and preload scripts both support ESM and use the Node.js ESM loader.
+2. Electron's preload scripts must be `unsandboxed` and the file end with the `.mjs` extension.
+
+Learn more about [ES Modules (ESM) in Electron](https://www.electronjs.org/docs/latest/tutorial/esm).
+
+### Enabling ESM
+
+There are two ways to enable ESM for electron-vite:
+
+1. Adding `"type": "module"` to the nearest `package.json`.
+
+   When using this way, the main process and preload scripts will be bundled as ES module files. Note that preload script files end with the `.mjs` extension. You need to fix the file names that reference these preload scripts in your code.
+
+2. Setting `build.rollupOptions.output.format` to `es` in config file.
+
+   ```js
+   export default defineConfig({
+     main: {
+       build: {
+         rollupOptions: {
+           output: {
+             format: 'es'
+           }
+         }
+       }
+     },
+     preload: {
+       build: {
+         rollupOptions: {
+           output: {
+             format: 'es'
+           }
+         }
+       }
+     }
+     // ...
+   })
+   ```
+
+   When using this way, the main process and preload scripts will be bundled as ES module files and end with the `.mjs` extension. You need to fix the `main` field (Electron entry point) in `package.json` and the file names that reference these preload scripts in your code.
+
+In addition, since electron-vite 2.0, you can use `"type": "module"` in `package.json` even though Electron is lower than 28. In this case, the main process and preload scripts will be bundled as CommonJS files and end with the `.cjs` extension.
+
+### Migrating to ESM
+
+Before this, we have been using CommonJS as the build format. We might run into some NPM packages that do not support CommonJS, but we can bundle them through electron-vite to support Electron. Similarly, when we migrate to ESM, we will also run into some problems.
+
+- Importing CommonJS Modules from ES Modules
+
+  ```js
+  import { autoUpdater } from 'electron-updater' // ❌ SyntaxError: Named export 'autoUpdater' not found.
+  ```
+
+  In the above example, we will get a _SyntaxError_. However, it is still possible to import CommonJS modules from ES Modules by using the standard import syntax. If the `module.exports` object is provided as the default export or an export is defined using `Object.defineProperty`, the named imports will not work, but the default import will.
+
+  ```js
+  import updater from 'electron-updater' // ✅
+  ```
+
+- Differences between ES modules and CommonJS
+
+  ```js
+  import { BrowserWindow } from 'electron'
+  import { join } from 'path'
+  ​
+  const mainWindow = new BrowserWindow({
+    webPreferences: {
+      preload: join(__dirname,'../preload/index.mjs') // ❌ ReferenceError: __dirname is not defined
+    }
+  })
+  ```
+
+  In ESM, some important CommonJS references are not defined. These include `require`, `require.resolve`, `__filename`, `__dirname`, etc. See Node.js's [Differences between ES modules and CommonJS](https://nodejs.org/api/esm.html#differences-between-es-modules-and-commonjs) for more details.
+
+  ```js
+  import { BrowserWindow } from 'electron'
+  import { fileURLToPath } from 'url'
+  ​
+  const mainWindow = new BrowserWindow({
+    webPreferences: {
+      preload: fileURLToPath(new URL('../preload/index.mjs', import.meta.url)) // ✅
+    }
+  })
+  ```
+
+**It is very important that electron-vite is compatible with some CommonJS syntax (include `require`, `require.resolve`, `__filename`, `__dirname`)**, and there is no need to fix these syntax problems during migration. However, we still recommend using ESM syntax in new projects.
+
+### ESM and CJS Syntax Compatibility
+
+electron-vite has made some compatibility with ES Modules and CommonJS syntax, allowing developers to freely switch between the two syntaxes with minimal migration work. But it should be noted that [Source Code Protection](./source-code-protection.md) currently only supports CommonJS.
