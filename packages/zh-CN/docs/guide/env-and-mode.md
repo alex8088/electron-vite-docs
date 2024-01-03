@@ -8,14 +8,15 @@
 
 electron-vite 会像 V​​ite 一样从项目根目录加载环境变量，并使用不同的前缀来限制可用范围。
 
-默认情况下，以 `MAIN_VITE_` 为前缀的变量暴露给主进程，`PRELOAD_VITE_` 用于预加载脚本，`RENDERER_VITE_` 则用于渲染器。
+默认情况下，以 `MAIN_VITE_` 为前缀的变量暴露给主进程，`PRELOAD_VITE_` 用于预加载脚本，`RENDERER_VITE_` 则用于渲染器，`VITE_` 则所有进程共用。
 
 ```
 // .env
-SOME_KEY=123                # 无效变量
-MAIN_VITE_SOME_KEY=123      # 主进程可用
-PRELOAD_VITE_SOME_KEY=123   # 预加载脚本可用
-RENDERER_VITE_SOME_KEY=123  # 渲染器可用
+KEY=123                # 无效变量
+MAIN_VITE_KEY=123      # 仅主进程可用
+PRELOAD_VITE_KEY=123   # 仅预加载脚本可用
+RENDERER_VITE_KEY=123  # 仅渲染器可用
+VITE_KEY=123           # 所有进程共用
 ```
 
 如果你想自定义 env 变量的前缀，可以使用 `envPrefix` 选项。
