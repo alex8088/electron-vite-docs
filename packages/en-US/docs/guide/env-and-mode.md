@@ -8,14 +8,15 @@ It is recommended to go through [Vite's Env Variables and Modes](https://vitejs.
 
 electron-vite will load environment variables from the project root like Vite, and use different prefixes to limit the available scope.
 
-By default, variables prefixed with `MAIN_VITE_` are exposed to the main process, `PRELOAD_VITE_` to preload scripts and `RENDERER_VITE_` to renderers.
+By default, variables prefixed with `MAIN_VITE_` are exposed to the main process, `PRELOAD_VITE_` to preload scripts, `RENDERER_VITE_` to renderers and `VITE_` to all.
 
 ```
 // .env
-SOME_KEY=123                # not available
-MAIN_VITE_SOME_KEY=123      # for the main process
-PRELOAD_VITE_SOME_KEY=123   # for preload scripts
-RENDERER_VITE_SOME_KEY=123  # for renderers
+KEY=123                # not available
+MAIN_VITE_KEY=123      # only main process available
+PRELOAD_VITE_KEY=123   # only preload scripts available
+RENDERER_VITE_KEY=123  # only renderers available
+VITE_KEY=123           # all available
 ```
 
 If you want to customize env variables prefix, you can use `envPrefix` option.
