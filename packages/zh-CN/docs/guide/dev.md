@@ -347,30 +347,127 @@ export default {
 查阅 [渲染进程 HMR](./hmr.md) 章节，了解更多详细信息。
 :::
 
-##  传递 CLI 参数给 Electron 应用程序
+##  传递参数给 Electron 应用程序
 
-建议通过[环境变量和模式](./env-and-mode.md)来处理命令行参数：
+可以在 electron-vite CLI 后面附加一个 `--` 以及要传递的参数。
 
-- 对于 Electron CLI 命令：
+- 传递 Electron CLI 命令：
 
-```js
-import { app } from 'electron'
-if (import.meta.env.MAIN_VITE_LOG === 'true') {
-  app.commandLine.appendSwitch('enable-logging', 'electron_debug.log')
+```json
+"scripts": {
+  "dev": "electron-vite dev -- --trace-warnings"
 }
 ```
 
-在开发中，可以使用上面的方法来处理。分发后，你可以直接附加 Electron 支持的参数。例如 `.\app.exe --enable-logging`。
-
 ::: tip 提示
-electron-vite 已经支持 `inspect`、`inspect-brk` 和 `remote-debugging-port` 命令，所以你不需要为这些命令做这样的处理。有关更多详细信息，请参阅[命令行界面](./cli.md#dev-选项)。
+electron-vite 已经支持 `--inspect`、`--inspect-brk`、`--remote-debugging-port` 和 `--no-sandbox` 命令，所以你不需要为这些命令做这样的处理。有关更多详细信息，请参阅[命令行界面](./cli.md#dev-选项)。
 :::
 
-- 对于应用程序参数：
+- 传递程序参数：
 
-```js
-const param = import.meta.env.MAIN_VITE_MY_PARAM === 'true' || /--myparam/.test(process.argv[2])
+```json
+"scripts": {
+  "dev": "electron-vite dev -- p1 p2"
+}
 ```
 
-  1. 在开发中，使用 ` import.meta.env` 和 `Modes` 来决定是否使用。
-  2. 在生产中，使用 `process.argv` 来处理。
+双破折号之后的所有参数都将传递给 Electron 应用程序，你可以使用 `process.argv` 来处理它们。
+
+## Electron 的 ESM 支持
+
+Electron 从 Electron 28 开始支持 ES 模块。 electron-vite 2.0 同样支持使用 ESM 来开发和构建你的 Electron 应用程序。
+
+### Electron ESM 的局限性
+
+我们首先应该了解 Electron ESM 的局限性：
+
+1. Electron 的主进程和预加载脚本都支持 ESM 并且都使用 Node.js 的 ESM 加载器。
+2. Electron 的预加载脚本必须 `非沙盒化` 并且文件以 `.mjs` 扩展名结尾。
+
+了解更多有关 [Electron ESM](https://www.electronjs.org/docs/latest/tutorial/esm)。
+
+### 启用 ESM
+
+electron-vite 启用 ESM 有两种方法：
+
+1. 将 `"type": "module"` 添加到最近的 `package.json` 中。
+
+   使用这种方式时，主进程和预加载脚本将被打包成 ES 模块文件。请注意，预加载脚本文件以 `.mjs` 扩展名结尾。你需要修复代码中引用这些脚本的文件名。
+
+2. 在配置文件中将 `build.rollupOptions.output.format` 设置为 `es`。
+
+   ```js
+   export default defineConfig({
+     main: {
+       build: {
+         rollupOptions: {
+           output: {
+             format: 'es'
+           }
+         }
+       }
+     },
+     preload: {
+       build: {
+         rollupOptions: {
+           output: {
+             format: 'es'
+           }
+         }
+       }
+     }
+     // ...
+   })
+   ```
+
+   使用这种方式时，主进程和预加载脚本将被打包成 ES 模块文件，并以 `.mjs` 扩展名结尾。你需要修复 `package.json` 中的 `main` 字段（Electron 入口点）以及代码中引用这些预加载脚本的文件名。
+
+另外，从 electron-vite 2.0 开始，即使 Electron 版本低于 28，也可以在 `package.json` 中使用 `"type": "module"`。这种情况下，主进程和预加载脚本将被打包成 CommonJS 文件并以 `.cjs` 扩展名结尾。
+
+### 迁移至 ESM
+
+在此之前，我们一直使用 CommonJS 作为构建格式。我们可能会遇到一些不支持 CommonJS 的 NPM 包，但是我们可以通过 electron-vite 重新打包它们来支持 Electron。同样，当我们迁移到 ESM 时，我们也会遇到一些问题。
+
+- 在 ES 模块中导入 CommonJS 模块
+
+  ```js
+  import { autoUpdater } from 'electron-updater' // ❌ SyntaxError: Named export 'autoUpdater' not found.
+  ```
+
+  在上面的例子中，我们将得到一个 _SyntaxError_。但是，我们仍然可以使用标准导入语法在 ES 模块中导入 CommonJS 模块。如果模块提供 `module.exports` 对象作为默认导出或使用 `Object.defineProperty` 定义导出，则具名导入将不起作用，但默认导入将起作用。
+
+  ```js
+  import updater from 'electron-updater' // ✅
+  ```
+
+- ES 模块与 CommonJS 的区别
+
+  ```js
+  import { BrowserWindow } from 'electron'
+  import { join } from 'path'
+  ​
+  const mainWindow = new BrowserWindow({
+    webPreferences: {
+      preload: join(__dirname,'../preload/index.mjs') // ❌ ReferenceError: __dirname is not defined
+    }
+  })
+  ```
+
+  在 ESM 中，一些重要的 CommonJS 引用没有定义。其中包括 `require`、`require.resolve`、`__filename`、`__dirname` 等。查阅 Node.js 的 [ES 模块与 CommonJS 的区别](https://nodejs.org/api/esm.html#differences-between-es-modules-and-commonjs)，了解更多详细信息。
+
+  ```js
+  import { BrowserWindow } from 'electron'
+  import { fileURLToPath } from 'url'
+  ​
+  const mainWindow = new BrowserWindow({
+    webPreferences: {
+      preload: fileURLToPath(new URL('../preload/index.mjs', import.meta.url)) // ✅
+    }
+  })
+  ```
+
+**非常重要的是，electron-vite 兼容一些 CommonJS 语法（包括 `require`、`require.resolve`、`__filename`、`__dirname`）**，在迁移过程中不需要修复这些语法问题。不过，我们仍然建议在新项目中使用 ESM 语法。
+
+### ESM 和 CJS 语法兼容性
+
+electron-vite 对 ES 模块 和 CommonJS 语法做了一些兼容性处理，允许开发者以最少的迁移工作在两种语法之间自由切换。但需要注意的是，[源代码保护](./source-code-protection.md)目前仅支持 CommonJS。
