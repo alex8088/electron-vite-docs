@@ -13,6 +13,21 @@ Through the following steps, you can quickly find the problems:
 3. After packaging, you can append argument `--trace-warnings` to the app to view the error message. e.g. `.\app.exe --trace-warnings`(in Windows), `open app.app --args --trace-warnings`(in MacOS).
 4. Usually the preview command works fine, but it is not normal after packaging. The high probability is that the dependent modules have not been packaged into the app. Please check whether the dependent modules are installed in `dependencies`, or it may be a pnpm problem (if it is used).
 
+## Migration
+
+### `The CJS build of Vite's Node API is deprecated`
+
+Since Vite 5, when calling Vite's CJS Node API, you will get a deprecation warning log. electron-vite 2 is now published as ESM, you can update to the latest version.
+
+In addition, you need to ensure:
+
+1. The `electron.vite.config.js` file content is using the ESM syntax.
+2. The nearest `package.json` file has `"type": "module"`, or use the `.mjs` extension, e.g. `electron.vite.config.mjs`.
+
+Note that when adding `"type": "module"` in the project `package.json`, if Electron support ESM (Electron 28+), it will be built as ESM and you need to read the [ESM Support in Electron](./dev.md#esm-support-in-electron) guide first. But if ESM is not supported, it will be built as CommonJS and all files will have a `.cjs` extension.
+
+If you don't want to make any changes and keep bundling into CJS, the best way is to rename `electron.vite.config.js` to `electron.vite.config.mjs`.
+
 ## Development
 
 ### `Unable to load preload scripts -> Error: module not found: 'XXX'`
