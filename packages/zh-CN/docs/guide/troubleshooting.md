@@ -13,6 +13,21 @@
 3. 打包后，可以附加参数 `--trace-warnings` 到应用程序运行，查看错误信息。例如：`.\app.exe --trace-warnings`（在 Windows 中），`open app.app --args --trace-warnings`（在 MacOS 中）。
 4. 通常 preview 命令运行正常，而打包后不正常，大概率是依赖模块未被打包进应用程序，请检查依赖模块是否安装在 `dependencies`中，也可能是 pnpm 问题（如果使用了的话）。
 
+## 迁移
+
+### `The CJS build of Vite's Node API is deprecated`
+
+从 Vite 5 开始，调用 Vite 的 CJS Node API 时，会收到弃用警告日志。 electron-vite 2 现已发布为 ESM，你可以更新到最新版本。
+
+此外，你还需要确保：
+
+1. `electro.vite.config.js` 配置文件的内容使用 ESM 语法。
+2. 最近的 `package.json` 文件中有 `"type": "module"`，或者使用 `.mjs` 扩展名，例如 `electron.vite.config.mjs`。
+
+请注意，在项目 `package.json` 中添加 `"type": "module"` 时，如果 Electron 支持 ESM (Electron 28+)，则会构建为 ESM，需要先阅读 [Electron 的 ESM 支持](./dev.md#electron-的-esm-支持) 指南。但如果不支持 ESM，它将被构建为 CommonJS，并且所有文件都将具有 `.cjs` 扩展名。
+
+如果你不想进行任何更改并保持打包成 CJS，最好的方式是将 `electro.vite.config.js` 重命名为 `electro.vite.config.mjs`。
+
 ## 开发
 
 ### `Unable to load preload scripts -> Error: module not found: 'XXX'`
