@@ -46,10 +46,15 @@ const nav: DefaultTheme.NavItem[] = [
   {
     text: 'Links',
     items: [
-      { text: 'Vite', link: 'https://vitejs.dev/' },
+      { text: 'Blog', link: '/blog/', activeMatch: '^/blog/' },
       {
-        text: 'create-electron',
-        link: 'https://github.com/alex8088/quick-start/tree/master/packages/create-electron'
+        items: [
+          { text: 'Vite', link: 'https://vitejs.dev/' },
+          {
+            text: 'create-electron',
+            link: 'https://github.com/alex8088/quick-start/tree/master/packages/create-electron'
+          }
+        ]
       }
     ]
   },
