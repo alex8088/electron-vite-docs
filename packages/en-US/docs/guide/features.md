@@ -59,9 +59,15 @@ Check out the [Hot Reloading](/guide/hot-reloading) section to learn more about 
 
 ## Asset Handling
 
-In addition to supporting the [static asset handling](https://vitejs.dev/guide/assets.html) in web app like Vite， electron-vite also optimizes asset handling in the Electron main process.
+In addition to supporting the [static asset handling](https://vitejs.dev/guide/assets.html) in web app like Vite，electron-vite also optimizes asset handling in the Electron main process.
 
 Check out the [Asset Handling](/guide/assets) section to learn more about this feature.
+
+## ESM Support in Electron
+
+Electron supports ES modules beginning in Electron 28. electron-vite (since 2.0) also supports using ESM to develop and build your Electron applications.
+
+Check out the [ESM Support in Electron](../guide/dev.md#esm-support-in-electron) section to learn more about this feature.
 
 ## Source Code Protection
 
