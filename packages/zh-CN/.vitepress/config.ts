@@ -43,10 +43,15 @@ const nav: DefaultTheme.NavItem[] = [
   {
     text: '链接',
     items: [
-      { text: 'Vite', link: 'https://cn.vitejs.dev/' },
+      { text: 'Blog', link: '/blog/', activeMatch: '^/blog/' },
       {
-        text: 'create-electron',
-        link: 'https://github.com/alex8088/quick-start/tree/master/packages/create-electron'
+        items: [
+          { text: 'Vite', link: 'https://cn.vitejs.dev/' },
+          {
+            text: 'create-electron',
+            link: 'https://github.com/alex8088/quick-start/tree/master/packages/create-electron'
+          }
+        ]
       }
     ]
   },
