@@ -63,6 +63,12 @@ electron-vite 可以智能地为 Electron 的独特环境打包源代码。
 
 查阅 [资源处理](/guide/assets) 部分，了解此功能的更多详细信息。
 
+## Electron 的 ESM 支持
+
+Electron 从 Electron 28 开始支持 ES 模块。 electron-vite（自 2.0 起）同样支持使用 ESM 来开发和构建你的 Electron 应用程序。
+
+查阅 [Electron 的 ESM 支持](../guide/dev.md#electron-的-esm-支持) 部分，了解此功能的更多详细信息。
+
 ## 源代码保护
 
 electron-vite 使用 V8 字节码来保护源代码。
