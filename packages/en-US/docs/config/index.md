@@ -150,17 +150,20 @@ export default defineConfig(({ command, mode }) => {
 | `build.target`        | `node*`, automatically match Node compatible target for Electron (e.g. Electron 20 is `node16.15`) |
 | `build.outDir`        | `out\main` (relative to project root) |
 | `build.lib.entry`     | `src\main\{index\|main}.{js\|ts\|mjs\|cjs}`, empty string if not found |
-| `build.lib.formats`   | `cjs` |
+| `build.lib.formats`   | `cjs` or `es`, `es` is only supported on electorn 28+ |
 | `build.reportCompressedSize`   | `false`, disable gzip-compressed size reporting, increase build performance |
 | `build.rollupOptions.external` | `electron` and all `node` built-in modules |
 | `build.assetDir`               | `chunks` |
 | `build.minify`                 | `false` |
 | `build.copyPublicDir`          | `false`, alway |
+| `build.ssr`                    | `true`, alway |
+| `build.ssrEmitAssets`          | `true`, alway |
+| `ssr.noExternal`               | `true`, alway |
 | `resolve.browserField`        | `false`, disable resolving to `browser` field |
 | `resolve.mainFields`          | `['module', 'jsnext:main', 'jsnext']` |
 | `resolve.conditions`          | `['node']`, first resolve `require` exports |
 | `publicDir`                    | `resources` |
-| `envPrefix`                    | `MAIN_VITE_` |
+| `envPrefix`                    | `MAIN_VITE_` and `VITE_` |
 
 ### Built-in Config for `preload`:
 
@@ -169,14 +172,17 @@ export default defineConfig(({ command, mode }) => {
 | `build.target`        | `node*`, automatically match Node compatible target for Electron (e.g. Electron 20 is `node16.15`) |
 | `build.outDir`        | `out\preload` (relative to project root) |
 | `build.lib.entry`     | `src\preload\{index\|preload}.{js\|ts\|mjs\|cjs}`, empty string if not found |
-| `build.lib.formats`   | `cjs` |
+| `build.lib.formats`   | `cjs` or `es`, `es` is only supported on electorn 28+ |
 | `build.reportCompressedSize` | `false`, disable gzip-compressed size reporting, increase build performance |
 | `build.rollupOptions.external` | `electron` and all `node` built-in modules |
 | `build.assetDir`               | `chunks` |
 | `build.minify`                 | `false` |
 | `build.copyPublicDir`          | `false`, alway |
+| `build.ssr`                    | `true`, alway |
+| `build.ssrEmitAssets`          | `true`, alway |
+| `ssr.noExternal`               | `true`, alway |
 | `publicDir`                    | `resources` |
-| `envPrefix`                    | `PRELOAD_VITE_` |
+| `envPrefix`                    | `PRELOAD_VITE_` and `VITE_` |
 
 ### Built-in Config for `renderer`:
 
@@ -189,7 +195,7 @@ export default defineConfig(({ command, mode }) => {
 | `build.modulePreload.polyfill` | `false`, there is no need to polyfill `Module Preload` for the Electron renderers |
 | `build.reportCompressedSize`   | `false`, disable gzip-compressed size reporting, increase build performance |
 | `build.minify`                 | `false` |
-| `envPrefix`                    | `RENDERER_VITE_` |
+| `envPrefix`                    | `RENDERER_VITE_` and `VITE_` |
 
 ## Vite Config Reference
 
