@@ -41,7 +41,7 @@ You will need to either:
 
 ### `Uncaught Error: Module "XXX" has been externalized for browser compatibility.` or `Uncaught ReferenceError: __dirname is not defined`
 
-Currently, electorn-vite not support `nodeIntegration`. One of the important reasons is that vite's HMR is implemented based on native ESM.
+Currently, electron-vite not support `nodeIntegration`. One of the important reasons is that vite's HMR is implemented based on native ESM.
 
 It is recommended to use `preload scripts` for development and avoiding Node.js modules for renderer code. if you want to do this，you can add polyfills manually， see [nodeIntegration](/guide/dev#nodeintegration) for more details.
 
@@ -93,9 +93,9 @@ Dependent modules are not packaged into the application. To solve this:
 
 ### `A JavaScript error occurred in the main process -> Error: Invaild or incompatible cached data (cachedDataRejected)`
 
-This problem occurs when bytecode plugin is enabled. The bytecode is compiled according to the Electorn Node.js version and system architecture (e.g. x86, x64, ARM, etc.).
+This problem occurs when bytecode plugin is enabled. The bytecode is compiled according to the Electron Node.js version and system architecture (e.g. x86, x64, ARM, etc.).
 
-Usually, the Node.js version that compiles the bytecode with local Electron is the same as the version packaged into the application, unless a different Electron version is specified for packaging tools such as electron-builder, which may cause this error. If this is the case, please make sure that the Electorn Node.js version when compiling the bytecode is the same as when running it after packaging.
+Usually, the Node.js version that compiles the bytecode with local Electron is the same as the version packaged into the application, unless a different Electron version is specified for packaging tools such as electron-builder, which may cause this error. If this is the case, please make sure that the Electron Node.js version when compiling the bytecode is the same as when running it after packaging.
 
 In fact, this error is mostly caused by the incompatibility between the system architecture at compile time and the specified architecture Electron application. For example, building a 64-bit app for MacOS in arm64 MacOS, it will run with this error. Because the arm64-based bytecode built by default cannot run in 64-bit app. Therefore, we need to ensure that the system architecture when compiling bytecode is consistent with that at runtime after packaging. For how to package target applications of different architectures on the same platform, please refer to the [Multi Platform Build](/guide/source-code-protection#multi-platform-build) section.
 

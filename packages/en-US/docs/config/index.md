@@ -150,7 +150,7 @@ export default defineConfig(({ command, mode }) => {
 | `build.target`        | `node*`, automatically match Node compatible target for Electron (e.g. Electron 20 is `node16.15`) |
 | `build.outDir`        | `out\main` (relative to project root) |
 | `build.lib.entry`     | `src\main\{index\|main}.{js\|ts\|mjs\|cjs}`, empty string if not found |
-| `build.lib.formats`   | `cjs` or `es`, `es` is only supported on electorn 28+ |
+| `build.lib.formats`   | `cjs` or `es`, `es` is only supported on electron 28+ |
 | `build.reportCompressedSize`   | `false`, disable gzip-compressed size reporting, increase build performance |
 | `build.rollupOptions.external` | `electron` and all `node` built-in modules |
 | `build.assetDir`               | `chunks` |
@@ -172,7 +172,7 @@ export default defineConfig(({ command, mode }) => {
 | `build.target`        | `node*`, automatically match Node compatible target for Electron (e.g. Electron 20 is `node16.15`) |
 | `build.outDir`        | `out\preload` (relative to project root) |
 | `build.lib.entry`     | `src\preload\{index\|preload}.{js\|ts\|mjs\|cjs}`, empty string if not found |
-| `build.lib.formats`   | `cjs` or `es`, `es` is only supported on electorn 28+ |
+| `build.lib.formats`   | `cjs` or `es`, `es` is only supported on electron 28+ |
 | `build.reportCompressedSize` | `false`, disable gzip-compressed size reporting, increase build performance |
 | `build.rollupOptions.external` | `electron` and all `node` built-in modules |
 | `build.assetDir`               | `chunks` |
