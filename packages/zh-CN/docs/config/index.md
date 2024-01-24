@@ -150,7 +150,7 @@ export default defineConfig(({ command, mode }) => {
 | `build.target`        | `node*`，自动匹配 Electron 的 Node 兼容目标（例如：Electron 20 为 `node16.15`） |
 | `build.outDir`        | `out\main`（相对于项目根目录） |
 | `build.lib.entry`     | `src\main\{index\|main}.{js\|ts\|mjs\|cjs}`，找不到则为空字符串 |
-| `build.lib.formats`   | `cjs` 或 `es`，仅当 electorn 28+ 时才支持 `es` |
+| `build.lib.formats`   | `cjs` 或 `es`，仅当 electron 28+ 时才支持 `es` |
 | `build.reportCompressedSize`   | `false`，禁用 gzip 压缩大小报告，提高构建性能 |
 | `build.rollupOptions.external` | `electron` 和所有 `node` 内置模块 |
 | `build.assetDir`               | `chunks` |
@@ -172,7 +172,7 @@ export default defineConfig(({ command, mode }) => {
 | `build.target`        | `node*`，自动匹配 Electron 的 Node 兼容目标（例如：Electron 20 为 `node16.15`） |
 | `build.outDir`        | `out\preload`（相对于项目根目录） |
 | `build.lib.entry`     | `src\preload\{index\|preload}.{js\|ts\|mjs\|cjs}`，找不到则为空字符串 |
-| `build.lib.formats`   | `cjs` 或 `es`，仅当 electorn 28+ 时才支持 `es` |
+| `build.lib.formats`   | `cjs` 或 `es`，仅当 electron 28+ 时才支持 `es` |
 | `build.reportCompressedSize`   | `false`，禁用 gzip 压缩大小报告，提高构建性能 |
 | `build.rollupOptions.external` | `electron` 和所有 `node` 内置模块 |
 | `build.assetDir`               | `chunks` |
