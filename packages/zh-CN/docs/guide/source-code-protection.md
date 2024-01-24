@@ -43,7 +43,7 @@ electron-vite 受 [bytenode](https://github.com/bytenode/bytenode) 启发，具�
 
 - 实现一个插件 `bytecodePlugin` 来解析构建产物，并确定是否编译为字节码。
 - 启动 Electron 进程将构建产物编译成 `.jsc` ​​文件，并确保生成的字节码可以在 Electron 的 Node 环境中运行。
-- 自动生成字节码加载器，使 Electorn 应用能够加载字节码模块。
+- 自动生成字节码加载器，使 Electron 应用能够加载字节码模块。
 - 支持开发者自由决定编译哪些块。
 
 此外，electron-vite 还解决了一些 `bytenode` 无法解决的问题：
@@ -198,13 +198,13 @@ export default defineConfig({
 不要期望可以在一个平台上为所有平台构建应用程序。
 :::
 
-默认情况下根据当前 **Electorn Node.js 版本**和当前**架构**（例如 x86、x64、ARM 等）编译字节码。除了确保发布的 Electorn 应用程序的 Node.js 版本与编译时的版本相同外，架构是多平台构建的约束。
+默认情况下根据当前 **Electron Node.js 版本**和当前**架构**（例如 x86、x64、ARM 等）编译字节码。除了确保发布的 Electron 应用程序的 Node.js 版本与编译时的版本相同外，架构是多平台构建的约束。
 
 ### 单一架构目标构建多平台
 
 可能支持多平台构建：
 
-- 在 64 位的 MacOS 中构建 MacOS、Windows 或 Linux 的 64 位 Electorn 应用程序
+- 在 64 位的 MacOS 中构建 MacOS、Windows 或 Linux 的 64 位 Electron 应用程序
 
 ### 单一平台构建多架构目标
 
@@ -237,9 +237,9 @@ npm install --arch=ia32 electron
 
 可能支持多架构构建：
 
-- 在 arm64 MacOS 中构建 MacOS 的 64 位 Electorn 应用程序
-- 在 arm64 Windows 中构建 Windows 的 64 位 Electorn 应用程序
-- 在 64 位 Windows 中构建 Windows 的 32 位 Electorn 应用程序
+- 在 arm64 MacOS 中构建 MacOS 的 64 位 Electron 应用程序
+- 在 arm64 Windows 中构建 Windows 的 64 位 Electron 应用程序
+- 在 64 位 Windows 中构建 Windows 的 32 位 Electron 应用程序
 
 ::: warning 警告
 字节码与 CPU 无关。但是，你应该在部署前后运行测试，因为 V8 健全性检查包括一些与 CPU 支持的功能相关的检查，因此在极少数情况下这可能会导致错误。

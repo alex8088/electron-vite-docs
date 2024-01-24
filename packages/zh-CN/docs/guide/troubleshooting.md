@@ -41,7 +41,7 @@
 
 ### `Uncaught Error: Module "XXX" has been externalized for browser compatibility.` or `Uncaught ReferenceError: __dirname is not defined`
 
-目前，electorn-vite 不支持 nodeIntegration。其中一个重要的原因是 Vite 的 HMR 是基于原生 ESM 实现的。
+目前，electron-vite 不支持 nodeIntegration。其中一个重要的原因是 Vite 的 HMR 是基于原生 ESM 实现的。
 
 推荐使用`预加载脚本`进行开发，避免将 Node.js 模块用于渲染器代码。如果你想这样做，你可以手动添加 polyfills，更多详情见 [nodeIntegration](/guide/dev#nodeintegration)。
 
@@ -94,9 +94,9 @@ win.loadFile(path.join(__dirname, '../renderer/index.html'), { hash: 'home' })
 
 ### `A JavaScript error occurred in the main process -> Error: Invaild or incompatible cached data (cachedDataRejected)`
 
-此问题是启用字节码插件时产生的。字节码是根据 Electorn Node.js 版本和系统架构（例如 x86、x64、ARM 等）编译的。
+此问题是启用字节码插件时产生的。字节码是根据 Electron Node.js 版本和系统架构（例如 x86、x64、ARM 等）编译的。
 
-通常使用本地 Electorn 编译字节码的 Node.js 版本和打包成应用程序的版本是一致的，除非给 electron-builder 等打包工具指定了不同的 Electorn 版本才可能导致此错误。如果有此情况，请确保编译字节码时的 Electorn Node.js 版本和打包后运行时的一致。
+通常使用本地 Electron 编译字节码的 Node.js 版本和打包成应用程序的版本是一致的，除非给 electron-builder 等打包工具指定了不同的 Electron 版本才可能导致此错误。如果有此情况，请确保编译字节码时的 Electron Node.js 版本和打包后运行时的一致。
 
 实际上，此错误大多数情况是由于编译时的系统架构和指定架构的 Electron 应用程序不兼容导致。例如，在 arm64 MacOS 中构建 MacOS 的 64 位应用程序，它会运行出错。因为默认构建的基于 arm64 的字节码无法在 64 位应用程序中运行。因此我们需要确保编译字节码时的系统架构和打包后运行时的一致。关于如何在同一平台打包不同架构目标应用程序，请参阅 [多平台构建](/guide/source-code-protection#%E5%A4%9A%E5%B9%B3%E5%8F%B0%E6%9E%84%E5%BB%BA) 章节。
 

@@ -260,7 +260,7 @@ mainWindow.webContents.on('will-attach-webview', (e, webPreferences) => {
 
 ## `nodeIntegration`
 
-目前，electorn-vite 不支持 `nodeIntegration`。其中一个重要的原因是 Vite 的 HMR 是基于原生 ESM 实现的。但是还有一种支持方式就是使用 `require` 导入 node 模块，不太优雅。或者你可以使用插件 [vite-plugin-commonjs-externals](https://github.com/xiaoxiangmoe/vite-plugin-commonjs-externals) 来处理。
+目前，electron-vite 不支持 `nodeIntegration`。其中一个重要的原因是 Vite 的 HMR 是基于原生 ESM 实现的。但是还有一种支持方式就是使用 `require` 导入 node 模块，不太优雅。或者你可以使用插件 [vite-plugin-commonjs-externals](https://github.com/xiaoxiangmoe/vite-plugin-commonjs-externals) 来处理。
 
 也许将来会有更好的方法来支持。但需要注意的是，使用预加载脚本是一个更好、更安全的选择。
 
