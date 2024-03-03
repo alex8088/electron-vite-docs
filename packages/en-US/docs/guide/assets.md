@@ -109,63 +109,6 @@ const path = require("path");
 const bin = path.join(__dirname, "../../resources/hello.exe").replace("app.asar", "app.asar.unpacked");
 ```
 
-## Importing Worker Threads
-
-### Import with Query Suffixes
-
-A node worker can be directly imported by appending `?nodeWorker` to the import request. The default export will be a node worker constructor:
-
-```js
-import createWorker from './worker?nodeWorker'
-
-createWorker({ workerData: 'worker' })
-    .on('message', (message) => {
-      console.log(`Message from worker: ${message}`)
-    })
-    .postMessage('')
-```
-
-This syntax requires no configuration and is the `recommended` way to create node workers.
-
-### Import with Constructors
-
-A node worker also can be imported using `new Worker()`:
-
-```js
-import { resolve } from 'node:path'
-import { Worker } from 'node:worker_threads'
-
-new Worker(resolve(__dirname, './worker.js'), {})
-```
-
-This syntax requires configuration to bundle the worker file：
-
-```js
-// electron.vite.config.ts
-import { resolve } from 'path'
-import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
-
-export default defineConfig({
-  main: {
-    plugins: [externalizeDepsPlugin()],
-    build: {
-      rollupOptions: {
-        input: {
-          index: resolve(__dirname, 'src/main/index.ts'),
-          worker: resolve(__dirname, 'src/main/worker.ts')
-        }
-      }
-    }
-  },
-  // ...
-})
-```
-
-### Examples
-
-You can learn more by playing with the [example](https://github.com/alex8088/electron-vite-worker-example).
-
-
 ## Importing Native Node Modules
 
 There are two ways to use `*.node` modules.
