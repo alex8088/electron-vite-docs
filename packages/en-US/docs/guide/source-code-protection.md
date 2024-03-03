@@ -190,6 +190,10 @@ export default defineConfig({
 You should not enumerate all strings in source code for protection, usually we only need to protect sensitive strings.
 :::
 
+::: warning Warning
+When minification (`build.minify`) is enabled, string protection has no effect. This is because string protection is based on character codes. However, modern minification tools (such as `esbuild` or `terser`) will restore the converted character codes, causing the protection to fail. electron-vite will throw a warning. In fact, minification has little effect on reducing bytecode size, so it is recommended not to enable minification when protecting strings.
+:::
+
 ## Multi Platform Build
 
 ::: tip NOTE
