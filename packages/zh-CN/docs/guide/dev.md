@@ -373,6 +373,66 @@ electron-vite 已经支持 `--inspect`、`--inspect-brk`、`--remote-debugging-p
 
 双破折号之后的所有参数都将传递给 Electron 应用程序，你可以使用 `process.argv` 来处理它们。
 
+## Worker Threads
+
+你可以在导入请求上添加 `?modulePath` 或 `?nodeWorker` 查询参数来直接导入一个 node worker。
+
+- 带 `?modulePath` 后缀默认导出会是一个 worker 的模块路径。这种语法更接近于标准，是创建 worker 的 **推荐** 方式。
+
+```js
+import { resolve } from 'node:path'
+import { Worker } from 'node:worker_threads'
+import workerPath from './worker?modulePath'
+
+new Worker(workerPath, {})
+```
+
+- 带 `?nodeWorker` 后缀默认导出会是一个自定义 worker 的构造函数。
+
+```js
+import createWorker from './worker?nodeWorker'
+
+createWorker({ workerData: 'worker' })
+    .on('message', (message) => {
+      console.log(`Message from worker: ${message}`)
+    })
+    .postMessage('')
+```
+
+你可以通过演练 [示例](https://github.com/alex8088/electron-vite-worker-example) 来了解更多信息。
+
+## Utility Process and Child Process
+
+electron-vite 支持使用 Electron [UtilityProcess](https://www.electronjs.org/docs/latest/api/utility-process) API 或 Node.js [child_process](https://nodejs.org/api/child_process.html) 来 fork 子进程。子进程可以使用 `?modulePath` 后缀导入。
+
+```js
+// main.ts
+import { utilityProcess, MessageChannelMain } from 'electron'
+import forkPath from './fork?modulePath'
+
+const { port1, port2 } = new MessageChannelMain()
+const child = utilityProcess.fork(forkPath)
+child.postMessage({ message: 'hello' }, [port1])
+
+port2.on('message', (e) => {
+  console.log(`Message from child: ${e.data}`)
+})
+port2.start()
+port2.postMessage('hello')
+
+// fork.ts
+process.parentPort.on('message', (e) => {
+  const [port] = e.ports
+  port.on('message', (e) => {
+    console.log(`Message from parent: ${e.data}`)
+  })
+  port.start()
+  port.postMessage('hello')
+})
+```
+
+你可以通过演练 [示例](https://github.com/alex8088/electron-vite-worker-example) 来了解更多信息。
+
 ## Electron 的 ESM 支持
 
 Electron 从 Electron 28 开始支持 ES 模块。 electron-vite 2.0 同样支持使用 ESM 来开发和构建你的 Electron 应用程序。
