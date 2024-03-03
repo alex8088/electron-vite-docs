@@ -373,6 +373,66 @@ electron-vite already supports `--inspect`, `--inspect-brk`, `--remote-debugging
 
 All arguments after the double-dash will be passed to Electron application, and you can use `process.argv` to handle them.
 
+## Worker Threads
+
+A node worker can be directly imported by appending `?modulePath` or `?nodeWorker` to the import request.
+
+- The default export with `?modulePath` suffix will be the worker bundle path. This syntax leans closer to the standards and is the `recommended` way to create node workers.
+
+```js
+import { resolve } from 'node:path'
+import { Worker } from 'node:worker_threads'
+import workerPath from './worker?modulePath'
+
+new Worker(workerPath, {})
+```
+
+- The default export with `?nodeWorker` suffix will be a node worker constructor.
+
+```js
+import createWorker from './worker?nodeWorker'
+
+createWorker({ workerData: 'worker' })
+    .on('message', (message) => {
+      console.log(`Message from worker: ${message}`)
+    })
+    .postMessage('')
+```
+
+You can learn more by playing with the [example](https://github.com/alex8088/electron-vite-worker-example).
+
+## Utility Process and Child Process
+
+electron-vite supports using Electron [UtilityProcess](https://www.electronjs.org/docs/latest/api/utility-process) API or Node.js [child_process](https://nodejs.org/api/child_process.html) to fork a child process. The child process can be imported with `?modulePath` suffix.
+
+```js
+// main.ts
+import { utilityProcess, MessageChannelMain } from 'electron'
+import forkPath from './fork?modulePath'
+
+const { port1, port2 } = new MessageChannelMain()
+const child = utilityProcess.fork(forkPath)
+child.postMessage({ message: 'hello' }, [port1])
+
+port2.on('message', (e) => {
+  console.log(`Message from child: ${e.data}`)
+})
+port2.start()
+port2.postMessage('hello')
+
+// fork.ts
+process.parentPort.on('message', (e) => {
+  const [port] = e.ports
+  port.on('message', (e) => {
+    console.log(`Message from parent: ${e.data}`)
+  })
+  port.start()
+  port.postMessage('hello')
+})
+```
+
+You can learn more by playing with the [example](https://github.com/alex8088/electron-vite-worker-example).
+
 ## ESM Support in Electron
 
 Electron supports ES modules beginning in Electron 28. electron-vite 2.0 also supports using ESM to develop and build your Electron applications.
