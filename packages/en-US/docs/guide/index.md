@@ -90,7 +90,7 @@ Run the following command in your command line:
 ::: code-group
 
 ```sh [npm]
-npm create @quick-start/electron
+npm create @quick-start/electron@latest
 ```
 
 ```sh [yarn]
