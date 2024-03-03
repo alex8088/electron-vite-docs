@@ -90,7 +90,7 @@ Electron 的工作目录将是输出目录，而不是你的源代码目录。�
 ::: code-group
 
 ```sh [npm]
-npm create @quick-start/electron
+npm create @quick-start/electron@latest
 ```
 
 ```sh [yarn]
