@@ -85,7 +85,7 @@ Check out the [TypeScript Decorator](/guide/typescript-decorator) section to lea
 
 electron-vite provides Node.js worker threads support for the Electron main process.
 
-Check out the [Workers](./assets.md#importing-worker-threads) section to learn more about this feature.
+Check out the [Workers](../guide/dev.md#worker-threads) section to learn more about this feature.
 
 ## Debugging
 

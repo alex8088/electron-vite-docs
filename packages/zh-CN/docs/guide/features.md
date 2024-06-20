@@ -85,7 +85,7 @@ electron-vite 创建了一个可选的由 `swc` 驱动 `swcPlugin` 插件来替�
 
 electron-vite 为 Electron 主进程提供 Node.js 工作线程支持。
 
-查阅 [Workers](./assets.md#导入-worker-threads) 部分，了解此功能的更多详细信息。
+查阅 [Workers](../guide/dev.md#worker-threads) 部分，了解此功能的更多详细信息。
 
 ## 调试
 

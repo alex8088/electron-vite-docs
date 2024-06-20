@@ -38,7 +38,7 @@ outline: deep
 
 如果找不到入口点，它将抛出一个错误。你可以通过设置 `build.rollupOptions.input` 选项来修复它。
 
-请在 [下一小节](#customizing) 中查看示例。
+请在 [下一小节](#自定义) 中查看示例。
 
 ### 自定义
 

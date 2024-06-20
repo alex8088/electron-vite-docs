@@ -124,7 +124,7 @@ export default defineConfig({
 
 在上面的配置中，它指示模块 sqlite3 应该从打包代码中排除。如果你不这么做，你会得到一个错误。
 
-默认情况下，electron-vite 会将添加 `electron` 模块和所有 `node` 内置模块作为外部依赖项。如果开发人员添加了自己的外部依赖项，它们将自动合并。更多详情可参考 [内置配置](/config/#built-in-config)。
+默认情况下，electron-vite 会将添加 `electron` 模块和所有 `node` 内置模块作为外部依赖项。如果开发人员添加了自己的外部依赖项，它们将自动合并。更多详情可参考 [内置配置](/config/#内置配置)。
 
 此外，electron-vite 提供了一个 `externalizeDepsPlugin` 插件来自动外部化 `package.json` 的依赖项（`dependencies`）。我们不必在 `external` 选项中一一添加。
 
