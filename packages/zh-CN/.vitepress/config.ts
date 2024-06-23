@@ -44,6 +44,7 @@ const nav: DefaultTheme.NavItem[] = [
     text: '链接',
     items: [
       { text: 'Blog', link: '/blog/', activeMatch: '^/blog/' },
+      { text: '赞助', link: '/sponsor/', activeMatch: '^/sponsor/' },
       {
         items: [
           { text: 'Vite', link: 'https://cn.vitejs.dev/' },
