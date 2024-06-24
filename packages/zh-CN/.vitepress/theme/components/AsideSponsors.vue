@@ -14,6 +14,19 @@
       </div>
     </section>
     <section class="vp-sponsor-section">
+      <div class="VPSponsorsGrid vp-sponsor-grid mini" data-vp-grid="1">
+        <div class="vp-sponsor-grid-item">
+          <a class="vp-sponsor-grid-link" href="https://chensuiyi.me" target="_blank" rel="sponsored noopener">
+            <article class="vp-sponsor-grid-box">
+              <h4 class="visually-hidden">前端之虎陈随易</h4>
+              <img style="max-width:36px; border-radius: 2px;" src="/sponsor-1.jpg" alt="sponsor-1">
+              <span class="vp-sponsor-grid-text" style="margin-left: 8px;">前端之虎陈随易</span>
+            </article>
+          </a>
+        </div>
+      </div>
+    </section>
+    <section class="vp-sponsor-section">
       <div class="VPSponsorsGrid vp-sponsor-grid xmini" data-vp-grid="2">
         <div class="vp-sponsor-grid-item">
           <a class="vp-sponsor-grid-link" href="https://github.com/alex8088/electron-uikit" target="_blank" rel="sponsored noopener">
