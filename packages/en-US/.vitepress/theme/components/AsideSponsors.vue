@@ -1,0 +1,65 @@
+<template>
+<div class="VPDocAsideSponsors">
+  <div class="VPSponsors vp-sponsor aside">
+    <section class="vp-sponsor-section">
+      <div class="VPSponsorsGrid vp-sponsor-grid mini" data-vp-grid="1">
+        <div class="vp-sponsor-grid-item">
+          <a class="vp-sponsor-grid-link" href="https://chensuiyi.me" target="_blank" rel="sponsored noopener">
+            <article class="vp-sponsor-grid-box">
+              <h4 class="visually-hidden">前端之虎陈随易</h4>
+              <img style="max-width:36px; border-radius: 2px;" src="/sponsor-1.jpg" alt="sponsor-1">
+              <span class="vp-sponsor-grid-text" style="margin-left: 8px;">前端之虎陈随易</span>
+            </article>
+          </a>
+        </div>
+      </div>
+    </section>
+    <section class="vp-sponsor-section">
+      <div class="VPSponsorsGrid vp-sponsor-grid xmini" data-vp-grid="2">
+        <div class="vp-sponsor-grid-item">
+          <a class="vp-sponsor-grid-link" href="https://github.com/alex8088/electron-uikit" target="_blank" rel="sponsored noopener">
+            <article class="vp-sponsor-grid-box">
+              <h4 class="visually-hidden">electron-uikit</h4>
+              <img class="vp-sponsor-grid-image" src="/electron-uikit.svg" alt="electron-uikit">
+            </article>
+          </a>
+        </div>
+        <div class="vp-sponsor-grid-item">
+          <a class="vp-sponsor-grid-link" href="https://github.com/alex8088/electron-conf" target="_blank" rel="sponsored noopener">
+            <article class="vp-sponsor-grid-box">
+              <h4 class="visually-hidden">electron-conf</h4>
+              <img class="vp-sponsor-grid-image" src="/electron-conf.svg" alt="electron-conf">
+            </article>
+          </a>
+        </div>
+        <div class="vp-sponsor-grid-item">
+          <a class="vp-sponsor-grid-link" href="https://github.com/alex8088/sqlite3-queries" target="_blank" rel="sponsored noopener">
+            <article class="vp-sponsor-grid-box">
+              <h4 class="visually-hidden">sqlite3-queries</h4>
+              <img class="vp-sponsor-grid-image" src="/sqlite3-queries.svg" alt="sqlite3-queries">
+            </article>
+          </a>
+        </div>
+        <div class="vp-sponsor-grid-item">
+          <a class="vp-sponsor-grid-link" href="/sponsor/" rel="sponsored noopener">
+            <article class="vp-sponsor-grid-box">
+              <span class="vp-sponsor-grid-text" style="color: var(--vp-c-gray-1);">Your Logo</span>
+            </article>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+</template>
+
+<style>
+.vp-sponsor-grid-text {
+  color: var(--vp-c-text-2);
+  font-size: 12px;
+}
+
+.dark .vp-sponsor-grid-text {
+  color: var(--vp-c-gray-1);
+}
+</style>
