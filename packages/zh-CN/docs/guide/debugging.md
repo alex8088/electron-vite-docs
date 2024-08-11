@@ -66,7 +66,7 @@ electron-vite 支持调试主进程和渲染进程代码。
 | :-------- | :--------------- |
 | Command   | run              |
 | Scripts   | dev              |
-| Arguments | --sourcemap --remote-debugging-port=9222 |
+| Arguments | -- --sourcemap --remote-debugging-port=9222 |
 
 同时，创建一个 `Attach to Node.js/Chrome` 运行配置。使用以下设置进行渲染进程调试：
 
