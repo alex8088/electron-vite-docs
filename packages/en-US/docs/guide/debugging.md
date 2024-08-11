@@ -66,7 +66,7 @@ Create a `Npm` run configuration. Use the following settings for main process de
 | :-------- | :--------------- |
 | Command   | run              |
 | Scripts   | dev              |
-| Arguments | --sourcemap --remote-debugging-port=9222 |
+| Arguments | -- --sourcemap --remote-debugging-port=9222 |
 
 Also Create a `Attach to Node.js/Chrome` run configuration. Use the following settings for renderer process debugging:
 
