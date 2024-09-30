@@ -1,6 +1,6 @@
 # 故障排除
 
-请参阅  [Vite 的故障排除指南](https://cn.vitejs.dev/guide/troubleshooting.html) 和 [Rollup 的故障排除指南](https://rollupjs.org/troubleshooting/) 了解更多信息。
+请参阅 [Vite 的故障排除指南](https://cn.vitejs.dev/guide/troubleshooting.html) 和 [Rollup 的故障排除指南](https://rollupjs.org/troubleshooting/) 了解更多信息。
 
 如果这里的建议并未帮助到你，你可以去 [GitHub issue tracker](https://github.com/alex8088/electron-vite/issues) 查看是否有人已经遇到相同的问题。如果你发现了 bug，或者 electron-vite 不能满足你的需求，欢迎提交 [issue](https://github.com/alex8088/electron-vite/issues) 或在 [GitHub 讨论区](https://github.com/alex8088/electron-vite/discussions) 发帖提问。
 
@@ -50,7 +50,7 @@
 
 ## 构建
 
-###  `Error [ERR_REQUIRE_ESM]: require() of ES Module`
+### `Error [ERR_REQUIRE_ESM]: require() of ES Module`
 
 Electron 不支持 `ESM`，所以主进程和预加载脚本的构建标准仍然是 `CJS`。发生此错误是因为模块被外部化了。对于支持 CJS 的模块，我们最好将其外部化。对于只支持 ESM 的模块（例如 lowdb、execa、node-fetch 等），我们不应该将其外部化。我们应该让 electron-vite 把它打包成一个 CJS 标准模块来支持 Electron。
 
@@ -62,26 +62,48 @@ import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 export default defineConfig({
   main: {
     plugins: [externalizeDepsPlugin({ exclude: ['foo'] })] // <- Add related modules to 'exclude' option
-  },
+  }
   // ...
 })
 ```
 
 相关 issue: [#35](https://github.com/alex8088/electron-vite/issues/35)
 
-### `vue-router` 或 `react-router-dom` 开发模式正常，但在构建后无效
+### `vue-router`、`react-router-dom` 或 `svelte-spa-router` 在开发模式下正常工作，但在构建后无效
 
-Electron 不处理（浏览器）历史并使用同步 URL 加载页面。所以只有 `hash 路由` 可以工作。
+Electron 不处理（浏览器）历史记录并使用同步 URL 加载页面。因此，只有 `hash 路由` 可以工作。
 
 - 对于 `vue-router`，你应该使用 `createWebHashHistory` 而不是 `createWebHistory`。
 - 对于 `react-router-dom`，你应该使用 `HashRouter` 而不是 `BrowserRouter`。
+- 对于 `svelte-spa-router`，你应该配置路由使用基于哈希的导航，如下所示：
 
-
-当使用 hash 路由时，可以通过 `BrowserWindow.loadFile` 的第二个参数设置 hash 值来加载页面。
+在使用 hash 路由时，可以通过 `BrowserWindow.loadFile` 的第二个参数设置 hash 值来加载页面。
 
 ```js
 win.loadFile(path.join(__dirname, '../renderer/index.html'), { hash: 'home' })
 ```
+
+对于 svelte-spa-router，下面是一个设置基本哈希路由的示例：
+
+```svelte
+<script>
+  import Router from 'svelte-spa-router';
+  import Home from './components/Home.svelte';
+  import About from './components/About.svelte';
+</script>
+
+<nav>
+  <a href="#/">Home</a>
+  <a href="#/about">About</a>
+</nav>
+
+<Router routes={{
+  '/': Home,
+  '/about': About
+}} />
+```
+
+相关问题: [#45](https://github.com/alex8088/quick-start/issues/45)
 
 ## 分发
 
@@ -90,7 +112,7 @@ win.loadFile(path.join(__dirname, '../renderer/index.html'), { hash: 'home' })
 依赖模块未打包到应用程序中。要解决这个问题：
 
 - 如果相关模块被安装在 `devDependencies` 中，请重新安装在 `dependencies` 中。这是因为打包工具（例如 `electron-builder`、`electron-force`）通常会排除 devDependencies 中的模块。
-- 如果你使用的是 `pnpm` 包管理器，则需要在项目根目录中添加一个带有 `shamefully-hoist=true` 的 `.npmrc` 文件（以便正确打包你的依赖项）。此外，你需要删除  `node_modules` 和 `pnpm-lock.yaml`，然后重新安装模块。当然你可以切换到其他包管理器（例如 `npm`、`yarn`）来避免这个问题。
+- 如果你使用的是 `pnpm` 包管理器，则需要在项目根目录中添加一个带有 `shamefully-hoist=true` 的 `.npmrc` 文件（以便正确打包你的依赖项）。此外，你需要删除 `node_modules` 和 `pnpm-lock.yaml`，然后重新安装模块。当然你可以切换到其他包管理器（例如 `npm`、`yarn`）来避免这个问题。
 
 ### `A JavaScript error occurred in the main process -> Error: Invaild or incompatible cached data (cachedDataRejected)`
 
