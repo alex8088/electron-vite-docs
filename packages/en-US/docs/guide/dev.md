@@ -260,7 +260,7 @@ mainWindow.webContents.on('will-attach-webview', (e, webPreferences) => {
 
 ## `nodeIntegration`
 
-Currently, electron-vite not support `nodeIntegration`. One of the important reasons is that vite's  HMR is implemented based on native ESM. But there is also a way to support that is to use `require` to import the node module which is not very elegant. Or you can use plugin [vite-plugin-commonjs-externals](https://github.com/xiaoxiangmoe/vite-plugin-commonjs-externals) to handle.
+Currently, electron-vite do not support `nodeIntegration`. One of the important reasons is that vite's  HMR is implemented based on native ESM. But there is also a way to support that is to use `require` to import the node module which is not very elegant. Or you can use plugin [vite-plugin-commonjs-externals](https://github.com/xiaoxiangmoe/vite-plugin-commonjs-externals) to handle.
 
 Perhaps there's a better way to support this in the future. But It is important to note that  using preload scripts is a better and safer option.
 
