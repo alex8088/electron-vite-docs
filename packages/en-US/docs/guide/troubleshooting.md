@@ -50,7 +50,7 @@ It is recommended to use `preload scripts` for development and avoiding Node.js 
 
 ## Build
 
-###  `Error [ERR_REQUIRE_ESM]: require() of ES Module`
+### `Error [ERR_REQUIRE_ESM]: require() of ES Module`
 
 Electron doesn't support `ESM`, so the build standard for the main process and preload scripts is still `CJS`. This error occurs because the module is externalized. For modules that support CJS, we'd better externalize it. For modules that only support ESM (e.g. lowdb, execa, node-fetch, etc.), we should not externalize it. We should let electron-vite bundle it into a CJS standard module to support Electron.
 
@@ -62,25 +62,48 @@ import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 export default defineConfig({
   main: {
     plugins: [externalizeDepsPlugin({ exclude: ['foo'] })] // <- Add related modules to 'exclude' option
-  },
+  }
   // ...
 })
 ```
 
 Related issue: [#35](https://github.com/alex8088/electron-vite/issues/35)
 
-### `vue-router` or `react-router-dom` works in development but not production
+### `vue-router` ,`react-router-dom` or `svelte-spa-router` works in development but not production
 
 Electron does not handle (browser) history and works with the synchronized URL. So only `hash router` can work.
 
 - For `vue-router`, you should use `createWebHashHistory` instead of `createWebHistory`.
 - For `react-router-dom`, you should use `HashRouter` instead of `BrowserRouter`.
+- For `svelte-spa-router`, you should configure your routes to use hash-based navigation as follows:
 
 When using hash router, you can set the hash value through the second argument of `BrowserWindow.loadFile` to load the page.
 
 ```js
 win.loadFile(path.join(__dirname, '../renderer/index.html'), { hash: 'home' })
 ```
+
+For svelte-spa-router, here's an example of how to set up basic hash-based routing:
+
+```svelte
+<script>
+  import Router from 'svelte-spa-router';
+  import Home from './components/Home.svelte';
+  import About from './components/About.svelte';
+</script>
+
+<nav>
+  <a href="#/">Home</a>
+  <a href="#/about">About</a>
+</nav>
+
+<Router routes={{
+  '/': Home,
+  '/about': About
+}} />
+```
+
+Related issue: [#45](https://github.com/alex8088/quick-start/issues/45)
 
 ## Distribution
 
