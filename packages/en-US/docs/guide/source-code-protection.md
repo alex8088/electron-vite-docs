@@ -219,7 +219,7 @@ But we can specify another configuration file and set the environment variable `
 import { defineConfig } from 'electron-vite'
 
 export default defineConfig(() => {
-  process.env.ELECTRON_EXEC_PATH = '/path/to/electron-x64/electron.app'
+  process.env.ELECTRON_EXEC_PATH = '/path/to/electron-x64/Electron.app/Contents/MacOS/Electron'
 
   return {
     // electron-vite config
