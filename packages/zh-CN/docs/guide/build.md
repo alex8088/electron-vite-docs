@@ -71,7 +71,7 @@ export default defineConfig({
 
 一个好的分块策略对 Electron 应用程序的性能非常重要。
 
-你可以通过配置 `build.rollupOptions.output.manualChunks` 来自定义 chunk 的分割策略（请参阅 [Rollup 文档](https://rollupjs.org/configuration-options/#output-manualchunks)）。另外，你也可以添加 Vite 提供的 `splitVendorChunkPlugin` 来使用 “分割 Vendor Chunk” 策略。
+你可以通过配置 `build.rollupOptions.output.manualChunks` 来自定义 chunk 的分割策略（请参阅 [Rollup 文档](https://rollupjs.org/configuration-options/#output-manualchunks)）。
 
 ```js
 // electron.vite.config.ts
@@ -92,15 +92,8 @@ export default defineConfig({
     }
   },
   // ...
-  renderer: {
-    plugins: [splitVendorChunkPlugin()]
-  }
 })
 ```
-
-::: tip 提示
-`splitVendorChunkPlugin` 从 Vite 导出.
-:::
 
 ## 外部依赖
 
