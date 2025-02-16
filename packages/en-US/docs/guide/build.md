@@ -139,7 +139,7 @@ export default defineConfig({
 See [`dependencies` vs `devDependencies`](/guide/dev#dependencies-vs-devdependencies) for more details.
 
 ::: tip Recommend
-For the main process and preload scripts, the best practice is to externalize dependencies. For renderers, it is usually fully bundle, so dependencies are best installed in `devDependencies`. This makes the final package more smaller.
+For the main process and preload scripts, the best practice is to externalize dependencies. For renderers, it is usually fully bundle, so dependencies are best installed in `devDependencies`. This makes the final package smaller.
 :::
 
 ## Source Code Protection
