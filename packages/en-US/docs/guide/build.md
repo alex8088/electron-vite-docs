@@ -72,7 +72,7 @@ export default defineConfig({
 
 A good chunking strategy is very important to the performance of Electron app.
 
-You can configure how chunks are split using `build.rollupOptions.output.manualChunks` (see [Rollup docs](https://rollupjs.org/configuration-options/#output-manualchunks)). In addition, you can also add the `splitVendorChunkPlugin` provided by Vite to use the `Split Vendor Chunk` strategy.
+You can configure how chunks are split using `build.rollupOptions.output.manualChunks` (see [Rollup docs](https://rollupjs.org/configuration-options/#output-manualchunks)).
 
 ```js
 // electron.vite.config.ts
@@ -93,15 +93,8 @@ export default defineConfig({
     }
   },
   // ...
-  renderer: {
-    plugins: [splitVendorChunkPlugin()]
-  }
 })
 ```
-
-::: tip NOTE
-The `splitVendorChunkPlugin` exports from `Vite`.
-:::
 
 ## Externals
 
