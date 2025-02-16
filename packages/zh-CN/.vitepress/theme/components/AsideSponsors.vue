@@ -20,19 +20,6 @@ const random = Math.floor(Math.random() * 3 + 1)
     <section class="vp-sponsor-section">
       <div class="VPSponsorsGrid vp-sponsor-grid mini" data-vp-grid="1">
         <div class="vp-sponsor-grid-item">
-          <a class="vp-sponsor-grid-link" href="https://chensuiyi.me" target="_blank" rel="sponsored noopener">
-            <article class="vp-sponsor-grid-box">
-              <h4 class="visually-hidden">前端之虎陈随易</h4>
-              <img style="max-width:36px; border-radius: 2px;" src="/sponsor-1.jpg" alt="sponsor-1">
-              <span class="vp-sponsor-grid-text" style="margin-left: 8px;">前端之虎陈随易</span>
-            </article>
-          </a>
-        </div>
-      </div>
-    </section>
-    <section class="vp-sponsor-section">
-      <div class="VPSponsorsGrid vp-sponsor-grid mini" data-vp-grid="1">
-        <div class="vp-sponsor-grid-item">
           <a class="vp-sponsor-grid-link" href="https://dev.boxai.cc/share/14" target="_blank" rel="sponsored noopener">
             <article class="vp-sponsor-grid-box">
               <h4 class="visually-hidden">midjourney 绘画接口服务商</h4>
