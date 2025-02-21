@@ -10,7 +10,7 @@ The asset handling feature in this guide applies to the main process. For static
 
 ## Public Directory
 
-The public directory defaults to `<root>/resources`, dedicated to the main process and preload scripts. It can be configured via the `main.build.publicDir` and `preload.build.publicDir` option.
+The public directory defaults to `<root>/resources`, dedicated to the main process and preload scripts. It can be configured via the `main.publicDir` and `preload.publicDir` option.
 
 If you have assets such as `icons`, `executables`, `wasm files`, etc., you can put them in this directory.
 
@@ -22,7 +22,7 @@ Note that:
 ::: warning Warning
 The public asset handling in renderers is different from the main process and preload scripts.
 
-- By default, the working directory of renderers are located in `src/renderer`, so the public directory needs to be created in this directory. The default public directory is named `public`, which can also be specified by `renderer.build.publicDir`.
+- By default, the working directory of renderers are located in `src/renderer`, so the public directory needs to be created in this directory. The default public directory is named `public`, which can also be specified by `renderer.publicDir`.
 - The renderer public asset will be copied to output directory.
 :::
 
