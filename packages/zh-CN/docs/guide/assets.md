@@ -10,7 +10,7 @@ outline: deep
 
 ## Public 目录
 
-公共目录默认为 `<root>/resources`，专用于主进程和预加载脚本。它可以通过 `main.build.publicDir` 和 `preload.build.publicDir` 选项进行配置。
+公共目录默认为 `<root>/resources`，专用于主进程和预加载脚本。它可以通过 `main.publicDir` 和 `preload.publicDir` 选项进行配置。
 
 如果你有 `图标`、`可执行程序`、`wasm 文件` 等资源，可以将它们放在这个目录中。
 
@@ -22,7 +22,7 @@ outline: deep
 ::: warning 提示
 值得注意的是渲染进程中的公共资源处理不同于主进程和预加载脚本。
 
-- 默认情况下，渲染进程的工作目录位于 `src/renderer`，因此需要在该目录下创建公共资源目录。默认的公共目录名为 `public`，也可以通过 `renderer.build.publicDir` 指定。
+- 默认情况下，渲染进程的工作目录位于 `src/renderer`，因此需要在该目录下创建公共资源目录。默认的公共目录名为 `public`，也可以通过 `renderer.publicDir` 指定。
 - 渲染进程的公共资源将被复制到输出目录。
 :::
 
