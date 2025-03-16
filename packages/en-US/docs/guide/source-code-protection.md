@@ -31,10 +31,6 @@ Scheme comparison:
 
 For now, the solution with v8 bytecode seems to be the best one.
 
-Read more:
-
-- [Electron code protection solution based on Node.js Addon and V8 bytecode](https://www.mo4tech.com/electron-code-protection-solution-based-on-node-js-addon-and-v8-bytecode.html)
-
 ## What is V8 Bytecode
 
 As we can understand, V8 bytecode is a serialized form of JavaScript parsed and compiled by the V8 engine, and it is often used for performance optimization within the browser. So if we run the code through V8 bytecode, we can not only protect the code, but also improve performance.
