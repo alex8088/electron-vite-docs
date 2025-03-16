@@ -108,19 +108,21 @@ Then follow the prompts!
 
 You can also directly specify the project name and the template you want to use via additional command line options. For example, to scaffold an Electron + Vue project, run:
 
-```sh
-# npm 6.x
-npm create @quick-start/electron my-app --template vue
+::: code-group
 
+```sh [npm]
 # npm 7+, extra double-dash is needed:
-npm create @quick-start/electron my-app -- --template vue
+npm create @quick-start/electron@latest my-app -- --template vue
+```
 
-# yarn
+```sh [yarn]
 yarn create @quick-start/electron my-app --template vue
+```
 
-# pnpm
+```sh [pnpm]
 pnpm create @quick-start/electron my-app --template vue
 ```
+:::
 
 Currently supported template presets include:
 
