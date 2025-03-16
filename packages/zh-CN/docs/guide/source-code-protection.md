@@ -31,10 +31,6 @@
 
 目前，使用 v8 字节码的解决方案似乎是最好的解决方案。
 
-阅读更多：
-
-- [Electron code protection solution based on Node.js Addon and V8 bytecode](https://www.mo4tech.com/electron-code-protection-solution-based-on-node-js-addon-and-v8-bytecode.html)
-
 ## 什么是 V8 字节码
 
 我们可以理解，V8 字节码是 V8 引擎在解析和编译 JavaScript 后产物的序列化形式，它通常用于浏览器内的性能优化。所以如果我们通过 V8 字节码运行代码，不仅能够起到代码保护作用，还对性能有一定的提升。
