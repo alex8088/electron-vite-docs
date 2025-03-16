@@ -108,19 +108,21 @@ pnpm create @quick-start/electron
 
 你还可以通过附加的命令行选项直接指定项目名称和你想要使用的模板。例如，要构建一个 Electron + Vue 项目，运行:
 
-```sh
-# npm 6.x
-npm create @quick-start/electron my-app --template vue
+::: code-group
 
-# npm 7+, extra double-dash is needed:
-npm create @quick-start/electron my-app -- --template vue
+```sh [npm]
+# npm 7+，需要添加额外的 --：
+npm create @quick-start/electron@latest my-app -- --template vue
+```
 
-# yarn
+```sh [yarn]
 yarn create @quick-start/electron my-app --template vue
+```
 
-# pnpm
+```sh [pnpm]
 pnpm create @quick-start/electron my-app --template vue
 ```
+:::
 
 目前支持的模板预设如下：
 
