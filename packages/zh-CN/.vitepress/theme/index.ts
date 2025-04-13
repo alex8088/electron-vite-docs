@@ -1,5 +1,6 @@
 import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
+import 'virtual:group-icons.css'
 import './styles/custom.css'
 
 import AsideSponsors from './components/AsideSponsors.vue'
