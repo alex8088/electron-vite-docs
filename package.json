@@ -6,7 +6,7 @@
   "license": "MIT",
   "author": "Alex Wei<https://github.com/alex8088>",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
@@ -22,9 +22,9 @@
   },
   "devDependencies": {
     "@alexwei/commit-lint": "^1.0.0",
-    "@types/node": "^18.18.6",
+    "@types/node": "^22.14.1",
     "simple-git-hooks": "^2.9.0",
-    "vitepress": "1.0.0-rc.29"
+    "vitepress": "^1.6.3"
   },
   "pnpm": {
     "peerDependencyRules": {
