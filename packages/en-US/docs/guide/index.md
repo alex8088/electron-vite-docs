@@ -21,7 +21,7 @@ You can learn more about the rationale behind the project in the [Introduction](
 ## Installation
 
 ::: tip Pre-requisites
-Requires **Node.js** version 18+, 20+ and **Vite** version 4.0+
+Requires **Node.js** version 20.19+, 22.12+ and **Vite** version 5.0+
 :::
 
 ```sh
