@@ -19,19 +19,6 @@ const random = Math.floor(Math.random() * 3 + 1)
       </div>
     </section>
     <section class="vp-sponsor-section">
-      <div class="VPSponsorsGrid vp-sponsor-grid mini" data-vp-grid="1">
-        <div class="vp-sponsor-grid-item">
-          <a class="vp-sponsor-grid-link" href="https://dev.boxai.cc/share/14" target="_blank" rel="sponsored noopener">
-            <article class="vp-sponsor-grid-box">
-              <h4 class="visually-hidden">midjourney 绘画接口服务商</h4>
-              <img style="max-width:33px; border-radius: 2px;" src="/sponsor-2.svg" alt="sponsor-1">
-              <span class="vp-sponsor-grid-text" style="margin-left: 10px; text-align: center; line-height: 18px;">Midjourney<br/>绘画接口服务商</span>
-            </article>
-          </a>
-        </div>
-      </div>
-    </section>
-    <section class="vp-sponsor-section">
       <div class="VPSponsorsGrid vp-sponsor-grid xmini" data-vp-grid="2">
         <div class="vp-sponsor-grid-item" v-if="random === 1">
           <a class="vp-sponsor-grid-link" href="https://github.com/alex8088/electron-uikit" target="_blank" rel="sponsored noopener">
