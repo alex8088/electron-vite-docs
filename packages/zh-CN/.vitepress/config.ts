@@ -153,7 +153,11 @@ export default defineConfig({
       copyright: 'Copyright © 2022-present Alex Wei & Powered by Vite'
     },
     nav,
-    sidebar
+    sidebar,
+    carbonAds: {
+      code: 'CW7ILKJL',
+      placement: 'electron-viteorg'
+    }
   },
   markdown: {
     config(md) {
