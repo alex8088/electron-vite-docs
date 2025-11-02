@@ -22,17 +22,9 @@
   },
   "devDependencies": {
     "@alexwei/commit-lint": "^1.0.0",
-    "@types/node": "^22.14.1",
-    "simple-git-hooks": "^2.9.0",
-    "vitepress": "^1.6.3",
-    "vitepress-plugin-group-icons": "^1.5.1"
-  },
-  "pnpm": {
-    "peerDependencyRules": {
-      "ignoreMissing": [
-        "@algolia/client-search",
-        "search-insights"
-      ]
-    }
+    "@types/node": "^22.18.13",
+    "simple-git-hooks": "^2.13.1",
+    "vitepress": "^1.6.4",
+    "vitepress-plugin-group-icons": "^1.6.5"
   }
 }
