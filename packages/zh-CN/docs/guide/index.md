@@ -1,22 +1,22 @@
 # 快速开始
 
+::: tip 提示
+本指南假设你熟悉 Electron 和 Vite。开始阅读之前建议先阅读 [Electron 指南](https://www.electronjs.org/docs/) 和 [Vite 指南](https://cn.vitejs.dev/guide/)。
+:::
+
 ## 总览
 
-**electron-vite** 是一个新型构建工具，旨在为 [Electron](https://www.electronjs.org) 提供更快、更精简的开发体验。它主要由五部分组成：
+**electron-vite** 是一个新型构建工具，旨在为 [Electron](https://www.electronjs.org) 提供更快、更精简的开发体验。它提供：
 
-- 一套构建指令，它使用 [Vite](https://cn.vitejs.dev/) 打包你的代码，并且它能够处理 Electron 的独特环境，包括 [Node.js](https://nodejs.org/) 和浏览器环境。
+- 一套构建指令，使用 [Vite](https://cn.vitejs.dev/) 打包你的代码，同时无缝处理 Electron 的双环境（[Node.js](https://nodejs.org/) 和浏览器上下文）。
 
-- 集中配置主进程、渲染器和预加载脚本的 Vite 配置，并针对 Electron 的独特环境进行预配置。
+- 为主进程、渲染进程和预加载脚本提供单一的配置入口，并针对 Electron 优化了合理的 [默认值配置](../config/index.md#内置配置)。
 
-- 为渲染器提供快速模块热替换（HMR）支持，为主进程和预加载脚本提供热重载支持，极大地提高了开发效率。
+- 为渲染进程提供 [模块热替换（HMR）](./hmr-and-hot-reloading.md#使用-hmr)支持，并为主进程和预加载脚本提供 [热重载](./hmr-and-hot-reloading.md#启用热重载) 支持。
 
-- 优化 Electron 主进程资源处理。
-
-- 使用 V8 字节码保护源代码。
+- 高级开发能力，包括通过简单导入后缀实现 [多线程支持](./dev.md#多进程)、针对主进程的 [资源优化处理](./assets.md)、用于增强沙盒支持的 [隔离构建](./isolated-build.md) 模式，以及 [ V8 字节码编译以保护源代码](./source-code-protection.md)。
 
 electron-vite 快速、简单且功能强大，旨在开箱即用。
-
-你可以在 [简介](./introduction.md) 中了解更多关于项目的设计初衷。
 
 ## 安装
 
@@ -32,7 +32,7 @@ npm i electron-vite -D
 
 在安装了 electron-vite 的项目中，你可以直接使用 `npx electron-vite` 运行，也可以在 `package.json` 文件中添加 npm scripts：
 
-```json
+```json [package.json]
 {
   "scripts": {
     "start": "electron-vite preview", // 开启 Electron 程序预览生产构建
@@ -50,8 +50,7 @@ npm i electron-vite -D
 
 当以命令行方式运行 `electron-vite` 时，electron-vite 将会自动尝试解析项目根目录下名为 `electron.vite.config.js` 的配置文件。最基本的配置文件如下所示：
 
-```js
-// electron.vite.config.js
+```js [electron.vite.config.js]
 export default {
   main: {
     // vite config options
@@ -71,7 +70,7 @@ export default {
 
 当使用 electron-vite 打包代码时，Electron 应用程序的入口点应更改为输出目录中的主进程入口文件。默认的输出目录 `outDir` 为 `out`。你的 `package.json` 文件会是这样：
 
-```json {4}
+```json [package.json] {4}
 {
   "name": "electron-app",
   "version": "1.0.0",
@@ -100,6 +99,7 @@ yarn create @quick-start/electron
 ```sh [pnpm]
 pnpm create @quick-start/electron
 ```
+
 :::
 
 然后按照提示操作即可!
@@ -122,17 +122,18 @@ yarn create @quick-start/electron my-app --template vue
 ```sh [pnpm]
 pnpm create @quick-start/electron my-app --template vue
 ```
+
 :::
 
 目前支持的模板预设如下：
 
-|             JavaScript              |                TypeScript                 |
-| :---------------------------------: | :---------------------------------------: |
+|                                                 JavaScript                                                 |                                                    TypeScript                                                    |
+| :--------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------: |
 | [vanilla](https://github.com/alex8088/quick-start/tree/master/packages/create-electron/playground/vanilla) | [vanilla-ts](https://github.com/alex8088/quick-start/tree/master/packages/create-electron/playground/vanilla-ts) |
 |     [vue](https://github.com/alex8088/quick-start/tree/master/packages/create-electron/playground/vue)     |     [vue-ts](https://github.com/alex8088/quick-start/tree/master/packages/create-electron/playground/vue-ts)     |
 |   [react](https://github.com/alex8088/quick-start/tree/master/packages/create-electron/playground/react)   |   [react-ts](https://github.com/alex8088/quick-start/tree/master/packages/create-electron/playground/react-ts)   |
 |  [svelte](https://github.com/alex8088/quick-start/tree/master/packages/create-electron/playground/svelte)  |  [svelte-ts](https://github.com/alex8088/quick-start/tree/master/packages/create-electron/playground/svelte-ts)  |
-|   [solid](https://github.com/alex8088/quick-start/tree/master/packages/create-electron/playground/solid)   |   [solid-ts](https://github.com/alex8088/quick-start/tree/master/packages/create-electron/playground/solid-ts)  |
+|   [solid](https://github.com/alex8088/quick-start/tree/master/packages/create-electron/playground/solid)   |   [solid-ts](https://github.com/alex8088/quick-start/tree/master/packages/create-electron/playground/solid-ts)   |
 
 了解更多有关 [create-electron](https://github.com/alex8088/quick-start/tree/master/packages/create-electron) 的信息。
 

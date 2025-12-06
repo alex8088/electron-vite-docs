@@ -1,8 +1,8 @@
 ---
-title: electron-vite 2.0 发布了！
+title: electron-vite 5.0 发布了！
 author:
   name: alex.wei
-date: 2024-01-09
+date: 2025-12-07
 outline: deep
 sidebar: false
 next: false
@@ -12,16 +12,16 @@ head:
       content: website
   - - meta
     - property: og:title
-      content: electron-vite 2 公告
+      content: electron-vite 5 公告
   - - meta
     - property: og:image
-      content: https://cn.electron-vite.org/og-image-announcing-2.png
+      content: https://cn.electron-vite.org/og-image-announcing-5.png
   - - meta
     - property: og:url
       content: https://cn.electron-vite.org/blog
   - - meta
     - property: og:description
-      content: electron-vite 2 发布公告
+      content: electron-vite 5 发布公告
 ---
 
 <style>
@@ -30,72 +30,45 @@ head:
 }
 </style>
 
-# electron-vite 2.0 发布了!
+# electron-vite 5.0 发布了！
 
-_January 09, 2024_
+_2025 年 12 月 7 日_
 
-![electron-vite 2 Announcement Cover Image](/og-image-announcing-2.png)
+![electron-vite 5 Announcement Cover Image](/og-image-announcing-5.png)
 
-electron-vite 是一个新型构建工具，旨在为 [Electron](https://www.electronjs.org) 提供更快、更精简的开发体验。
+electron-vite 5.0 今日正式发布！这个里程碑式的版本不仅引入了多项新功能，还对核心功能进行深度优化，并重新梳理了文档，为开发者提供更流畅、更高效的开发体验。
 
-electron-vite 1.0 发布一年多了，已经逐渐成为 Electron 开发生态的一部分。得益于 [Vite](https://cn.vitejs.dev) 优秀的性能和开发体验。在此基础上，electron-vite 做了很多设计和优化工作，使其对 Electron 开发更加友好，例如[热重载](../guide/hot-reloading.md)、[源代码保护](../guide/source-code-protection.md)、[调试](../guide/debugging.md)和[资源处理优化](../guide/assets.md)等。此外，还发布了新的文档来帮助开发者，你可以前往 [cn.electron-vite.org](../index.md) 查看阅读，并且还提供了 [create-electron](https://github.com/alex8088/quick-start/tree/master/packages/create-electron) 模板来帮助你使用你喜欢的框架（例如 [Vue](https://vuejs.org)、[React](https://react.dev)、[Svelte](https://svelte.dev) 和 [Solid](https://www.solidjs.com)）来搭建 Electron 项目。
+- [Github 变更日志](https://github.com/alex8088/electron-vite/blob/master/CHANGELOG.md)
 
-今天，electron-vite 2.0 正式发布了！ electron-vite 现在可以正确支持 Vite 5 并支持 Electron 的 ESM。
+## 隔离构建
 
-快速链接:
+[隔离构建](../guide/isolated-build.md) 旨在解决 **多入口** 应用开发中的常见问题，例如输出单文件、高效 tree-shaking 以避免不必要的模块引入，以及减少过多的 chunk 生成。
 
-- [文档](../index.md)
-- [变更日志](https://github.com/alex8088/electron-vite/blob/master/CHANGELOG.md#v200-2024-01-09)
+electron-vite 5.0 引入了 `build.isolatedEntries` 选项，用于 **自动隔离多个入口**，并 **智能处理共享 chunk 和资源输出**。
 
-如果你是 electron-vite 的新手，我们建议你首先阅读[入门](../guide/index.md)和[开发](../guide/dev.md)指南。
+**适用场景：**
 
-## 快速开始使用 electron-vite 2
+- **主进程：** 通过 `?modulePath` 导入的模块默认启用隔离构建，无需额外配置。
+- **预加载脚本：** 若存在多个入口点并共享依赖，则需要启用隔离构建。这是支持 Electron sandbox（允许输出为单文件 bundle）的前置条件。
+- **渲染进程：** 减少生成的 chunk 数量，从而提升渲染性能。
 
-你可以使用 `npm create @quick-start/electron` 用你喜欢的框架快速搭建 Electron 项目。
+当项目中存在大量入口点时，启用 `隔离构建` 会增加构建时间，但通常影响在可接受范围内。这个权衡是非常值得的：`隔离构建`能显著 **提升应用性能**、**增强安全性**、**降低开发复杂度**，并 **提高开发者生产力**。
 
-## 兼容性说明
+## 增强字节码的字符串保护
 
-- electron-vite 不再支持已 EOL 的 Node.js 14 / 16 / 17 / 19。现在需要 Node.js 18 / 20+。
-- electron-vite 现已发布为 ESM，并且 CJS 导出将在 3.0 版本中删除，因为 Vite 6 将不再支持 CJS。
+electron-vite 5.0 引入了一个全新的基于 Babel 的字符串保护插件，用于字节码编译，带来以下增强：
 
-对于大多数项目来说，electron-vite 2 的更新应该是直接的。如果你遇到问题，你可以阅读 [故障排除指南](../guide/troubleshooting.md)。
+- **将每个字符串编译成唯一的 IIFE 函数，实现真正的混淆，使字符串不可读**。
+- **支持字符串字面量和模板字面量（仅纯静态）**。
 
-## Vite 5 支持
+详见 [bytecode.protectedStrings](../guide/source-code-protection.md#bytecode-protectedstrings)
 
-electro-vite 2 现在可以正确支持 Vite 5。如果你要升级到 Vite 5，建议在升级之前查看 [Vite 的迁移指南](https://cn.vitejs.dev/guide/migration)。此外，electron-vite 2 删除了对 Vite 3 的兼容性支持。
+## 弃用项
 
-## 性能
+1. `externalizeDepsPlugin` 已被弃用，请使用 `build.externalizeDeps` 配置项替代。在 electron-vite 5.0 中，这一 **行为默认启用**。
 
-在 Vite 5 的构建性能改进之上，electron-vite 2 为主进程和预加载脚本启用了 Vite 的 SSR 构建，跳过了一些现代 Web 插件，并进行了一些优化，例如 `package.json` 缓存，从而提高了构建性能并且更适合 Electron。
-​
-## Electron ESM 支持
+2. `bytecodePlugin` 已被弃用，请使用 `build.bytecode` 配置项替代。
 
-Electron 从 Electron 28 开始支持 ES 模块。 electron-vite 2.0 同样支持使用 ESM 来开发和构建你的 Electron 应用程序。
+## 迁移至 v5
 
-要让 electron-vite 启用 ESM 有两种方式，添加 `"type": "module"` 到最近的 `package.json`，或在配置文件中设置 `build.rollupOptions.output.format` 为 `es`。 但在此之前，你需要先阅读 [迁移至 ESM ](../guide/dev.md#迁移至-esm) 指南。
-
-electron-vite 对 ES 模块 和 CommonJS 语法做了一定的兼容性处理，允许开发者以最少的迁移工作在两种语法之间自由切换。但需要注意的是，[源代码保护](../guide/source-code-protection.md) 目前仅支持 CommonJS。
-
-## 传递参数给 Electron
-
-在 electron-vite 2.0 中，向 Electron 应用程序传递参数非常简单。你可以在 electron-vite CLI 之后附加一个 `--` 以及要传递的参数。
-
-```json
-"scripts": {
-  "dev": "electron-vite dev -- p1 p2"
-}
-```
-
-了解更多有关 [传递参数给 Electron 应用程序](../guide/dev.md#传递参数给-electron-应用程序) 的信息。
-
-## 环境变量
-
-electron-vite 现在可以在主进程和渲染进程间共享环境变量。以 `VITE_` 为前缀的变量将暴露给所有进程。
-
-```
-SOME_KEY=123           # 无效变量
-MAIN_VITE_KEY=123      # 仅主进程可用
-PRELOAD_VITE_KEY=123   # 仅预加载脚本可用
-RENDERER_VITE_KEY=123  # 仅渲染进程可用
-VITE_KEY=123           # 所有进程可用 // [!code warning]
-```
+对于大多数项目而言，升级到 electron-vite 5 应该很简单。但我们建议在升级前先查看 [详细的迁移指南](../guide/migration.md)。

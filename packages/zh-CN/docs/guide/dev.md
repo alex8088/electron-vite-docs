@@ -64,7 +64,7 @@ outline: deep
 
 你的 `electron.vite.config.ts` 文件应该是这样：
 
-```js
+```js [electron.vite.config.ts]
 import { defineConfig } from 'electron-vite'
 import { resolve } from 'path'
 
@@ -127,7 +127,13 @@ import { withBase } from 'vitepress'
 
 1. 创建一个预加载脚本并通过 `contextBridge.exposeInMainWorld` 将 `方法` 或 `变量` 暴露给渲染器。
 
-```js
+2. 将脚本附在渲染进程上，在 `BrowserWindow` 构造器中使用 `webPreferences.preload` 传入脚本的路径。
+
+3. 在渲染器进程中使用暴露的函数和变量：
+
+::: code-group
+
+```js [preload.js]
 import { contextBridge, ipcRenderer } from 'electron'
 
 contextBridge.exposeInMainWorld('electron', {
@@ -135,17 +141,15 @@ contextBridge.exposeInMainWorld('electron', {
 })
 ```
 
-2. 将脚本附在渲染进程上，在 `BrowserWindow` 构造器中使用 `webPreferences.preload` 传入脚本的路径。
-
-```js {7,11}
+```js [main.js] {7,11}
 import { app, BrowserWindow } from 'electron'
 import path from 'path'
 
 const createWindow = () => {
   const win = new BrowserWindow({
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-    },
+      preload: path.join(__dirname, 'preload.js')
+    }
   })
 
   ipcMain.handle('ping', () => 'pong')
@@ -158,9 +162,7 @@ app.whenReady().then(() => {
 })
 ```
 
-3. 在渲染器进程中使用暴露的函数和变量：
-
-```js{2}
+```js [renderer.js] {2}
 const func = async () => {
   const response = await window.electron.ping()
   console.log(response) // prints out 'pong'
@@ -169,20 +171,30 @@ const func = async () => {
 func()
 ```
 
+:::
+
 ### 沙盒的限制
 
 从 Electron 20 开始，预加载脚本默认沙盒化，不再拥有完整 Node.js 环境的访问权。实际上，这意味着你只拥有一个 polyfilled 的 require 函数（类似于 Node 的 require 模块），它只能访问一组有限的 API。
 
-| 可用的 API | 详细信息 |
-| :--------------- | :--------------- |
-| Electron 模块  | 仅 [渲染进程模块](https://www.electronjs.org/zh/docs/latest/api/context-bridge)  |
-| Node.js 模块   | `events`, `timers`, `url`     |
-| Polyfilled 的全局模块 | `Buffer`, `process`, `clearImmediate`, `setImmediate` |
+| 可用的 API            | 详细信息                                                                        |
+| :-------------------- | :------------------------------------------------------------------------------ |
+| Electron 模块         | 仅 [渲染进程模块](https://www.electronjs.org/zh/docs/latest/api/context-bridge) |
+| Node.js 模块          | `events`, `timers`, `url`                                                       |
+| Polyfilled 的全局模块 | `Buffer`, `process`, `clearImmediate`, `setImmediate`                           |
 
-::: tip 提示
-因为 `require` 函数是一个功能有限的 polyfill，你无法把 preload 脚本拆成多个文件并作为 CommonJS 模块来加载，除非指定了 `sandbox: false`。
-:::
+在沙盒模式下，如果你在**预加载脚本**中使用 `require` 或 `import` 引入其他模块，可能会遇到以下错误：
 
+> Unable to load preload scripts -> Error: module not found: 'foo'
+
+要正确处理依赖，你可以采用以下两种方案之一：
+
+1. **禁用沙盒**
+2. **使用 `electron-vite` 全量打包依赖**
+
+   将所有需要的模块都包含在构建输出中，使得预加载脚本能够在运行时访问它们。更多信息，请参阅 [依赖处理](./dependency-handling.md) 和 [隔离构建](./isolated-build.md) 章节。
+
+::: details 如何在 Electron 中禁用沙盒
 在 Electron 中，可以使用 [BrowserWindow](https://www.electronjs.org/zh/docs/latest/api/browser-window) 构造函数中的 `sandbox: false` 选项在每个进程的基础上禁用渲染器沙盒。
 
 ```js
@@ -193,20 +205,20 @@ const win = new BrowserWindow({
 })
 ```
 
+:::
+
 了解有关 [Electron 进程沙盒](https://www.electronjs.org/zh/docs/latest/tutorial/sandbox) 的更多信息。
 
-### 高效
+### 工具包
 
-也许有些开发人员认为使用预加载脚本不方便且不灵活。但我们为什么要推荐：
+为了提高开发效率，推荐使用 [@electron-toolkit/preload](https://github.com/alex8088/electron-toolkit/tree/master/packages/preload)。
+它提供了一种简单的方式，将 Electron 的 API（`ipcRenderer`、`webFrame`、`process`）暴露给渲染进程。
 
-- 这是安全的做法，大多数流行的 Electron 应用程序（slack、visual studio code 等）都这样做。
-- 避免混合开发（nodejs 和浏览器），让渲染器成为一个常规的 web 应用程序，让 web 开发人员更容易上手。
+首先，在启用上下文隔离的情况下，使用 `contextBridge` 将 Electron APIs 暴露给渲染器，否则将其添加到全局 DOM。然后，你就可以在渲染进程中直接使用这些 APIs。
 
-基于效率考虑，推荐使用 [@electron-toolkit/preload](https://github.com/alex8088/electron-toolkit/tree/master/packages/preload)。非常容易将 Electron APIs（ipcRenderer、webFrame、process）暴露​给渲染器。
+::: code-group
 
-首先，在启用上下文隔离的情况下，使用 `contextBridge` 将 Electron APIs 暴露给渲染器，否则将其添加到全局 DOM。
-
-```js
+```js [preload.js]
 import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
@@ -221,14 +233,12 @@ if (process.contextIsolated) {
 }
 ```
 
-然后，在渲染进程中直接使用 Electron APIs：
-
-```js
+```js [renderer.js]
 // Send a message to the main process with no response
 window.electron.ipcRenderer.send('electron:say', 'hello')
 
 // Send a message to the main process with the response asynchronously
-window.electron.ipcRenderer.invoke('electron:doAThing', '').then(re => {
+window.electron.ipcRenderer.invoke('electron:doAThing', '').then((re) => {
   console.log(re)
 })
 
@@ -238,14 +248,12 @@ window.electron.ipcRenderer.on('electron:reply', (_, args) => {
 })
 ```
 
-了解更多有关 [@electron-toolkit/preload](https://github.com/alex8088/electron-toolkit/tree/master/packages/preload)。
-
-::: tip 提示
-`@electron-toolkit/preload` 需要禁用 `sandbox`。
 :::
 
+了解更多有关 [@electron-toolkit/preload](https://github.com/alex8088/electron-toolkit/tree/master/packages/preload)。
+
 ::: warning IPC 安全问题
-最安全的方法是使用辅助函数来包装 `ipcRenderer` 调用，而不是直接通过 context bridge 暴露 ipcRenderer 模块。
+最安全的方法是使用辅助函数来包装 `ipcRenderer` 调用，而不是直接通过 context bridge 暴露整个 ipcRenderer 模块。
 :::
 
 ### Webview
@@ -254,70 +262,19 @@ window.electron.ipcRenderer.on('electron:reply', (_, args) => {
 
 ```js
 mainWindow.webContents.on('will-attach-webview', (e, webPreferences) => {
-  webPreferences.preload = join(__dirname, '../preload/index.js')
+  webPreferences.preload = join(import.meta.dirname, '../preload/index.js')
 })
 ```
 
 ## `nodeIntegration`
 
-目前，electron-vite 不支持 `nodeIntegration`。其中一个重要的原因是 Vite 的 HMR 是基于原生 ESM 实现的。但是还有一种支持方式就是使用 `require` 导入 node 模块，不太优雅。或者你可以使用插件 [vite-plugin-commonjs-externals](https://github.com/xiaoxiangmoe/vite-plugin-commonjs-externals) 来处理。
-
-也许将来会有更好的方法来支持。但需要注意的是，使用预加载脚本是一个更好、更安全的选择。
-
-## `dependencies` vs `devDependencies`
-
-- **对于主进程和预加载脚本**，最佳实践是将依赖项外部化，只打包自己的代码。
-
-  我们需要将应用程序需要的依赖安装到 `package.json` 的 `dependencies` 中。然后使用 `externalizeDepsPlugin` 将它们外部化而不打包它们。
-
-  ```js {5,8}
-  import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
-
-  export default defineConfig({
-    main: {
-      plugins: [externalizeDepsPlugin()]
-    },
-    preload: {
-      plugins: [externalizeDepsPlugin()]
-    },
-    // ...
-  })
-  ```
-
-  在打包应用程序的时候，这些依赖也会一起打包，比如 `electron-builder`。不用担心他们会丢失。另一方面，`devDependencies` 则不会被打包。
-
-  值得注意的是一些只支持 `ESM` 的模块（例如 `lowdb`、`execa`、`node-fetch`），我们不应该将其外部化。我们应该让 `electron-vite` 把它打包成一个 `CJS` 标准模块来支持 Electron。
-
-  ```js {5}
-  import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
-
-  export default defineConfig({
-    main: {
-      plugins: [externalizeDepsPlugin({ exclude: ['lowdb'] })],
-      build: {
-        rollupOptions: {
-          output: {
-            manualChunks(id) {
-              if (id.includes('lowdb')) {
-                return 'lowdb'
-              }
-            }
-          }
-        }
-      }
-    },
-    // ...
-  })
-  ```
-
-- **对于渲染器**，它通常是完全打包的，所以依赖项最好安装在 `devDependencies` 中。这使得最终的分发包更小。
+electron-vite 不支持 `nodeIntegration`。我们建议使用预加载脚本，并避免在渲染进程中使用 Node.js 模块，这是大多数流行 Electron 应用所采用的最佳实践。如果你确实需要使用该功能，则必须手动添加 polyfill 来实现支持（例如使用 [vite-plugin-commonjs-externals](https://github.com/xiaoxiangmoe/vite-plugin-commonjs-externals) 之类的插件）。
 
 ## 多窗口应用程序
 
 当 Electron 应用程序具有多窗口时，这意味着可能有多个 html 页面和预加载脚本，你可以像下面一样修改你的配置文件：
 
-```js
-// electron.vite.config.js
+```js [electron.vite.config.js] {7,8,17,18}
 export default {
   main: {},
   preload: {
@@ -344,10 +301,10 @@ export default {
 ```
 
 ::: tip 如何加载多页
-查阅 [渲染进程 HMR](./hmr.md) 章节，了解更多详细信息。
+查阅 [使用 HMR](./hmr-and-hot-reloading.md#using-hmr) 章节，了解更多详细信息。
 :::
 
-##  传递参数给 Electron 应用程序
+## 传递参数给 Electron 应用程序
 
 可以在 electron-vite CLI 后面附加一个 `--` 以及要传递的参数。
 
@@ -360,7 +317,7 @@ export default {
 ```
 
 ::: tip 提示
-electron-vite 已经支持 `--inspect`、`--inspect-brk`、`--remote-debugging-port` 和 `--no-sandbox` 命令，所以你不需要为这些命令做这样的处理。有关更多详细信息，请参阅[命令行界面](./cli.md#dev-选项)。
+electron-vite 已经支持 `--inspect`、`--inspect-brk`、`--remote-debugging-port` 和 `--no-sandbox` 命令，所以你不需要为这些命令做这样的处理。有关更多详细信息，请参阅 [命令行界面](./cli.md#dev-选项)。
 :::
 
 - 传递程序参数：
@@ -373,7 +330,9 @@ electron-vite 已经支持 `--inspect`、`--inspect-brk`、`--remote-debugging-p
 
 双破折号之后的所有参数都将传递给 Electron 应用程序，你可以使用 `process.argv` 来处理它们。
 
-## Worker Threads
+## 多进程
+
+### Worker Threads
 
 你可以在导入请求上添加 `?modulePath` 或 `?nodeWorker` 查询参数来直接导入一个 node worker。
 
@@ -393,20 +352,19 @@ new Worker(workerPath, {})
 import createWorker from './worker?nodeWorker'
 
 createWorker({ workerData: 'worker' })
-    .on('message', (message) => {
-      console.log(`Message from worker: ${message}`)
-    })
-    .postMessage('')
+  .on('message', (message) => {
+    console.log(`Message from worker: ${message}`)
+  })
+  .postMessage('')
 ```
 
-你可以通过演练 [示例](https://github.com/alex8088/electron-vite-worker-example) 来了解更多信息。
-
-## Utility Process and Child Process
+### Utility Process and Child Process
 
 electron-vite 支持使用 Electron [UtilityProcess](https://www.electronjs.org/docs/latest/api/utility-process) API 或 Node.js [child_process](https://nodejs.org/api/child_process.html) 来 fork 子进程。子进程可以使用 `?modulePath` 后缀导入。
 
-```js
-// main.ts
+::: code-group
+
+```js [main.js]
 import { utilityProcess, MessageChannelMain } from 'electron'
 import forkPath from './fork?modulePath'
 
@@ -419,8 +377,9 @@ port2.on('message', (e) => {
 })
 port2.start()
 port2.postMessage('hello')
+```
 
-// fork.ts
+```js [fork.js]
 process.parentPort.on('message', (e) => {
   const [port] = e.ports
   port.on('message', (e) => {
@@ -431,7 +390,7 @@ process.parentPort.on('message', (e) => {
 })
 ```
 
-你可以通过演练 [示例](https://github.com/alex8088/electron-vite-worker-example) 来了解更多信息。
+:::
 
 ## Electron 的 ESM 支持
 
@@ -456,7 +415,7 @@ electron-vite 启用 ESM 有两种方法：
 
 2. 在配置文件中将 `build.rollupOptions.output.format` 设置为 `es`。
 
-   ```js
+   ```js [electron.vite.config.js]
    export default defineConfig({
      main: {
        build: {
@@ -530,4 +489,4 @@ electron-vite 启用 ESM 有两种方法：
 
 ### ESM 和 CJS 语法兼容性
 
-electron-vite 对 ES 模块 和 CommonJS 语法做了一些兼容性处理，允许开发者以最少的迁移工作在两种语法之间自由切换。但需要注意的是，[源代码保护](./source-code-protection.md)目前仅支持 CommonJS。
+electron-vite 对 ES 模块 和 CommonJS 语法做了一些兼容性处理，允许开发者以最少的迁移工作在两种语法之间自由切换。但需要注意的是，[源代码保护](./source-code-protection.md) 目前仅支持 CommonJS。

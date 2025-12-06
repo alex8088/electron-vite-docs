@@ -10,7 +10,7 @@ electron-vite 支持调试主进程和渲染进程代码。
 
 添加文件 `.vscode/launch.json`，配置内容为：
 
-```json
+```json [.vscode/launch.json]
 {
   "version": "0.2.0",
   "configurations": [

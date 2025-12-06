@@ -26,27 +26,6 @@ outline: deep
 - 渲染进程的公共资源将被复制到输出目录。
 :::
 
-
-## 类型定义
-
-如果你是 TypeScript 用户，请确保添加一个 `*.d.ts` 声明文件以获得类型检查和智能感知：
-
-```js
-/// <reference types="electron-vite/node" />
-```
-
-同时，你也可以将 `electron-vite/node` 添加到 `tsconfig` 中的 `compilerOptions.types` 下：
-
-```json
-{
-  "compilerOptions": {
-    "types": ["electron-vite/node"]
-  }
-}
-```
-
-这将为资源导入提供类型定义（例如：导入 `*?asset` 文件）。
-
 ## 将资源引入为文件路径
 
 在主进程中，可以使用 `?asset` 后缀将资源作为文件路径导入：

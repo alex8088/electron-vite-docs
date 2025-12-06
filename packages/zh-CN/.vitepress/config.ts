@@ -1,26 +1,30 @@
 import { defineConfig, DefaultTheme } from 'vitepress'
-import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons'
+import {
+  groupIconMdPlugin,
+  groupIconVitePlugin,
+  localIconLoader
+} from 'vitepress-plugin-group-icons'
 
 const sidebar: DefaultTheme.Sidebar = {
   '/': [
     {
       text: '指南',
       items: [
-        { text: '简介', link: '/guide/introduction' },
         { text: '快速开始', link: '/guide/' },
-        { text: '功能', link: '/guide/features' },
         { text: '命令行界面', link: '/guide/cli' },
         { text: '开发', link: '/guide/dev' },
         { text: '资源处理', link: '/guide/assets' },
-        { text: '渲染进程 HMR', link: '/guide/hmr' },
-        { text: '热重载', link: '/guide/hot-reloading' },
+        { text: 'TypeScript', link: '/guide/typescript' },
+        { text: 'HMR 和热重载', link: '/guide/hmr-and-hot-reloading' },
         { text: '构建生产版本', link: '/guide/build' },
-        { text: '分发', link: '/guide/distribution' },
+        { text: '依赖处理', link: '/guide/dependency-handling' },
+        { text: '隔离构建', link: '/guide/isolated-build' },
         { text: '源代码保护', link: '/guide/source-code-protection' },
-        { text: 'TS 装饰器', link: '/guide/typescript-decorator' },
+        { text: '分发', link: '/guide/distribution' },
         { text: '环境变量和模式', link: '/guide/env-and-mode' },
         { text: '调试', link: '/guide/debugging' },
-        { text: '故障排除', link: '/guide/troubleshooting' }
+        { text: '故障排除', link: '/guide/troubleshooting' },
+        { text: '从 v4 迁移', link: '/guide/migration' }
       ]
     },
     {
@@ -41,11 +45,11 @@ const nav: DefaultTheme.NavItem[] = [
     activeMatch: '^/guide|api|about/'
   },
   { text: '配置', link: '/config/', activeMatch: '^/config/' },
+  { text: '博客', link: '/blog/', activeMatch: '^/blog/' },
+  { text: '赞助', link: '/sponsor/', activeMatch: '^/sponsor/' },
   {
     text: '链接',
     items: [
-      { text: 'Blog', link: '/blog/', activeMatch: '^/blog/' },
-      { text: '赞助', link: '/sponsor/', activeMatch: '^/sponsor/' },
       {
         items: [
           { text: 'Vite', link: 'https://cn.vitejs.dev/' },
@@ -58,7 +62,7 @@ const nav: DefaultTheme.NavItem[] = [
     ]
   },
   {
-    text: 'v4.0.0',
+    text: 'v5.0.0',
     items: [
       {
         text: '更新日志',
@@ -166,7 +170,14 @@ export default defineConfig({
   },
   vite: {
     plugins: [
-      groupIconVitePlugin()
+      groupIconVitePlugin({
+        customIcon: {
+          'electron.vite': localIconLoader(
+            import.meta.url,
+            '../docs/public/favicon.svg'
+          )
+        }
+      })
     ]
   }
 })

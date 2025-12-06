@@ -4,8 +4,7 @@
 
 当以命令行方式运行 `electron-vite` 时，electron-vite 将会自动尝试解析项目根目录下名为 `electron.vite.config.js` 的配置文件。最基本的配置文件如下所示：
 
-```js
-// electron.vite.config.js
+```js [electron.vite.config.js]
 export default {
   main: {
     // vite config options
@@ -33,7 +32,7 @@ electron-vite --config my-config.js
 
 因为 electron-vite 本身附带 TypeScript 类型，所以你可以通过 IDE 和 jsdoc 的配合来实现智能提示：
 
-```js
+```js [electron.vite.config.ts]
 /**
  * @type {import('electron-vite').UserConfig}
  */
@@ -46,7 +45,7 @@ export default config
 
 另外，你可以使用 `defineConfig` 工具函数，这样不用 jsdoc 注解也可以获取类型提示：
 
-```js
+```js [electron.vite.config.ts]
 import { defineConfig } from 'electron-vite'
 
 export default defineConfig({
@@ -66,7 +65,7 @@ export default defineConfig({
 
 如果配置文件需要基于（`dev`/`serve` 或 `build`）命令或者不同的模式 (`development` 或 `production`) 来决定选项，则可以选择导出这样一个函数：
 
-```js
+```js [electron.vite.config.ts]
 import { defineConfig } from 'electron-vite'
 
 export default defineConfig(({ command, mode }) => {
@@ -92,41 +91,11 @@ export default defineConfig(({ command, mode }) => {
 })
 ```
 
-你还可以使用 `defineViteConfig` 函数来导出：
-
-```js
-import { defineConfig, defineViteConfig } from 'electron-vite'
-
-export default defineConfig({
-  main: {
-    // ...
-  },
-  preload: {
-    // ...
-  },
-  renderer: defineViteConfig(({ command, mode }) => {
-    if (command === 'dev') {
-      return {
-        // dev specific config
-      }
-    } else {
-      return {
-        // build specific config
-      }
-    }
-  })
-})
-```
-
-::: tip 提示
-`defineViteConfig` 从 Vite 导出。
-:::
-
 ## 环境变量
 
 注意 electron-vite 默认是不加载 `.env` 文件的，因为这些文件需要在执行完 electron-vite 配置后才能确定加载哪一个。不过当你的确需要时，你可以使用 electron-vite 导出的 `loadEnv` 函数来加载特定的 `.env` 文件。
 
-```js
+```js [electron.vite.config.ts]
 import { defineConfig, loadEnv } from 'electron-vite'
 
 export default defineConfig(({ command, mode }) => {
