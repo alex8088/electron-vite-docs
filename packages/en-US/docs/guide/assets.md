@@ -26,26 +26,6 @@ The public asset handling in renderers is different from the main process and pr
 - The renderer public asset will be copied to output directory.
 :::
 
-## Type Definitions
-
-If you are a TypeScript user, make sure to add a `*.d.ts` declaration file to get type checks and intellisense:
-
-```js
-/// <reference types="electron-vite/node" />
-```
-
-Also, you can add `electron-vite/node` to `compilerOptions.types` of your `tsconfig`:
-
-```json
-{
-  "compilerOptions": {
-    "types": ["electron-vite/node"]
-  }
-}
-```
-
-This will provide type definitions for asset imports (e.g. importing an `*?asset` file).
-
 ## Importing Asset as File Path
 
 In main process, assets can be imported as file path using the `?asset` suffix:

@@ -4,8 +4,7 @@
 
 When running `electron-vite` from the command line, electron-vite will automatically try to resolve a config file named `electron.vite.config.js` inside project root. The most basic config file looks like this:
 
-```js
-// electron.vite.config.js
+```js [electron.vite.config.js]
 export default {
   main: {
     // vite config options
@@ -33,7 +32,7 @@ electron-vite --config my-config.js
 
 Since `electron-vite` ships with TypeScript typings, you can leverage your IDE's intellisense with jsdoc type hints:
 
-```js
+```js [electron.vite.config.ts]
 /**
  * @type {import('electron-vite').UserConfig}
  */
@@ -46,7 +45,7 @@ export default config
 
 Alternatively, you can use the `defineConfig` helper which should provide intellisense without the need for jsdoc annotations:
 
-```js
+```js [electron.vite.config.ts]
 import { defineConfig } from 'electron-vite'
 
 export default defineConfig({
@@ -66,7 +65,7 @@ export default defineConfig({
 
 If the config needs to conditionally determine options based on the command (`dev`/`serve` or `build`), the mode (`development` or `production`) being used, it can export a function instead:
 
-```js
+```js [electron.vite.config.ts]
 import { defineConfig } from 'electron-vite'
 
 export default defineConfig(({ command, mode }) => {
@@ -92,41 +91,11 @@ export default defineConfig(({ command, mode }) => {
 })
 ```
 
-You can also use the `defineViteConfig` helper:
-
-```js
-import { defineConfig, defineViteConfig } from 'electron-vite'
-
-export default defineConfig({
-  main: {
-    // ...
-  },
-  preload: {
-    // ...
-  },
-  renderer: defineViteConfig(({ command, mode }) => {
-    if (command === 'dev') {
-      return {
-        // dev specific config
-      }
-    } else {
-      return {
-        // build specific config
-      }
-    }
-  })
-})
-```
-
-::: tip TIP
-The `defineViteConfig` exports from `Vite`.
-:::
-
 ## Environment Variables
 
 Note that electron-vite doesn't load `.env` files by default as the files to load can only be determined after evaluating the electron-vite config. However, you can use the exported `loadEnv` helper to load the specific `.env` file if needed.
 
-```js
+```js [electron.vite.config.ts]
 import { defineConfig, loadEnv } from 'electron-vite'
 
 export default defineConfig(({ command, mode }) => {

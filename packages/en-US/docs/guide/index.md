@@ -1,22 +1,22 @@
 # Getting Started
 
+::: tip NOTE
+This guide assumes that you are familiar with Electron and Vite. A good way to start learning more is to read the [Electron Guide](https://www.electronjs.org/docs/), and [Vite Guide](https://vitejs.dev/guide/).
+:::
+
 ## Overview
 
-**electron-vite** is a build tool that aims to provide a faster and leaner development experience for [Electron](https://www.electronjs.org). It consists of five major parts:
+**electron-vite** is a build tool that aims to provide a faster and leaner development experience for [Electron](https://www.electronjs.org). It provides:
 
-- A build command that bundles your code with [Vite](https://vitejs.dev/), and able to handle Electron's unique environment including [Node.js](https://nodejs.org/) and browser environments.
+- A build command that bundles your code with [Vite](https://vitejs.dev/) while seamlessly handling Electron's dual environment ([Node.js](https://nodejs.org/) and browser contexts).
 
-- Centrally configure the main process, renderers and preload scripts Vite configuration, and preconfigure for Electron's unique environment.
+- Provides a single configuration point for the main process, renderer processes, and preload scripts, with [sensible defaults optimized for Electron](../config/index.md#built-in-config).
 
-- Use fast Hot Module Replacement(HMR) for renderers, and the main process and preload scripts support hot reloading, extremely improving development efficiency.
+- Features instant [Hot Module Replacement(HMR)](./hmr-and-hot-reloading.md#using-hmr) for renderer processes, plus [hot reloading](./hmr-and-hot-reloading.md#enabling-hot-reloading) support for the main process and preload scripts.
 
-- Optimize asset handling for Electron main process.
-
-- Use V8 bytecode to protect source code.
+- Advanced development capabilities including [multi-threading](./dev.md#multi-threading) support via simple import suffixes, [optimized asset handling](./assets.md) for the  main process, [isolated build](./isolated-build.md) mode for enhanced sandbox support, and [V8 bytecode compilation to protect source code](./source-code-protection.md).
 
 electron-vite is fast, simple and powerful, designed to work out-of-the-box.
-
-You can learn more about the rationale behind the project in the [Introduction](./introduction.md) section.
 
 ## Installation
 
@@ -32,7 +32,7 @@ npm i electron-vite -D
 
 In a project where electron-vite is installed, you can use `electron-vite` binary directly with `npx electron-vite` or add the npm scripts to your `package.json` file like this:
 
-```json
+```json [package.json]
 {
   "scripts": {
     "start": "electron-vite preview", // start electron app to preview production build
@@ -50,8 +50,7 @@ Learn more about [Command Line Interface](/guide/cli).
 
 When running `electron-vite` from the command line, electron-vite will automatically try to resolve a config file named `electron.vite.config.js` inside project root. The most basic config file looks like this:
 
-```js
-// electron.vite.config.js
+```js [electron.vite.config.js]
 export default {
   main: {
     // vite config options
@@ -71,7 +70,7 @@ Learn more about [Config Reference](/config/).
 
 When using electron-vite to bundle your code, the entry point of the Electron application should be changed to the main process entry file in the output directory. The default `outDir` is `out`. Your `package.json` file should look something like this:
 
-```json {4}
+```json [package.json] {4}
 {
   "name": "electron-app",
   "version": "1.0.0",

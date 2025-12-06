@@ -1,29 +1,33 @@
 import { defineConfig, DefaultTheme } from 'vitepress'
-import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons'
+import {
+  groupIconMdPlugin,
+  groupIconVitePlugin,
+  localIconLoader
+} from 'vitepress-plugin-group-icons'
 
 const sidebar: DefaultTheme.Sidebar = {
   '/': [
     {
       text: 'Guide',
       items: [
-        { text: 'Introduction', link: '/guide/introduction' },
         { text: 'Getting Started', link: '/guide/' },
-        { text: 'Features', link: '/guide/features' },
         { text: 'CLI', link: '/guide/cli' },
         { text: 'Development', link: '/guide/dev' },
         { text: 'Asset Handling', link: '/guide/assets' },
-        { text: 'Using HMR', link: '/guide/hmr' },
-        { text: 'Hot Reloading', link: '/guide/hot-reloading' },
+        { text: 'HMR and Hot Reloading', link: '/guide/hmr-and-hot-reloading' },
+        { text: 'TypeScript', link: '/guide/typescript' },
         { text: 'Building for Production', link: '/guide/build' },
-        { text: 'Distribution', link: '/guide/distribution' },
+        { text: 'Dependency Handling', link: '/guide/dependency-handling' },
+        { text: 'Isolated Build', link: '/guide/isolated-build' },
         {
           text: 'Source Code Protection',
           link: '/guide/source-code-protection'
         },
-        { text: 'TypeScript Decorator', link: '/guide/typescript-decorator' },
+        { text: 'Distribution', link: '/guide/distribution' },
         { text: 'Env Variables and Modes', link: '/guide/env-and-mode' },
         { text: 'Debugging', link: '/guide/debugging' },
-        { text: 'Troubleshooting', link: '/guide/troubleshooting' }
+        { text: 'Troubleshooting', link: '/guide/troubleshooting' },
+        { text: 'Migration from v4', link: '/guide/migration' }
       ]
     },
     {
@@ -44,10 +48,10 @@ const nav: DefaultTheme.NavItem[] = [
     activeMatch: '^/guide|api|about/'
   },
   { text: 'Config', link: '/config/', activeMatch: '^/config/' },
+  { text: 'Blog', link: '/blog/', activeMatch: '^/blog/' },
   {
     text: 'Links',
     items: [
-      { text: 'Blog', link: '/blog/', activeMatch: '^/blog/' },
       {
         items: [
           { text: 'Vite', link: 'https://vitejs.dev/' },
@@ -60,7 +64,7 @@ const nav: DefaultTheme.NavItem[] = [
     ]
   },
   {
-    text: 'v4.0.0',
+    text: 'v5.0.0',
     items: [
       {
         text: 'Changelog',
@@ -116,7 +120,14 @@ export default defineConfig({
   },
   vite: {
     plugins: [
-      groupIconVitePlugin()
+      groupIconVitePlugin({
+        customIcon: {
+          'electron.vite': localIconLoader(
+            import.meta.url,
+            '../docs/public/favicon.svg'
+          )
+        }
+      })
     ]
   }
 })

@@ -10,8 +10,7 @@ electron-vite will load environment variables from the project root like Vite, a
 
 By default, variables prefixed with `MAIN_VITE_` are exposed to the main process, `PRELOAD_VITE_` to preload scripts, `RENDERER_VITE_` to renderers and `VITE_` to all.
 
-```
-// .env
+``` [.env]
 KEY=123                # not available
 MAIN_VITE_KEY=123      # only main process available
 PRELOAD_VITE_KEY=123   # only preload scripts available
@@ -21,8 +20,7 @@ VITE_KEY=123           # all available
 
 If you want to customize env variables prefix, you can use `envPrefix` option.
 
-```js
-// electron.vite.config.js
+```js [electron.vite.config.js]
 export default defineConfig({
   main: {
     envPrefix: 'M_VITE_'

@@ -10,7 +10,7 @@ When you customize the build output directory via the `--outDir` CLI argument, t
 
 Add a file `.vscode/launch.json` with the following configuration:
 
-```json
+```json [.vscode/launch.json]
 {
   "version": "0.2.0",
   "configurations": [

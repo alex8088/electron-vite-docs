@@ -6,44 +6,48 @@ If the suggestions here don't work, please try checking the [GitHub issue tracke
 
 ## Skills
 
-Through the following steps, you can quickly find the problems:
+Through the following steps, you can quickly identify and resolve problems:
 
-1. In development mode, you can debug problem via the `debugger` breakpoint.
-2. Before packaging, please run the `preview` command to preview the situation after packaging and find problems early.
-3. After packaging, you can append argument `--trace-warnings` to the app to view the error message. e.g. `.\app.exe --trace-warnings`(in Windows), `open app.app --args --trace-warnings`(in MacOS).
-4. Usually the preview command works fine, but it is not normal after packaging. The high probability is that the dependent modules have not been packaged into the app. Please check whether the dependent modules are installed in `dependencies`, or it may be a pnpm problem (if it is used).
+1. **During development** - Use the `debugger` statement or breakpoints to locate problems.
+2. **Before packaging** - Run the `preview` command to simulate the packaged environment and detect potential problems early.
+3. **After packaging** - Append argument `--trace-warnings` to your app’s launch command to view detailed error messages. For example:
+    - **Windows:** `.\app.exe --trace-warnings`
+    - **macOS:** `open app.app --args --trace-warnings`
+4. **If the app works in preview but not after packaging** - This usually indicates that some dependent modules were not included in the package. Check that all necessary modules are listed under `dependencies` (not `devDependencies`). Or it may be a **pnpm** problem (if it is used).
 
 ## Migration
 
 ### `The CJS build of Vite's Node API is deprecated`
 
-Since Vite 5, when calling Vite's CJS Node API, you will get a deprecation warning log. electron-vite 2 is now published as ESM, you can update to the latest version.
+Since Vite 5, calling Vite’s CJS Node API will trigger a deprecation warning. `electron-vite` v2 is now published as an ESM package, so you can update to the latest version.
 
-In addition, you need to ensure:
+In addition, make sure that:
 
-1. The `electron.vite.config.js` file content is using the ESM syntax.
-2. The nearest `package.json` file has `"type": "module"`, or use the `.mjs` extension, e.g. `electron.vite.config.mjs`.
+1. The `electron.vite.config.js` file uses **ESM syntax**.
+2. The nearest `package.json` file has `"type": "module"`, or alternatively, rename the config file to use the `.mjs` extension (e.g. `electron.vite.config.mjs`).
 
-Note that when adding `"type": "module"` in the project `package.json`, if Electron support ESM (Electron 28+), it will be built as ESM and you need to read the [ESM Support in Electron](./dev.md#esm-support-in-electron) guide first. But if ESM is not supported, it will be built as CommonJS and all files will have a `.cjs` extension.
+Note that when adding `"type": "module"` to your project's `package.json`, if Electron supports ESM (Electron 28+), it will be built as ESM. Read the [ESM Support in Electron](./dev.md#esm-support-in-electron) guide before migrating. But if ESM is not supported, it will be built as CommonJS and all files will have the `.cjs` extension.
 
-If you don't want to make any changes and keep bundling into CJS, the best way is to rename `electron.vite.config.js` to `electron.vite.config.mjs`.
+If you prefer not to make any changes and want to continue bundling as CJS, the simplest solution is to rename `electron.vite.config.js` to `electron.vite.config.mjs`.
 
 ## Development
 
 ### `Unable to load preload scripts -> Error: module not found: 'XXX'`
 
-From Electron 20, preload scripts are sandboxed by default and no longer have access to a full Node.js environment.
+From Electron 20, preload scripts are sandboxed by default and no longer have access to the full Node.js environment.
 
 You will need to either:
 
-1. Specify `sandbox: false` for `BrowserWindow`.
-2. Refactor preload scripts to remove Node usage from the renderer and bundle into one file (does not support to require multiple files).
+1. Set `sandbox: false` in the `BrowserWindow` options.
+2. Fully bundle all dependencies into a single preload script (since sandboxed scripts cannot `require` multiple separate files).
+
+- Related: [Limitations of Sandboxing](./dev.md#limitations-of-sandboxing)
+- Related: [Fully Bundling](./dependency-handling.md#fully-bundling)
+- Related: [Isolated Build](./isolated-build.md)
 
 ### `Uncaught Error: Module "XXX" has been externalized for browser compatibility.` or `Uncaught ReferenceError: __dirname is not defined`
 
-Currently, electron-vite not support `nodeIntegration`. One of the important reasons is that vite's HMR is implemented based on native ESM.
-
-It is recommended to use `preload scripts` for development and avoiding Node.js modules for renderer code. if you want to do this，you can add polyfills manually， see [nodeIntegration](/guide/dev#nodeintegration) for more details.
+You should not use Node.js modules in renderer processes. `electron-vite` also does not support `nodeIntegration`.
 
 - Related: [nodeIntegration](/guide/dev#nodeintegration)
 - Related: [Module externalized for browser compatibility](https://vitejs.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility)
@@ -52,16 +56,23 @@ It is recommended to use `preload scripts` for development and avoiding Node.js 
 
 ###  `Error [ERR_REQUIRE_ESM]: require() of ES Module`
 
-Electron doesn't support `ESM`, so the build standard for the main process and preload scripts is still `CJS`. This error occurs because the module is externalized. For modules that support CJS, we'd better externalize it. For modules that only support ESM (e.g. lowdb, execa, node-fetch, etc.), we should not externalize it. We should let electron-vite bundle it into a CJS standard module to support Electron.
+This happens because many libraries (e.g. `lowdb`, `execa`, `node-fetch`) are distributed only as **ES modules** and therefore cannot be required from CJS code.
 
-To solve this:
+There are two ways to resolve this issue:
 
-```js
-import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
+1. **Switch to ESM** — electron-vite provides excellent [support for ESM](./dev.md#esm-support-in-electron) and makes migration straightforward.
+2. **Bundle ESM libraries as CJS** — configure electron-vite to bundle these `ESM-only` dependencies so they can be used in a `CJS` environment.
+
+```js [electron.vite.config.js] {7}
+import { defineConfig } from 'electron-vite'
 
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin({ exclude: ['foo'] })] // <- Add related modules to 'exclude' option
+    build: {
+      externalizeDeps: {
+        exclude: ['foo'] // <- Add related modules to 'exclude' option
+      }
+    }
   },
   // ...
 })
@@ -71,32 +82,35 @@ Related issue: [#35](https://github.com/alex8088/electron-vite/issues/35)
 
 ### `vue-router` or `react-router-dom` works in development but not production
 
-Electron does not handle (browser) history and works with the synchronized URL. So only `hash router` can work.
+Electron does not manage browser history and instead relies on a synchronized URL. Therefore, only a **hash-based router** will work properly in production.
 
-- For `vue-router`, you should use `createWebHashHistory` instead of `createWebHistory`.
-- For `react-router-dom`, you should use `HashRouter` instead of `BrowserRouter`.
+- For `vue-router`, use `createWebHashHistory` instead of `createWebHistory`.
+- For `react-router-dom`, use `HashRouter` instead of `BrowserRouter`.
 
-When using hash router, you can set the hash value through the second argument of `BrowserWindow.loadFile` to load the page.
+When using a hash router, you can specify the hash value in the second argument of `BrowserWindow.loadFile` to load the corresponding page.
 
 ```js
-win.loadFile(path.join(__dirname, '../renderer/index.html'), { hash: 'home' })
+win.loadFile(path.join(import.meta.dirname, '../renderer/index.html'), { hash: 'home' })
 ```
 
 ## Distribution
 
 ### `A JavaScript error occurred in the main process -> Error: Cannot find module 'XXX'`
 
-Dependent modules are not packaged into the application. To solve this:
+This error usually occurs because dependent modules are not included in the packaged application. To resolve this issue:
 
-- If the related module is installed in `devDependencies`, please reinstall it in `dependencies`. This is because packaging tools (e.g. `electron-builder`, `electron-force`) usually exclude modules in devDependencies.
-- If you are using the `pnpm` package manager, you’ll need to add a file `.npmrc` with `shamefully-hoist=true` in project root directory (in order for your dependencies to be bundled correctly). Also, you need to delete `node_modules` and `pnpm-lock.yaml`, then reinstall the modules. Of course you can switch to other package manager (e.g. `npm`, `yarn`) to avoid this problem.
+- **Check dependencies:**
+
+  If the missing module is listed under `devDependencies`, reinstall it under `dependencies` instead. Packaging tools (such as `electron-builder` or `electron-forge`) typically exclude modules in `devDependencies`.
+
+- **For pnpm users:**
+
+  You can add a file named `.npmrc` with `shamefully-hoist=true` in your project root directory (in order for your dependencies to be bundled correctly). Then delete `node_modules` and `pnpm-lock.yaml`, and reinstall your dependencies. Alternatively, you can switch to another package manager (e.g. `npm` or `yarn`) to avoid this issue.
 
 ### `A JavaScript error occurred in the main process -> Error: Invaild or incompatible cached data (cachedDataRejected)`
 
-This problem occurs when bytecode plugin is enabled. The bytecode is compiled according to the Electron Node.js version and system architecture (e.g. x86, x64, ARM, etc.).
+This issue occurs when `build.bytecode` is enabled.
 
-Usually, the Node.js version that compiles the bytecode with local Electron is the same as the version packaged into the application, unless a different Electron version is specified for packaging tools such as electron-builder, which may cause this error. If this is the case, please make sure that the Electron Node.js version when compiling the bytecode is the same as when running it after packaging.
+To prevent this runtime error, you need to compile the bytecode cache for the target platform and architecture.
 
-In fact, this error is mostly caused by the incompatibility between the system architecture at compile time and the specified architecture Electron application. For example, building a 64-bit app for MacOS in arm64 MacOS, it will run with this error. Because the arm64-based bytecode built by default cannot run in 64-bit app. Therefore, we need to ensure that the system architecture when compiling bytecode is consistent with that at runtime after packaging. For how to package target applications of different architectures on the same platform, please refer to the [Multi Platform Build](/guide/source-code-protection#multi-platform-build) section.
-
-- Related: [Source Code Protection](/guide/source-code-protection)
+See the [Limitations of Build](./source-code-protection.md#limitations-of-build) section in the [Source Code Protection](./source-code-protection.md) guide for details.

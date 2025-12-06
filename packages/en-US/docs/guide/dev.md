@@ -64,7 +64,7 @@ Suppose you have the following project structure:
 
 Your `electron.vite.config.ts` should be:
 
-```js
+```js [electron.vite.config.ts]
 import { defineConfig } from 'electron-vite'
 import { resolve } from 'path'
 
@@ -127,7 +127,13 @@ Learn more about [preload scripts](https://www.electronjs.org/docs/latest/tutori
 
 1. Create a preload script to expose `functions` and `variables` into renderer via `contextBridge.exposeInMainWorld`.
 
-```js
+2. To attach this script to your renderer process, pass its path to the `webPreferences.preload` option in the `BrowserWindow` constructor.
+
+3. Use exposed functions and variables in the renderer process.
+
+::: code-group
+
+```js [preload.js]
 import { contextBridge, ipcRenderer } from 'electron'
 
 contextBridge.exposeInMainWorld('electron', {
@@ -135,9 +141,7 @@ contextBridge.exposeInMainWorld('electron', {
 })
 ```
 
-2. To attach this script to your renderer process, pass its path to the `webPreferences.preload` option in the `BrowserWindow` constructor:
-
-```js {7,11}
+```js [main.js] {7,11}
 import { app, BrowserWindow } from 'electron'
 import path from 'path'
 
@@ -158,9 +162,7 @@ app.whenReady().then(() => {
 })
 ```
 
-3. Use exposed functions and variables in the renderer process:
-
-```js{2}
+```js [renderer.js] {2}
 const func = async () => {
   const response = await window.electron.ping()
   console.log(response) // prints out 'pong'
@@ -168,6 +170,7 @@ const func = async () => {
 
 func()
 ```
+:::
 
 ### Limitations of Sandboxing
 
@@ -179,10 +182,18 @@ From Electron 20 onwards, preload scripts are sandboxed by default and no longer
 | Node.js modules   | `events`, `timers`, `url`     |
 | Polyfilled globals| `Buffer`, `process`, `clearImmediate`, `setImmediate` |
 
-::: tip NOTE
-Because the `require` function is a polyfill with limited functionality, you will not be able to use CommonJS modules to separate your preload script into multiple files, unless `sandbox: false` is specified.
-:::
+In sandbox mode, if you `require` or `import` other modules in a preload script, you may encounter the following error:
 
+> Unable to load preload scripts -> Error: module not found: 'foo'
+
+To handle dependencies correctly, you have two options:
+
+1. **Disable sandbox**
+2. **Fully bundle dependencies with `electron-vite`**
+
+   Include all required modules in the build output so that preload scripts can access them at runtime. For more information, refer to the [Dependency Handling](./dependency-handling.md) and [Isolated Build](./isolated-build.md) sections.
+
+::: details How to disbale sandbox in Electron
 In Electron, renderer sandboxing can be disabled on a per-process basis with the `sandbox: false` preference in the [BrowserWindow](https://www.electronjs.org/docs/latest/api/browser-window) constructor.
 
 ```js
@@ -192,21 +203,18 @@ const win = new BrowserWindow({
   }
 })
 ```
+:::
 
 Learn more about [Electron Process Sandboxing](https://www.electronjs.org/docs/latest/tutorial/sandbox).
 
-### Efficient
+### Toolkit
 
-Perhaps some developers think that using preload scripts is inconvenient and inflexible. But why we recommend:
+For development efficiency, it is recommended to use [@electron-toolkit/preload](https://github.com/alex8088/electron-toolkit/tree/master/packages/preload). It provides an easy way to expose Electron APIs (`ipcRenderer`, `webFrame`, `process`) to the renderer process.
 
-- It's safe practice, most popular Electron apps (slack, visual studio code, etc.) do this.
-- Avoid mixed development (nodejs and browser), make renderer as a regular web app and easier to get started for web developers.
+First, use `contextBridge` to expose Electron APIs into renderer only if context isolation is enabled, otherwise just add to the DOM global. Then, use the Electron APIs directly in the renderer process.
 
-Based on efficiency considerations, it is recommended to use [@electron-toolkit/preload](https://github.com/alex8088/electron-toolkit/tree/master/packages/preload). It's very easy to expose Electron APIs (ipcRenderer, webFrame, process) into renderer.
-
-First, use `contextBridge` to expose Electron APIs into renderer only if context isolation is enabled, otherwise just add to the DOM global.
-
-```js
+::: code-group
+```js [preload.js]
 import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
@@ -220,10 +228,7 @@ if (process.contextIsolated) {
   window.electron = electronAPI
 }
 ```
-
-Then, use the Electron APIs directly in the renderer process：
-
-```js
+```js [renderer.js]
 // Send a message to the main process with no response
 window.electron.ipcRenderer.send('electron:say', 'hello')
 
@@ -237,12 +242,9 @@ window.electron.ipcRenderer.on('electron:reply', (_, args) => {
   console.log(args)
 })
 ```
+:::
 
 Learn more about [@electron-toolkit/preload](https://github.com/alex8088/electron-toolkit/tree/master/packages/preload).
-
-::: tip NOTE
-`@electron-toolkit/preload` need to disable the `sandbox`.
-:::
 
 ::: warning IPC SECURITY
 The safest way is to use a helper function to wrap the `ipcRenderer` call rather than expose the ipcRenderer module directly via context bridge.
@@ -254,70 +256,19 @@ The easiest way to attach a preload script to a webview is through the webConten
 
 ```js
 mainWindow.webContents.on('will-attach-webview', (e, webPreferences) => {
-  webPreferences.preload = join(__dirname, '../preload/index.js')
+  webPreferences.preload = join(import.meta.dirname, '../preload/index.js')
 })
 ```
 
 ## `nodeIntegration`
 
-Currently, electron-vite do not support `nodeIntegration`. One of the important reasons is that vite's  HMR is implemented based on native ESM. But there is also a way to support that is to use `require` to import the node module which is not very elegant. Or you can use plugin [vite-plugin-commonjs-externals](https://github.com/xiaoxiangmoe/vite-plugin-commonjs-externals) to handle.
-
-Perhaps there's a better way to support this in the future. But It is important to note that  using preload scripts is a better and safer option.
-
-## `dependencies` vs `devDependencies`
-
-- **For the main process and preload scripts**, the best practice is to externalize dependencies and only bundle our own code.
-
-  We need to install the dependencies required by the app into the `dependencies` of `package.json`. Then use `externalizeDepsPlugin` to externalize them without bundle them.
-
-  ```js {5,8}
-  import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
-
-  export default defineConfig({
-    main: {
-      plugins: [externalizeDepsPlugin()]
-    },
-    preload: {
-      plugins: [externalizeDepsPlugin()]
-    },
-    // ...
-  })
-  ```
-
-  When packaging the app, these dependencies will also be packaged together, such as `electron-builder`. Don't worry about them being lost. On the other hand, `devDependencies` will not be packaged.
-
-  It is important to note that some modules that only support `ESM` (e.g. `lowdb`, `execa`, `node-fetch`), we should not externalize it. We should let `electron-vite` bundle it into a `CJS` standard module to support Electron.
-
-  ```js {5}
-  import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
-
-  export default defineConfig({
-    main: {
-      plugins: [externalizeDepsPlugin({ exclude: ['lowdb'] })],
-      build: {
-        rollupOptions: {
-          output: {
-            manualChunks(id) {
-              if (id.includes('lowdb')) {
-                return 'lowdb'
-              }
-            }
-          }
-        }
-      }
-    },
-    // ...
-  })
-  ```
-
-- **For renderers**, it is usually fully bundle, so dependencies are best installed in `devDependencies`. This makes the final package more smaller.
+electron-vite does not support `nodeIntegration`. We recommend using preload scripts and avoiding Node.js modules in the renderer, which is the best practice adopted by most popular Electron applications. If you do need to use this feature, you must manually add polyfills for support (e.g., using plugins like [vite-plugin-commonjs-externals](https://github.com/xiaoxiangmoe/vite-plugin-commonjs-externals)).
 
 ## Multiple Windows App
 
 When your electron app has multiple windows, it means there are multiple html files or preload files. You can modify your config file like this:
 
-```js
-// electron.vite.config.js
+```js [electron.vite.config.js] {7,8,17,18}
 export default {
   main: {},
   preload: {
@@ -344,7 +295,7 @@ export default {
 ```
 
 ::: tip How to Load Multi-Page
-Check out the [Using HMR](./hmr.md) section for more details.
+Check out the [Using HMR](./hmr-and-hot-reloading.md#using-hmr) section for more details.
 :::
 
 ## Passing Arguments to Electron App
@@ -373,7 +324,9 @@ electron-vite already supports `--inspect`, `--inspect-brk`, `--remote-debugging
 
 All arguments after the double-dash will be passed to Electron application, and you can use `process.argv` to handle them.
 
-## Worker Threads
+## Multi-threading
+
+### Worker Threads
 
 A node worker can be directly imported by appending `?modulePath` or `?nodeWorker` to the import request.
 
@@ -399,14 +352,13 @@ createWorker({ workerData: 'worker' })
     .postMessage('')
 ```
 
-You can learn more by playing with the [example](https://github.com/alex8088/electron-vite-worker-example).
-
-## Utility Process and Child Process
+### Utility Process and Child Process
 
 electron-vite supports using Electron [UtilityProcess](https://www.electronjs.org/docs/latest/api/utility-process) API or Node.js [child_process](https://nodejs.org/api/child_process.html) to fork a child process. The child process can be imported with `?modulePath` suffix.
 
-```js
-// main.ts
+::: code-group
+
+```js [main.js]
 import { utilityProcess, MessageChannelMain } from 'electron'
 import forkPath from './fork?modulePath'
 
@@ -419,8 +371,9 @@ port2.on('message', (e) => {
 })
 port2.start()
 port2.postMessage('hello')
+```
 
-// fork.ts
+```js [fork.js]
 process.parentPort.on('message', (e) => {
   const [port] = e.ports
   port.on('message', (e) => {
@@ -431,7 +384,7 @@ process.parentPort.on('message', (e) => {
 })
 ```
 
-You can learn more by playing with the [example](https://github.com/alex8088/electron-vite-worker-example).
+:::
 
 ## ESM Support in Electron
 
@@ -456,7 +409,7 @@ There are two ways to enable ESM for electron-vite:
 
 2. Setting `build.rollupOptions.output.format` to `es` in config file.
 
-   ```js
+   ```js [electron.vite.config.js]
    export default defineConfig({
      main: {
        build: {
