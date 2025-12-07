@@ -83,6 +83,7 @@ export default defineConfig({
     ['link', { rel: 'icon', href: '/favicon.png', type: 'image/png' }]
   ],
   srcDir: 'docs',
+  srcExclude: ['**/v2.md'],
   lastUpdated: true,
   cleanUrls: true,
   locales: {
