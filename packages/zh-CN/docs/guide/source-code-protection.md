@@ -39,9 +39,9 @@ build:
   # ... 其他配置
   electronFuses:
     # 启用 ASAR 完整性校验
-    EnableEmbeddedAsarIntegrityValidation: true
+    enableEmbeddedAsarIntegrityValidation: true
     # （可选，但推荐）确保 Electron 仅从 app.asar 加载应用程序代码
-    OnlyLoadAppFromAsar: true
+    onlyLoadAppFromAsar: true
 ```
 
 ### V8 字节码

@@ -39,9 +39,9 @@ build:
   # ... other configurations
   electronFuses:
     # Enable ASAR integrity validation
-    EnableEmbeddedAsarIntegrityValidation: true
+    enableEmbeddedAsarIntegrityValidation: true
     # (Optional, but recommended) Ensure Electron only loads app code from app.asar
-    OnlyLoadAppFromAsar: true
+    onlyLoadAppFromAsar: true
 ```
 
 ### V8 Bytecode
