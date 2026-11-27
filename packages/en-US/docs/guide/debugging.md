@@ -94,3 +94,32 @@ Once electron-vite starts, you can use `Chrome DevTools` for this by opening `ch
 ::: tip NOTE
 If you want to debug the source code instead of the bundled code, you should append the `--sourcemap` option.
 :::
+
+## AI Coding Agents (MCP)
+
+To let an AI coding agent (such as Cursor or Claude Code) inspect and interact with your running `electron-vite` renderer window over Chrome DevTools Protocol, launch Electron with a remote debugging port:
+
+```sh
+REMOTE_DEBUGGING_PORT=9222 electron-vite dev
+```
+
+Or pass the flag directly:
+
+```sh
+electron-vite dev -- --remote-debugging-port=9222
+```
+
+Then connect an MCP server that can attach to local Electron CDP targets, such as [Weavetab](https://github.com/Weavetab/mcp):
+
+```json
+{
+  "mcpServers": {
+    "weavetab": {
+      "command": "npx",
+      "args": ["-y", "@weavetab/mcp"]
+    }
+  }
+}
+```
+
+Once connected, the agent can read the renderer DOM, check console output, and test UI flows directly against your local dev window.
